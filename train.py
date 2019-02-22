@@ -1,21 +1,8 @@
-'''
-
-   Main training file
-
-   The goal is to correct the colors in underwater images.
-   CycleGAN was used to create images that appear to be underwater.
-   Those will be sent into the generator, which will attempt to correct the
-   colors.
-
-'''
-
 import cPickle as pickle
 import tensorflow as tf
 from scipy import misc
-from tqdm import tqdm
 import numpy as np
 import argparse
-import ntpath
 import random
 import glob
 import time
@@ -31,6 +18,7 @@ from tf_ops import *
 import data_ops
 import uiqm
 
+
 if __name__ == '__main__':
    parser = argparse.ArgumentParser()
    parser.add_argument('--LEARNING_RATE', required=False,default=1e-4,type=float,help='Learning rate')
@@ -42,8 +30,8 @@ if __name__ == '__main__':
    parser.add_argument('--IG_WEIGHT',     required=False,default=0.,type=float,help='Weight for image gradient loss')
    parser.add_argument('--NETWORK',       required=False,default='pix2pix',type=str,help='Network to use')
    parser.add_argument('--AUGMENT',       required=False,default=0,type=int,help='Augment data or not')
-   parser.add_argument('--EPOCHS',        required=False,default=10,type=int,help='Number of epochs for GAN')
-   parser.add_argument('--DATA',          required=False,default='large',type=str,help='Dataset to use')
+   parser.add_argument('--EPOCHS',        required=False,default=1,type=int,help='Number of epochs for GAN')
+   parser.add_argument('--DATA',          required=False,default='underwater_imagenet',type=str,help='Dataset to use')
    parser.add_argument('--LAB',           required=False,default=0,type=int,help='LAB colorspace option')
    a = parser.parse_args()
 
@@ -199,10 +187,11 @@ if __name__ == '__main__':
 
    merged_summary_op = tf.summary.merge_all()
 
-   trainA_paths = data_ops.getPaths('datasets/'+DATA+'/trainA/') # underwater photos
-   trainB_paths = data_ops.getPaths('datasets/'+DATA+'/trainB/') # normal photos (ground truth)
-   test_paths   = data_ops.getPaths('datasets/'+DATA+'/test/')
-   val_paths    = data_ops.getPaths('datasets/'+DATA+'/val/')
+   data_dir = "/mnt/data2/color_correction_related/datasets/"
+   trainA_paths = data_ops.getPaths(data_dir+DATA+'/trainA/') # underwater photos
+   trainB_paths = data_ops.getPaths(data_dir+DATA+'/trainB/') # normal photos (ground truth)
+   test_paths   = data_ops.getPaths(data_dir+DATA+'/test/')
+   val_paths    = data_ops.getPaths(data_dir+DATA+'/val/')
 
    print len(trainB_paths),'training pairs'
    num_train = len(trainA_paths)
@@ -301,3 +290,9 @@ if __name__ == '__main__':
             c += 1
             if c == 5: break
          print 'Done with val images, average uiqm:',np.mean(np.asarray(val_uiqms))
+
+
+
+
+
+
