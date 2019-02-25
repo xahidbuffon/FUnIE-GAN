@@ -1,8 +1,21 @@
+'''
+
+   Main training file
+
+   The goal is to correct the colors in underwater images.
+   CycleGAN was used to create images that appear to be underwater.
+   Those will be sent into the generator, which will attempt to correct the
+   colors.
+
+'''
+
 import cPickle as pickle
 import tensorflow as tf
 from scipy import misc
+from tqdm import tqdm
 import numpy as np
 import argparse
+import ntpath
 import random
 import glob
 import time
@@ -18,19 +31,33 @@ from tf_ops import *
 import data_ops
 import uiqm
 
+def loadImages(DATA):
+   trainA_paths  = data_ops.getPaths('datasets/'+DATA+'/trainA/') # underwater photos
+   trainB_paths  = data_ops.getPaths('datasets/'+DATA+'/trainB/') # normal photos (ground truth)
+   trainA_images = np.empty((len(trainA_paths), 256, 256, 3), dtype=np.float32)
+   trainB_images = np.empty((len(trainB_paths), 256, 256, 3), dtype=np.float32)
+   i = 0
+   for a,b in tqdm(zip(trainA_paths, trainB_paths)):
+      a_img = data_ops.preprocess(misc.imread(a))
+      b_img = data_ops.preprocess(misc.imread(b))
+      trainA_images[i, ...] = a_img
+      trainB_images[i, ...] = b_img
+      i += 1
+   return trainA_images, trainB_images
+
 
 if __name__ == '__main__':
    parser = argparse.ArgumentParser()
    parser.add_argument('--LEARNING_RATE', required=False,default=1e-4,type=float,help='Learning rate')
    parser.add_argument('--LOSS_METHOD',   required=False,default='wgan',help='Loss function for GAN')
    parser.add_argument('--UIQM_WEIGHT',   required=False,default=0.0,type=float,help='UIQM loss weight')
-   parser.add_argument('--BATCH_SIZE',    required=False,default=16,type=int,help='Batch size')
+   parser.add_argument('--BATCH_SIZE',    required=False,default=32,type=int,help='Batch size')
    parser.add_argument('--NUM_LAYERS',    required=False,default=16,type=int,help='Number of total layers in G')
-   parser.add_argument('--L1_WEIGHT',     required=False,default=100.0,type=float,help='Weight for L1 loss')
+   parser.add_argument('--L1_WEIGHT',     required=False,default=100.,type=float,help='Weight for L1 loss')
    parser.add_argument('--IG_WEIGHT',     required=False,default=0.,type=float,help='Weight for image gradient loss')
    parser.add_argument('--NETWORK',       required=False,default='pix2pix',type=str,help='Network to use')
    parser.add_argument('--AUGMENT',       required=False,default=0,type=int,help='Augment data or not')
-   parser.add_argument('--EPOCHS',        required=False,default=60,type=int,help='Number of epochs for GAN')
+   parser.add_argument('--EPOCHS',        required=False,default=100,type=int,help='Number of epochs for GAN')
    parser.add_argument('--DATA',          required=False,default='underwater_imagenet',type=str,help='Dataset to use')
    parser.add_argument('--LAB',           required=False,default=0,type=int,help='LAB colorspace option')
    a = parser.parse_args()
@@ -50,8 +77,13 @@ if __name__ == '__main__':
    
    EXPERIMENT_DIR  = 'checkpoints/LOSS_METHOD_'+LOSS_METHOD\
                      +'/NETWORK_'+NETWORK\
+                     +'/UIQM_WEIGHT_'+str(UIQM_WEIGHT)\
                      +'/NUM_LAYERS_'+str(NUM_LAYERS)\
-                     +'/DATA_'+DATA+'/'\
+                     +'/L1_WEIGHT_'+str(L1_WEIGHT)\
+                     +'/IG_WEIGHT_'+str(IG_WEIGHT)\
+                     +'/AUGMENT_'+str(AUGMENT)\
+                     +'/DATA_'+DATA\
+                     +'/LAB_'+str(LAB)+'/'\
 
    IMAGES_DIR      = EXPERIMENT_DIR+'images/'
 
@@ -63,21 +95,35 @@ if __name__ == '__main__':
    except: pass
 
    exp_info = dict()
+   exp_info['LEARNING_RATE'] = LEARNING_RATE
    exp_info['LOSS_METHOD']   = LOSS_METHOD
+   exp_info['UIQM_WEIGHT']   = UIQM_WEIGHT
    exp_info['BATCH_SIZE']    = BATCH_SIZE
    exp_info['NUM_LAYERS']    = NUM_LAYERS
+   exp_info['L1_WEIGHT']     = L1_WEIGHT
+   exp_info['IG_WEIGHT']     = IG_WEIGHT
    exp_info['NETWORK']       = NETWORK
+   exp_info['AUGMENT']       = AUGMENT
+   exp_info['EPOCHS']        = EPOCHS
    exp_info['DATA']          = DATA
+   exp_info['LAB']           = LAB
    exp_pkl = open(EXPERIMENT_DIR+'info.pkl', 'wb')
    data = pickle.dumps(exp_info)
    exp_pkl.write(data)
    exp_pkl.close()
-   
+
    print
+   print 'LEARNING_RATE: ',LEARNING_RATE
    print 'LOSS_METHOD:   ',LOSS_METHOD
+   print 'BATCH_SIZE:    ',BATCH_SIZE
    print 'NUM_LAYERS:    ',NUM_LAYERS
+   print 'L1_WEIGHT:     ',L1_WEIGHT
+   print 'IG_WEIGHT:     ',IG_WEIGHT
    print 'NETWORK:       ',NETWORK
+   print 'AUGMENT:       ',AUGMENT
+   print 'EPOCHS:        ',EPOCHS
    print 'DATA:          ',DATA
+   print 'LAB:           ',LAB
    print
 
    if NETWORK == 'pix2pix': from pix2pix import *
@@ -96,9 +142,18 @@ if __name__ == '__main__':
    if NUM_LAYERS == 16:
       layers     = netG16_encoder(image_u)
       gen_image  = netG16_decoder(layers)
+   if NUM_LAYERS == 12:
+      layers     = netG12_encoder(image_u)
+      gen_image  = netG12_decoder(layers)
+   if NUM_LAYERS == 10:
+      layers     = netG10_encoder(image_u)
+      gen_image  = netG10_decoder(layers)
    if NUM_LAYERS == 8:
       layers     = netG8_encoder(image_u)
       gen_image  = netG8_decoder(layers)
+   if NUM_LAYERS == 4:
+      layers     = netG4_encoder(image_u)
+      gen_image  = netG4_decoder(layers)
 
    # send 'clean' water images to D
    D_real = netD(image_r, LOSS_METHOD)
@@ -187,11 +242,11 @@ if __name__ == '__main__':
 
    merged_summary_op = tf.summary.merge_all()
 
-   data_dir = "/mnt/data2/color_correction_related/datasets/"
-   trainA_paths = data_ops.getPaths(data_dir+DATA+'/trainA/') # underwater photos
-   trainB_paths = data_ops.getPaths(data_dir+DATA+'/trainB/') # normal photos (ground truth)
-   test_paths   = data_ops.getPaths(data_dir+DATA+'/test/')
-   val_paths    = data_ops.getPaths(data_dir+DATA+'/val/')
+   trainA_paths = data_ops.getPaths('datasets/'+DATA+'/trainA/') # underwater photos
+   trainB_paths = data_ops.getPaths('datasets/'+DATA+'/trainB/') # normal photos (ground truth)
+   trainA_images, trainB_images = loadImages(DATA)
+   test_paths   = data_ops.getPaths('datasets/'+DATA+'/test/')
+   val_paths    = data_ops.getPaths('datasets/'+DATA+'/val/')
 
    print len(trainB_paths),'training pairs'
    num_train = len(trainA_paths)
@@ -210,37 +265,17 @@ if __name__ == '__main__':
       # pick random images every time for D
       for itr in xrange(n_critic):
          idx = np.random.choice(np.arange(num_train), BATCH_SIZE, replace=False)
-         batchA_paths = trainA_paths[idx]
-         batchB_paths = trainB_paths[idx]
-         batchA_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-         batchB_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-         i = 0
-         for a,b in zip(batchA_paths, batchB_paths):
-            a_img = misc.imread(a)
-            b_img = misc.imread(b)
-
-            # Data augmentation here - each has 50% chance
-            if AUGMENT: a_img, b_img = data_ops.augment(a_img, b_img)
-            batchA_images[i, ...] = data_ops.preprocess(a_img)
-            batchB_images[i, ...] = data_ops.preprocess(b_img)
-            i += 1
+         batchA_images = trainA_images[idx]
+         batchB_images = trainB_images[idx]
          sess.run(D_train_op, feed_dict={image_u:batchA_images, image_r:batchB_images})
 
       # also get new batch for G
       idx = np.random.choice(np.arange(num_train), BATCH_SIZE, replace=False)
-      batchA_paths = trainA_paths[idx]
-      batchB_paths = trainB_paths[idx]
-      batchA_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-      batchB_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-      i = 0
-      for a,b in zip(batchA_paths, batchB_paths):
-         a_img = misc.imread(a)
-         b_img = misc.imread(b)
-         # Data augmentation here - each has 50% chance
-         if AUGMENT: a_img, b_img = data_ops.augment(a_img, b_img)
-         batchA_images[i, ...] = data_ops.preprocess(a_img)
-         batchB_images[i, ...] = data_ops.preprocess(b_img)
-         i += 1
+      batchA_images = trainA_images[idx]
+      batchB_images = trainB_images[idx]
+
+      if AUGMENT:
+         batchA_images, batchB_images = data_ops.augment(batchA_images, batchB_images)
 
       # calculate uiqm for each image generated by the generator - want to maximize this
       if UIQM_WEIGHT > 0.0:
@@ -264,12 +299,11 @@ if __name__ == '__main__':
          print 'epoch:',epoch_num,'step:',step,'D loss:',D_loss,'G_loss:',G_loss,'time:',ss
       step += 1
       
-      if step%5000 == 0:
+      if step%100 == 0:
          print 'Saving model...'
          saver.save(sess, EXPERIMENT_DIR+'checkpoint-'+str(step))
          saver.export_meta_graph(EXPERIMENT_DIR+'checkpoint-'+str(step)+'.meta')
          print 'Model saved\n'
-         
          idx = np.random.choice(np.arange(num_val), BATCH_SIZE, replace=False)
          batch_paths  = val_paths[idx]
          batch_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
@@ -291,10 +325,3 @@ if __name__ == '__main__':
             c += 1
             if c == 5: break
          print 'Done with val images, average uiqm:',np.mean(np.asarray(val_uiqms))
-         
-
-
-
-
-
-
