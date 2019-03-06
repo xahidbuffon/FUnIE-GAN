@@ -137,41 +137,36 @@ class Pix2Pix():
 
     def train(self, epochs, batch_size=1, sample_interval=50):
 
-        start_time = datetime.datetime.now()
-
         # Adversarial loss ground truths
         valid = np.ones((batch_size,) + self.disc_patch)
         fake = np.zeros((batch_size,) + self.disc_patch)
 
-        for epoch in range(epochs):
-            for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_batch(batch_size)):
-                #  Train Discriminator
-                # Condition on B and generate a translated version
-                fake_A = self.generator.predict(imgs_B)
+        step = 0
+        TOTAL_STEP = epochs*(self.data_loader.num_train/batch_size)
+        print (TOTAL_STEP)
 
-                # Train the discriminators (original images = real / generated = Fake)
-                d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)
-                d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B], fake)
-                d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+        while step < TOTAL_STEP:
+            imgs_A, imgs_B = self.data_loader.load_batch(batch_size)
+            #  Train Discriminator
+            # Condition on B and generate a translated version
+            fake_A = self.generator.predict(imgs_B)
 
-                # -----------------
-                #  Train Generator
-                # -----------------
+            # Train the discriminators (original images = real / generated = Fake)
+            d_loss_real = self.discriminator.train_on_batch([imgs_A, imgs_B], valid)
+            d_loss_fake = self.discriminator.train_on_batch([fake_A, imgs_B], fake)
+            d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
-                # Train the generators
-                g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A])
+          
+            # Train the generators
+            g_loss = self.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A])
 
-                elapsed_time = datetime.datetime.now() - start_time
-                # Plot the progress
-                print ("[Epoch %d/%d] [Batch %d/%d] [D loss: %f, acc: %3d%%] [G loss: %f] time: %s" % (epoch, epochs,
-                                                                        batch_i, self.data_loader.n_batches,
-                                                                        d_loss[0], 100*d_loss[1],
-                                                                        g_loss[0],
-                                                                        elapsed_time))
-
-                # If at save interval => save generated image samples
-                #if batch_i % sample_interval == 0:
-                    #self.sample_images(epoch, batch_i)
+            step += 1
+            # Plot the progress
+            print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, d_loss, g_loss)) 
+                
+            # If at save interval => save generated image samples
+            #if batch_i % sample_interval == 0:
+                #self.sample_images(epoch, batch_i)
 
     def sample_images(self, epoch, batch_i):
         os.makedirs('images/%s' % self.dataset_name, exist_ok=True)

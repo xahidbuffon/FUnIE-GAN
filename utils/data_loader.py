@@ -19,13 +19,7 @@ class DataLoader():
 
 
 
-    def load_data(self, batch_size=1, AUGMENT=False, is_testing=False):
-        imgs_A = np.array(imgs_A)/127.5 - 1.
-        imgs_B = np.array(imgs_B)/127.5 - 1.
-        return imgs_A, imgs_B
-
-
-    def load_batch(self, batch_size=1, is_validating=False):
+    def load_batch(self, batch_size=1, AUGMENT=False, is_validating=False):
         if (is_validating):
             idx = np.random.choice(np.arange(self.num_val), batch_size, replace=False)
         else:
