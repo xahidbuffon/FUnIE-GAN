@@ -19,7 +19,7 @@ class DataLoader():
 
 
 
-    def load_data(self, batch_size=1, is_testing=False):
+    def load_data(self, batch_size=1, AUGMENT=False, is_testing=False):
         imgs_A = np.array(imgs_A)/127.5 - 1.
         imgs_B = np.array(imgs_B)/127.5 - 1.
         return imgs_A, imgs_B
