@@ -2,7 +2,7 @@ from __future__ import print_function, division
 import scipy
 
 from keras.datasets import mnist
-from keras_contrib.layers.normalization import InstanceNormalization
+from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -15,41 +15,33 @@ import sys
 from utils.data_loader import DataLoader
 import numpy as np
 import os
+#export TF_CPP_MIN_LOG_LEVEL=2
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+
 
 class Pix2Pix():
     def __init__(self):
         # Input shape
-        self.img_rows = 256
-        self.img_cols = 256
-        self.channels = 3
+        self.img_rows, self.img_cols, self.channels = 256, 256, 3
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
 
         # Configure data loader
-        self.dataset_name = 'facades'
-        self.data_loader = DataLoader(dataset_name=self.dataset_name,
-                                      img_res=(self.img_rows, self.img_cols))
-
+        data_dir = "/mnt/data2/color_correction_related/datasets/"
+        dataset_name = "underwater_imagenet"
+        self.data_loader = DataLoader(data_dir, dataset_name)
 
         # Calculate output shape of D (PatchGAN)
         patch = int(self.img_rows / 2**4)
         self.disc_patch = (patch, patch, 1)
 
         # Number of filters in the first layer of G and D
-        self.gf = 64
-        self.df = 64
-
+        self.gf, self.df = 64, 64
         optimizer = Adam(0.0002, 0.5)
 
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
-        self.discriminator.compile(loss='mse',
-            optimizer=optimizer,
-            metrics=['accuracy'])
-
-        #-------------------------
-        # Construct Computational
-        #   Graph of Generator
-        #-------------------------
+        self.discriminator.compile(loss='mse', optimizer=optimizer, metrics=['accuracy'])
 
         # Build the generator
         self.generator = self.build_generator()
@@ -68,9 +60,9 @@ class Pix2Pix():
         valid = self.discriminator([fake_A, img_B])
 
         self.combined = Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-        self.combined.compile(loss=['mse', 'mae'],
-                              loss_weights=[1, 100],
-                              optimizer=optimizer)
+        self.combined.compile(loss=['mse', 'mae'], oss_weights=[1, 100], optimizer=optimizer)
+
+
 
     def build_generator(self):
         """U-Net Generator"""
@@ -153,11 +145,7 @@ class Pix2Pix():
 
         for epoch in range(epochs):
             for batch_i, (imgs_A, imgs_B) in enumerate(self.data_loader.load_batch(batch_size)):
-
-                # ---------------------
                 #  Train Discriminator
-                # ---------------------
-
                 # Condition on B and generate a translated version
                 fake_A = self.generator.predict(imgs_B)
 
@@ -182,8 +170,8 @@ class Pix2Pix():
                                                                         elapsed_time))
 
                 # If at save interval => save generated image samples
-                if batch_i % sample_interval == 0:
-                    self.sample_images(epoch, batch_i)
+                #if batch_i % sample_interval == 0:
+                    #self.sample_images(epoch, batch_i)
 
     def sample_images(self, epoch, batch_i):
         os.makedirs('images/%s' % self.dataset_name, exist_ok=True)
@@ -212,4 +200,8 @@ class Pix2Pix():
 
 if __name__ == '__main__':
     gan = Pix2Pix()
-    gan.train(epochs=200, batch_size=1, sample_interval=200)
+    gan.train(epochs=1, batch_size=1, sample_interval=200)
+
+
+
+

@@ -1,75 +1,49 @@
-import scipy
-from glob import glob
+import os
 import numpy as np
-import matplotlib.pyplot as plt
+from scipy import misc
+# local
+from data_ops import getPaths, preprocess, augment
 
 class DataLoader():
-    def __init__(self, dataset_name, img_res=(128, 128)):
-        self.dataset_name = dataset_name
+    def __init__(self, data_dir, dataset_name, img_res=(256, 256)):
         self.img_res = img_res
+        self.DATA = dataset_name
+        self.data_dir = os.path.join(data_dir, dataset_name)
+
+        self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # underwater photos
+        self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # normal photos (ground truth)
+        self.val_paths    = getPaths(os.path.join(self.data_dir, "val"))
+        assert (len(self.trainA_paths)==len(self.trainB_paths)), "imbalanaced training pairs"
+        self.num_train, self.num_val = len(self.trainA_paths), len(self.val_paths)
+        print ("{0} training pairs\n".format(self.num_train))
+
+
 
     def load_data(self, batch_size=1, is_testing=False):
-        data_type = "train" if not is_testing else "test"
-        path = glob('./datasets/%s/%s/*' % (self.dataset_name, data_type))
-
-        batch_images = np.random.choice(path, size=batch_size)
-
-        imgs_A = []
-        imgs_B = []
-        for img_path in batch_images:
-            img = self.imread(img_path)
-
-            h, w, _ = img.shape
-            _w = int(w/2)
-            img_A, img_B = img[:, :_w, :], img[:, _w:, :]
-
-            img_A = scipy.misc.imresize(img_A, self.img_res)
-            img_B = scipy.misc.imresize(img_B, self.img_res)
-
-            # If training => do random flip
-            if not is_testing and np.random.random() < 0.5:
-                img_A = np.fliplr(img_A)
-                img_B = np.fliplr(img_B)
-
-            imgs_A.append(img_A)
-            imgs_B.append(img_B)
-
         imgs_A = np.array(imgs_A)/127.5 - 1.
         imgs_B = np.array(imgs_B)/127.5 - 1.
-
         return imgs_A, imgs_B
 
-    def load_batch(self, batch_size=1, is_testing=False):
-        data_type = "train" if not is_testing else "val"
-        path = glob('./datasets/%s/%s/*' % (self.dataset_name, data_type))
 
-        self.n_batches = int(len(path) / batch_size)
+    def load_batch(self, batch_size=1, is_validating=False):
+        if (is_validating):
+            idx = np.random.choice(np.arange(self.num_val), batch_size, replace=False)
+        else:
+            idx = np.random.choice(np.arange(self.num_train), batch_size, replace=False)
 
-        for i in range(self.n_batches-1):
-            batch = path[i*batch_size:(i+1)*batch_size]
-            imgs_A, imgs_B = [], []
-            for img in batch:
-                img = self.imread(img)
-                h, w, _ = img.shape
-                half_w = int(w/2)
-                img_A = img[:, :half_w, :]
-                img_B = img[:, half_w:, :]
+        batchA_paths = self.trainA_paths[idx]
+        batchB_paths = self.trainB_paths[idx]
+        batchA_images = np.empty((batch_size, 256, 256, 3), dtype=np.float32)
+        batchB_images = np.empty((batch_size, 256, 256, 3), dtype=np.float32)
 
-                img_A = scipy.misc.imresize(img_A, self.img_res)
-                img_B = scipy.misc.imresize(img_B, self.img_res)
+        for i,(a,b) in enumerate(zip(batchA_paths, batchB_paths)):
+            a_img = misc.imread(a)
+            b_img = misc.imread(b)
+            # Data augmentation with 0.5 proba
+            if AUGMENT:  a_img, b_img = augment(a_img, b_img)
+            batchA_images[i, ...] = preprocess(a_img)
+            batchB_images[i, ...] = preprocess(b_img)
 
-                if not is_testing and np.random.random() > 0.5:
-                        img_A = np.fliplr(img_A)
-                        img_B = np.fliplr(img_B)
-
-                imgs_A.append(img_A)
-                imgs_B.append(img_B)
-
-            imgs_A = np.array(imgs_A)/127.5 - 1.
-            imgs_B = np.array(imgs_B)/127.5 - 1.
-
-            yield imgs_A, imgs_B
+        return batchA_images, batchB_images
 
 
-    def imread(self, path):
-        return scipy.misc.imread(path, mode='RGB').astype(np.float)
