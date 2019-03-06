@@ -4,8 +4,8 @@ def save_val_samples_funieGAN(samples_dir, gen_imgs, step, row=3, col=3):
     titles = ['Condition', 'Generated', 'Original']
     fig, axs = plt.subplots(row, col)
     cnt = 0
-    for i in range(r):
-        for j in range(c):
+    for i in range(row):
+        for j in range(col):
             axs[i,j].imshow(gen_imgs[cnt])
             axs[i, j].set_title(titles[i])
             axs[i,j].axis('off')

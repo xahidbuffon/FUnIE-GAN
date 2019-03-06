@@ -24,7 +24,7 @@ if not os.path.exists(checkpoint_dir):
 num_epoch = 1
 batch_size = 16
 val_interval = 5
-save_model_interval = 10 #data_loader.num_train//batch_size
+save_model_interval = 20 #data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
 ## load model arch
