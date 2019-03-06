@@ -33,13 +33,13 @@ def augment(a_img, b_img):
 
     # flip image left right
     r = random.random()
-    if r < 0.5:
+    if r < 0.25:
         a_img = np.fliplr(a_img)
         b_img = np.fliplr(b_img)
     
     # flip image up down
     r = random.random()
-    if r < 0.5:
+    if r < 0.25:
         a_img = np.flipud(a_img)
         b_img = np.flipud(b_img) 
     return a_img, b_img
