@@ -70,6 +70,21 @@ class DataLoader():
         print ("{0} training pairs\n".format(self.num_train))
 
 
+    def load_val_data(self, batch_size=1):
+        idx = np.random.choice(np.arange(self.num_val), batch_size, replace=False)
+        pathsA = self.trainA_paths[idx]
+        pathsB = self.trainB_paths[idx]
+
+        imgs_A, imgs_B = [], []
+        for idx in range(len(pathsB)):
+            img_A, img_B = read_and_resize(pathsA[idx], pathsB[idx], self.img_res)
+            imgs_A.append(img_A)
+            imgs_B.append(img_B)
+
+        imgs_A = preprocess(np.array(imgs_A))
+        imgs_B = preprocess(np.array(imgs_B))
+        return imgs_A, imgs_B
+
 
     def load_batch(self, batch_size=1, data_augment=True):
         self.n_batches = self.num_train//batch_size

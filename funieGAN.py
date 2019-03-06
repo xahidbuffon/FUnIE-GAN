@@ -137,8 +137,6 @@ class Pix2Pix():
 
 
     def train(self, epochs, batch_size=1, sample_interval=50):
-
-        start_time = datetime.datetime.now()
         # Adversarial loss ground truths
         valid = np.ones((batch_size,) + self.disc_patch)
         fake = np.zeros((batch_size,) + self.disc_patch)
@@ -164,14 +162,16 @@ class Pix2Pix():
                 print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, d_loss[0], g_loss[0])) 
                 
                 # If at save interval => save generated image samples
-                #if batch_i % sample_interval == 0:
-                    #self.sample_images(epoch, batch_i)
+                if step % sample_interval == 0:
+                    self.validate_samples(step)
 
-    def sample_images(self, epoch, batch_i):
-        os.makedirs('images/%s' % self.dataset_name, exist_ok=True)
+
+    def validate_samples(self, step):
+        if not os.path.exists("data/samples/"):
+            os.makedirs("data/samples/")
+        
         r, c = 3, 3
-
-        imgs_A, imgs_B = self.data_loader.load_data(batch_size=3, is_testing=True)
+        imgs_A, imgs_B = self.data_loader.load_val_data(batch_size=3)
         fake_A = self.generator.predict(imgs_B)
 
         gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
@@ -188,13 +188,14 @@ class Pix2Pix():
                 axs[i, j].set_title(titles[i])
                 axs[i,j].axis('off')
                 cnt += 1
-        fig.savefig("images/%s/%d_%d.png" % (self.dataset_name, epoch, batch_i))
+        fig.savefig("data/samples/%d.png" % (step))
         plt.close()
+
 
 
 if __name__ == '__main__':
     gan = Pix2Pix()
-    gan.train(epochs=1, batch_size=16, sample_interval=200)
+    gan.train(epochs=1, batch_size=16, sample_interval=50)
 
 
 
