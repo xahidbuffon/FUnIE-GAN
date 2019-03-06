@@ -65,22 +65,6 @@ while (step <= num_step):
             print("\nSaved trained model in {0}\n".format(checkpoint_dir))
 
 
-def generate_from_saved_model():
-    """ For loading a saved model and generating an image
-    """
-    assert (os.path.exists("models/cgan_mnist.json")), "model does not exist"
-    assert (os.path.exists("models/cgan_mnist.h5")), "model does not exist"
-    from keras.models import model_from_json
-    # load json and create model
-    json_file = open('models/cgan_mnist.json', 'r')
-    loaded_model_json = json_file.read()
-    json_file.close()
-    model = model_from_json(loaded_model_json)
-    # load weights into new model
-    model.load_weights("models/cgan_mnist.h5")
-    print("\nLoaded data and model")
-
-
 
 
 

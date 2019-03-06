@@ -47,7 +47,13 @@ def getPaths(data_dir):
     return np.asarray(image_paths)
 
 
-def read_and_resize(pathA, pathB, img_res):
+def read_and_resize(path, img_res):
+    img = misc.imread(path, mode='RGB').astype(np.float)  
+    img = misc.imresize(img, img_res)
+    return img
+
+
+def read_and_resize_pair(pathA, pathB, img_res):
     img_A = misc.imread(pathA, mode='RGB').astype(np.float)  
     img_A = misc.imresize(img_A, img_res)
     img_B = misc.imread(pathB, mode='RGB').astype(np.float)
@@ -56,18 +62,35 @@ def read_and_resize(pathA, pathB, img_res):
 
 
 
+
+
 class DataLoader():
-    def __init__(self, data_dir, dataset_name, img_res=(256, 256)):
+    def __init__(self, data_dir, dataset_name, img_res=(256, 256), test_only=False):
         self.img_res = img_res
         self.DATA = dataset_name
         self.data_dir = os.path.join(data_dir, dataset_name)
 
-        self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # underwater photos
-        self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # normal photos (ground truth)
-        self.val_paths    = getPaths(os.path.join(self.data_dir, "val"))
-        assert (len(self.trainA_paths)==len(self.trainB_paths)), "imbalanaced training pairs"
-        self.num_train, self.num_val = len(self.trainA_paths), len(self.val_paths)
-        print ("{0} training pairs\n".format(self.num_train))
+        if not test_only:
+            self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # underwater photos
+            self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # normal photos (ground truth)
+            self.val_paths    = getPaths(os.path.join(self.data_dir, "val"))
+            assert (len(self.trainA_paths)==len(self.trainB_paths)), "imbalanaced training pairs"
+            self.num_train, self.num_val = len(self.trainA_paths), len(self.val_paths)
+            print ("{0} training pairs\n".format(self.num_train))
+        else:
+            self.test_paths    = getPaths(os.path.join(self.data_dir, "test"))
+            print ("{0} test images\n".format(len(self.test_paths)))
+
+
+    def get_test_data(self, batch_size=1):
+        idx = np.random.choice(np.arange(len(self.test_paths)), batch_size, replace=False)
+        paths = self.test_paths[idx]
+        imgs = []
+        for p in paths:
+            img = read_and_resize(p, self.img_res)
+            imgs.append(img)
+        imgs = preprocess(np.array(imgs))
+        return imgs
 
 
     def load_val_data(self, batch_size=1):
@@ -77,7 +100,7 @@ class DataLoader():
 
         imgs_A, imgs_B = [], []
         for idx in range(len(pathsB)):
-            img_A, img_B = read_and_resize(pathsA[idx], pathsB[idx], self.img_res)
+            img_A, img_B = read_and_resize_pair(pathsA[idx], pathsB[idx], self.img_res)
             imgs_A.append(img_A)
             imgs_B.append(img_B)
 
@@ -94,7 +117,7 @@ class DataLoader():
             batch_B = self.trainB_paths[i*batch_size:(i+1)*batch_size]
             imgs_A, imgs_B = [], []
             for idx in range(len(batch_A)): 
-                img_A, img_B = read_and_resize(batch_A[idx], batch_B[idx], self.img_res)
+                img_A, img_B = read_and_resize_pair(batch_A[idx], batch_B[idx], self.img_res)
 
                 if (data_augment):
                     img_A, img_B = augment(img_A, img_B)
