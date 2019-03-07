@@ -21,10 +21,10 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 50
+num_epoch = 1
 batch_size = 16
-val_interval = 100
-save_model_interval = data_loader.num_train//batch_size
+val_interval = 10
+save_model_interval = 10#data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
 ## load model arch
@@ -58,7 +58,7 @@ while (step <= num_step):
 
         if (step % save_model_interval==0):
             ## save model and weights
-            model_name = checkpoint_dir+("model_%d" %step)
+            model_name = os.path.join(checkpoint_dir, ("model_%d" %step))
             with open(model_name+"_.json", "w") as json_file:
                 json_file.write(funie_gan.generator.to_json())
             funie_gan.generator.save_weights(model_name+"_.h5")

@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 
 def save_val_samples_funieGAN(samples_dir, gen_imgs, step, row=3, col=3):
@@ -10,7 +11,7 @@ def save_val_samples_funieGAN(samples_dir, gen_imgs, step, row=3, col=3):
             axs[i, j].set_title(titles[i])
             axs[i,j].axis('off')
             cnt += 1
-    fig.savefig(samples_dir+("%d.png" %step))
+    fig.savefig(os.path.join(samples_dir, ("%d.png" %step)))
     plt.close()
 
 
@@ -22,5 +23,5 @@ def save_test_samples_funieGAN(samples_dir, gen_imgs, step=0):
     axs[1].imshow(gen_imgs[1])
     axs[1].set_title("Generated")
     axs[1].axis('off')
-    fig.savefig(samples_dir+("_test_%d.png" %step))
+    fig.savefig(os.path.join(samples_dir,("/_test_%d.png" %step)))
     plt.close()
