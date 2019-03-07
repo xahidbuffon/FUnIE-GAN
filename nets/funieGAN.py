@@ -79,16 +79,6 @@ class FUNIE_GAN():
         gen_total_err = 70*mse_gen_loss+30*content_loss
         return gen_total_err
 
-	"""
-    def total_gen_loss(self, org_content, gen_content):
-        vgg_org_content = self.vgg_content(org_content)
-        vgg_gen_content = self.vgg_content(gen_content)
-        content_loss = K.mean(K.square(vgg_gen_content-vgg_org_content), axis=-1)
-        mse_gen_loss = K.mean(K.abs(gen_content - org_content), axis=-1)
-        gen_total_err = 70*mse_gen_loss+30*content_loss
-        return mse_gen_loss
-	"""
-
 
     def FUNIE_generator(self):
         """

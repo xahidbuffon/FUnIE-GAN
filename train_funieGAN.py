@@ -13,18 +13,18 @@ dataset_name = "underwater_imagenet"
 data_loader = DataLoader(data_dir, dataset_name)
 
 ## create dir for log and (sampled) validation data
-samples_dir = "data/samples/"
-checkpoint_dir = "checkpoints/funieGAN/"
+samples_dir = os.path.join("data/samples/", dataset_name)
+checkpoint_dir = os.path.join("checkpoints/funieGAN/", dataset_name)
 if not os.path.exists(samples_dir):
     os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 1
+num_epoch = 50
 batch_size = 16
-val_interval = 5
-save_model_interval = 20 #data_loader.num_train//batch_size
+val_interval = 100
+save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
 ## load model arch
