@@ -9,7 +9,7 @@ from utils.plot_utils import save_val_samples_funieGAN_UP
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/"
-dataset_name = "underwater_imagenet"
+dataset_name = "DURV_combined"
 data_loader = DataLoader(data_dir, dataset_name)
 
 ## create dir for log and (sampled) validation data
@@ -21,11 +21,11 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 50
-batch_size = 8
-val_interval = 100
+num_epoch = 1
+batch_size = 10
+val_interval = 10
 N_val_samples = 1
-save_model_interval = data_loader.num_train//batch_size
+save_model_interval = 10#data_loader.num_train//batch_size
 num_step = 10#num_epoch*save_model_interval
 
 ## load model arch

@@ -46,10 +46,6 @@ class FUNIE_GAN_UP():
         ## number of filters in the first layer of G and D
         self.gf, self.df = 32, 64
         optimizer = Adam(0.0003, 0.5)
- 
-        # Loss weights
-        self.lambda_cycle = 10.0                    # Cycle-consistency loss
-        self.lambda_id = 0.1 * self.lambda_cycle    # Identity loss
 
         # Build and compile the discriminators
         self.d_A = self.FUNIE_UP_discriminator()
@@ -60,10 +56,6 @@ class FUNIE_GAN_UP():
         # Build the generators
         self.g_AB = self.FUNIE_UP_generator()
         self.g_BA = self.FUNIE_UP_generator()
-
-        # Input images from both domains
-        img_A = Input(shape=self.img_shape)
-        img_B = Input(shape=self.img_shape)
 
         # Translate images to the other domain
         fake_B = self.g_AB(img_A)
@@ -87,10 +79,8 @@ class FUNIE_GAN_UP():
 
         # Combined model trains generators to fool discriminators
         self.combined = Model(inputs=[img_A, img_B], outputs=[ valid_A, valid_B, reconstr_A, reconstr_B, img_A_id, img_B_id ])
-        self.combined.compile(loss=['mse', 'mse', 'mae', 'mae', 'mae', 'mae'],
-                            loss_weights=[1, 1, self.lambda_cycle, self.lambda_cycle, self.lambda_id, self.lambda_id],
-                            optimizer=optimizer)
-
+        self.combined.compile(loss=['mse', 'mse', self.total_gen_loss, self.total_gen_loss, 'mae', 'mae'],
+                            loss_weights=[0.2, 0.2, 0.8, 0.8, 0.2, 0.2], optimizer=optimizer)
 
 
     def wasserstein_loss(self, y_true, y_pred):
@@ -102,7 +92,7 @@ class FUNIE_GAN_UP():
         vgg_gen_content = self.vgg_content(gen_content)
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mse_gen_loss = K.mean(K.abs(org_content-gen_content))
-        gen_total_err = 70*mse_gen_loss+30*content_loss
+        gen_total_err = 0.7*mse_gen_loss+0.3*content_loss
         return gen_total_err
 
 
@@ -133,19 +123,20 @@ class FUNIE_GAN_UP():
         d0 = Input(shape=self.img_shape); print(d0)
         ## downsample
         d1 = conv2d(d0, self.gf*1, f_size=5, bn=False) ;print(d1)
-        d2 = conv2d(d1, self.gf*2, f_size=4, bn=True)  ;print(d2)
-        d3 = conv2d(d2, self.gf*4, f_size=4, bn=True)  ;print(d3)
+        d2 = conv2d(d1, self.gf*4, f_size=4, bn=True)  ;print(d2)
+        d3 = conv2d(d2, self.gf*8, f_size=4, bn=True)  ;print(d3)
         d4 = conv2d(d3, self.gf*8, f_size=3, bn=True)  ;print(d4); print();
+        d5 = conv2d(d4, self.gf*8, f_size=3, bn=True)  ;print(d5); print();
         ## upsample
-        u1 = deconv2d(d4, d3, self.gf*4) ;print(u1)
-        u2 = deconv2d(u1, d2, self.gf*2) ;print(u2)
-        u3 = deconv2d(u2, d1, self.gf*1) ;print(u3)
-        u4 = UpSampling2D(size=2)(u3)    ;print(u4)
-        output_img = Conv2D(self.channels, kernel_size=4, strides=1, padding='same', activation='tanh')(u4)
+        u1 = deconv2d(d5, d4, self.gf*8) ;print(u1)
+        u2 = deconv2d(u1, d3, self.gf*8) ;print(u2)
+        u3 = deconv2d(u2, d2, self.gf*4) ;print(u3)
+        u4 = deconv2d(u3, d1, self.gf*1) ;print(u4)
+        u5 = UpSampling2D(size=2)(u4)    ;print(u5)
+        output_img = Conv2D(self.channels, kernel_size=4, strides=1, padding='same', activation='tanh')(u5)
         print(output_img); print();
 
         return Model(d0, output_img)
-
 
 
 
@@ -172,7 +163,6 @@ class FUNIE_GAN_UP():
         print(validity); print()
 
         return Model(img, validity)
-
 
 
 
