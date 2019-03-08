@@ -13,7 +13,7 @@ dataset_name = "underwater_imagenet"
 data_loader = DataLoader(data_dir, dataset_name)
 
 ## create dir for log and (sampled) validation data
-samples_dir = os.path.join("data/samples/", dataset_name)
+samples_dir = os.path.join("data/samples/funieGAN/", dataset_name)
 checkpoint_dir = os.path.join("checkpoints/funieGAN/", dataset_name)
 if not os.path.exists(samples_dir):
     os.makedirs(samples_dir)
