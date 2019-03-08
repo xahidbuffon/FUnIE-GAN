@@ -5,7 +5,7 @@ import numpy as np
 ## local libs
 from utils.data_loader import DataLoader
 from nets.funieGAN_unpaired import FUNIE_GAN_UP
-from utils.plot_utils import save_val_samples_funieGAN_GP
+from utils.plot_utils import save_val_samples_funieGAN_UP
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/"
@@ -22,11 +22,11 @@ if not os.path.exists(checkpoint_dir):
 
 ## hyper-params
 num_epoch = 50
-batch_size = 16
+batch_size = 8
 val_interval = 100
 N_val_samples = 1
 save_model_interval = data_loader.num_train//batch_size
-num_step = num_epoch*save_model_interval
+num_step = 10#num_epoch*save_model_interval
 
 ## load model arch
 funie_gan = FUNIE_GAN_UP()
@@ -36,6 +36,7 @@ valid = np.ones((batch_size,) + funie_gan.disc_patch)
 fake = np.zeros((batch_size,) + funie_gan.disc_patch)
 
 step = 0
+all_D_losses = []; all_G_losses = []
 while (step <= num_step):
     for _, (imgs_A, imgs_B) in enumerate(data_loader.load_batch(batch_size)):
         ##  train the discriminator (both opposite domains)
@@ -52,8 +53,9 @@ while (step <= num_step):
 
         ## train the generator
         g_loss = funie_gan.combined.train_on_batch([imgs_A, imgs_B], [valid, valid, imgs_A, imgs_B, imgs_A, imgs_B])
-        step += 1
 
+        ## increment step, save losses, and print them 
+        step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
         print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
         # more: adv:np.mean(g_loss[1:3]), recon:np.mean(g_loss[3:5]), id:np.mean(g_loss[5:6])
 
@@ -69,7 +71,7 @@ while (step <= num_step):
             reconstr_B = funie_gan.g_AB.predict(fake_A)
             gen_imgs = np.concatenate([imgs_A, fake_B, reconstr_A, imgs_B, fake_A, reconstr_B])
             gen_imgs = 0.5 * gen_imgs + 0.5 # Rescale to 0-1
-            save_val_samples_funieGAN_GP(samples_dir, gen_imgs, step, N_samples=N_val_samples)
+            save_val_samples_funieGAN_UP(samples_dir, gen_imgs, step, N_samples=N_val_samples)
 
         if (step % save_model_interval==0):
             ## save model and weights
@@ -78,6 +80,17 @@ while (step <= num_step):
                 json_file.write(funie_gan.g_BA.to_json())
             funie_gan.g_BA.save_weights(model_name+"_.h5")
             print("\nSaved trained model in {0}\n".format(checkpoint_dir))
+
+        if (step>=num_step): break
+         
+
+
+## for visualization
+viz = True
+if viz:
+    from utils.plot_utils import viz_gen_and_dis_losses
+    viz_gen_and_dis_losses(all_D_losses, all_G_losses,checkpoint_dir)
+
 
 
 

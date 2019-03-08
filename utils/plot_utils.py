@@ -16,7 +16,7 @@ def save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=3, N_ims=3)
     plt.close()
 
 
-def save_val_samples_funieGAN_GP(samples_dir, gen_imgs, step, N_samples=1, N_ims=6):
+def save_val_samples_funieGAN_UP(samples_dir, gen_imgs, step, N_samples=1, N_ims=6):
     row=2*N_samples; col=N_ims//2;
     titles = ['Original','Translated','Reconstructed']
     fig, axs = plt.subplots(row, col)
@@ -42,3 +42,13 @@ def save_test_samples_funieGAN(samples_dir, gen_imgs, step=0):
     axs[1].axis('off')
     fig.savefig(os.path.join(samples_dir,("/_test_%d.png" %step)))
     plt.close()
+
+
+def viz_gen_and_dis_losses(all_D_losses, all_G_losses, save_dir=None):
+    plt.plot(all_D_losses, 'r')
+    plt.plot(all_G_losses, 'g')
+    plt.title('Model convergence'); plt.ylabel('Losses'); plt.xlabel('# of steps');
+    plt.legend(['Discriminator network', 'Generator network'], loc='upper right')
+    plt.show();
+    if not save_dir:
+        plt.savefig(os.path.join(save_dir, 'conv.png'));

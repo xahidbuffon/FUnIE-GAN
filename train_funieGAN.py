@@ -21,7 +21,7 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 20
+num_epoch = 50
 batch_size = 16
 val_interval = 100
 N_val_samples = 3
@@ -36,6 +36,7 @@ valid = np.ones((batch_size,) + funie_gan.disc_patch)
 fake = np.zeros((batch_size,) + funie_gan.disc_patch)
 
 step = 0
+all_D_losses = []; all_G_losses = []
 while (step <= num_step):
     for _, (imgs_A, imgs_B) in enumerate(data_loader.load_batch(batch_size)):
         ##  train the discriminator
@@ -46,7 +47,9 @@ while (step <= num_step):
 
         ## train the generator
         g_loss = funie_gan.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A])
-        step += 1
+
+        ## increment step, save losses, and print them 
+        step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
         print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
 
         ## validate and save generated samples at regular intervals 
@@ -64,6 +67,16 @@ while (step <= num_step):
                 json_file.write(funie_gan.generator.to_json())
             funie_gan.generator.save_weights(model_name+"_.h5")
             print("\nSaved trained model in {0}\n".format(checkpoint_dir))
+
+        if (step>=num_step): break
+         
+
+
+## for visualization
+viz = True
+if viz:
+    from utils.plot_utils import viz_gen_and_dis_losses
+    viz_gen_and_dis_losses(all_D_losses, all_G_losses,checkpoint_dir)
 
 
 

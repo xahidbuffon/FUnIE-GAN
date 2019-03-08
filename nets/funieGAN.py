@@ -76,7 +76,7 @@ class FUNIE_GAN():
         vgg_gen_content = self.vgg_content(gen_content)
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mse_gen_loss = K.mean(K.abs(org_content-gen_content))
-        gen_total_err = 70*mse_gen_loss+30*content_loss
+        gen_total_err = 0.7*mse_gen_loss+0.3*content_loss
         return gen_total_err
 
 
