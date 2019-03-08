@@ -76,7 +76,7 @@ while (step <= num_step):
 viz = True
 if viz:
     from utils.plot_utils import viz_gen_and_dis_losses
-    viz_gen_and_dis_losses(all_D_losses, all_G_losses,checkpoint_dir)
+    viz_gen_and_dis_losses(all_D_losses, all_G_losses, checkpoint_dir)
 
 
 
