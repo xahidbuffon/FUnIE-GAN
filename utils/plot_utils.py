@@ -1,8 +1,9 @@
 import os
 import matplotlib.pyplot as plt
 
-def save_val_samples_funieGAN(samples_dir, gen_imgs, step, row=3, col=3):
-    titles = ['Condition', 'Generated', 'Original']
+def save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=3,
+                              titles = ['Condition', 'Generated', 'Original']):
+    row=N_samples; col=3;
     fig, axs = plt.subplots(row, col)
     cnt = 0
     for i in range(row):
@@ -13,6 +14,8 @@ def save_val_samples_funieGAN(samples_dir, gen_imgs, step, row=3, col=3):
             cnt += 1
     fig.savefig(os.path.join(samples_dir, ("%d.png" %step)))
     plt.close()
+
+
 
 
 def save_test_samples_funieGAN(samples_dir, gen_imgs, step=0):
