@@ -21,10 +21,11 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 1
+num_epoch = 20
 batch_size = 16
-val_interval = 10
-save_model_interval = 10#data_loader.num_train//batch_size
+val_interval = 100
+N_val_samples = 3
+save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
 ## load model arch
@@ -50,11 +51,11 @@ while (step <= num_step):
 
         ## validate and save generated samples at regular intervals 
         if (step % val_interval==0):
-            imgs_A, imgs_B = data_loader.load_val_data(batch_size=3)
+            imgs_A, imgs_B = data_loader.load_val_data(batch_size=N_val_samples)
             fake_A = funie_gan.generator.predict(imgs_B)
             gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
             gen_imgs = 0.5 * gen_imgs + 0.5 # Rescale to 0-1
-            save_val_samples_funieGAN(samples_dir, gen_imgs, step)
+            save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=N_val_samples)
 
         if (step % save_model_interval==0):
             ## save model and weights

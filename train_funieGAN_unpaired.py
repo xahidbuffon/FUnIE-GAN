@@ -5,7 +5,7 @@ import numpy as np
 ## local libs
 from utils.data_loader import DataLoader
 from nets.funieGAN_unpaired import FUNIE_GAN_UP
-from utils.plot_utils import save_val_samples_funieGAN
+from utils.plot_utils import save_val_samples_funieGAN_GP
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/"
@@ -23,7 +23,8 @@ if not os.path.exists(checkpoint_dir):
 ## hyper-params
 num_epoch = 50
 batch_size = 16
-val_interval = 100
+val_interval = 5
+N_val_samples = 1
 save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
@@ -59,7 +60,7 @@ while (step <= num_step):
 
         ## validate and save generated samples at regular intervals 
         if (step % val_interval==0):
-            imgs_A, imgs_B = data_loader.load_val_data(batch_size=3)
+            imgs_A, imgs_B = data_loader.load_val_data(batch_size=N_val_samples)
             # Translate images to the other domain
             fake_A = funie_gan.g_BA.predict(imgs_B)
             fake_B = funie_gan.g_AB.predict(imgs_A)
@@ -68,7 +69,7 @@ while (step <= num_step):
             reconstr_B = funie_gan.g_AB.predict(fake_A)
             gen_imgs = np.concatenate([imgs_A, fake_B, reconstr_A, imgs_B, fake_A, reconstr_B])
             gen_imgs = 0.5 * gen_imgs + 0.5 # Rescale to 0-1
-            save_val_samples_funieGAN(samples_dir, gen_imgs, step, titles = ['Original','Translated','Reconstructed'])
+            save_val_samples_funieGAN_GP(samples_dir, gen_imgs, step, N_samples=N_val_samples)
 
         if (step % save_model_interval==0):
             ## save model and weights
