@@ -73,8 +73,12 @@ class DataLoader():
         if not test_only:
             self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # underwater photos
             self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # normal photos (ground truth)
-            self.val_paths    = getPaths(os.path.join(self.data_dir, "val"))
-            assert (len(self.trainA_paths)==len(self.trainB_paths)), "imbalanaced training pairs"
+            if (len(self.trainA_paths)<len(self.trainB_paths)):
+                self.trainB_paths = self.trainB_paths[:len(self.trainA_paths)]
+            elif (len(self.trainA_paths)>len(self.trainB_paths)):
+                self.trainA_paths = self.trainA_paths[:len(self.trainB_paths)]
+            else: pass
+            self.val_paths = getPaths(os.path.join(self.data_dir, "val"))
             self.num_train, self.num_val = len(self.trainA_paths), len(self.val_paths)
             print ("{0} training pairs\n".format(self.num_train))
         else:

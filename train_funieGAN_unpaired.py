@@ -21,12 +21,12 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 1
-batch_size = 10
-val_interval = 10
+num_epoch = 20
+batch_size = 4
+val_interval = 200
 N_val_samples = 1
-save_model_interval = 10#data_loader.num_train//batch_size
-num_step = 10#num_epoch*save_model_interval
+save_model_interval = data_loader.num_train//batch_size
+num_step = num_epoch*save_model_interval
 
 ## load model arch
 funie_gan = FUNIE_GAN_UP()
