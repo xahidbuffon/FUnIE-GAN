@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow.contrib.layers as tcl
 import sys
 
-sys.path.insert(0, 'ops/')
+sys.path.insert(0, 'utils/')
 from tf_ops import *
 
 def netG4_encoder(x):
