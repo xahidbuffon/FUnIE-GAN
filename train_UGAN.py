@@ -18,13 +18,13 @@ from utils.data_ops import getPaths, augment, preprocess
 LEARNING_RATE = 1e-4
 LOSS_METHOD   = 'wgan'
 BATCH_SIZE    = 16
-NUM_LAYERS    = 8
+NUM_LAYERS    = 16
 NETWORK       = 'pix2pix'
 AUGMENT       = True
-EPOCHS        = 1
+EPOCHS        = 10
 DATA          = 'underwater_imagenet'
 
-EXPERIMENT_DIR  = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
+EXPERIMENT_DIR  = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
 IMAGES_DIR      = EXPERIMENT_DIR+'samples/'
 
 if not os.path.exists(IMAGES_DIR):
@@ -60,8 +60,13 @@ image_u = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='imag
 # correct image
 image_r = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='image_r')
 # generated corrected colors
-layers     = netG8_encoder(image_u)
-gen_image  = netG8_decoder(layers)
+if NUM_LAYERS==8:
+    layers     = netG8_encoder(image_u)
+    gen_image  = netG8_decoder(layers)
+elif NUM_LAYERS==16:
+    layers     = netG16_encoder(image_u)
+    gen_image  = netG16_decoder(layers)
+else: pass
 # send 'clean' water images to D
 D_real = netD(image_r, LOSS_METHOD)
 # send corrected underwater images to D
