@@ -18,10 +18,10 @@ from utils.data_ops import getPaths, augment, preprocess
 LEARNING_RATE = 1e-4
 LOSS_METHOD   = 'wgan'
 BATCH_SIZE    = 16
-NUM_LAYERS    = 16
+NUM_LAYERS    = 8
 NETWORK       = 'pix2pix'
 AUGMENT       = True
-EPOCHS        = 10
+EPOCHS        = 20
 DATA          = 'underwater_imagenet'
 
 EXPERIMENT_DIR  = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
