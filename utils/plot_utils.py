@@ -40,7 +40,7 @@ def save_test_samples_funieGAN(samples_dir, gen_imgs, step=0):
     axs[1].imshow(gen_imgs[1])
     axs[1].set_title("Generated")
     axs[1].axis('off')
-    fig.savefig(os.path.join(samples_dir,("/_test_%d.png" %step)))
+    fig.savefig(os.path.join(samples_dir,("_test_%d.png" %step)))
     plt.close()
 
 

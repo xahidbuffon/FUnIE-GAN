@@ -62,6 +62,15 @@ def read_and_resize_pair(pathA, pathB, img_res):
 
 
 
+def get_local_test_data(data_dir, img_res=(256, 256)):
+    assert (os.path.exists(data_dir), "local image path doesnt exist")
+    imgs = []
+    for p in getPaths(data_dir):
+        img = read_and_resize(p, img_res)
+        imgs.append(img)
+    imgs = preprocess(np.array(imgs))
+    return imgs
+
 
 
 class DataLoader():
