@@ -1,37 +1,36 @@
-import cPickle as pickle
-import tensorflow as tf
-from scipy import misc
-import numpy as np
-import argparse
-import random
-import sys
-import cv2
 import os
+import cv2
+import sys
+import random
+import numpy as np
+from scipy import misc
+import tensorflow as tf
+import cPickle as pickle
 #export TF_CPP_MIN_LOG_LEVEL=2
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-# my imports
-sys.path.insert(0, 'nets/')
-from utils.data_loader import getPaths, read_and_resize, preprocess, augment
  
-
+## default settins as mentioned in the original paper
+EPOCHS = 50
+AUGMENT = True
+BATCH_SIZE = 8
+NUM_LAYERS = 16
+L1_WEIGHT = 100.0
+VAL_INTERVAL = 100
 LEARNING_RATE = 1e-4
-LOSS_METHOD   = 'wgan'
-BATCH_SIZE    = 8
-NUM_LAYERS    = 16
-NETWORK       = 'pix2pix'
-AUGMENT       = True
-EPOCHS        = 50
-DATA          = 'underwater_imagenet'
+## feel free to change the following to try different mdoels
+LOSS_METHOD = 'gan'  # options: {'gan', 'least_squares', 'wgan'}
+NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
+DATA = 'underwater_imagenet'
+SAMPLES_DIR = os.path.join("data/samples/uGAN/", DATA+'/run2/')
+EXPERIMENT_DIR = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
 
-EXPERIMENT_DIR  = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
-IMAGES_DIR      = EXPERIMENT_DIR+'samples/'
+## setup experimental and sample directories
+if not os.path.exists(SAMPLES_DIR): os.makedirs(SAMPLES_DIR)
+if not os.path.exists(EXPERIMENT_DIR): os.makedirs(EXPERIMENT_DIR)
+print ("Setup experimental and sample directories")
 
-if not os.path.exists(IMAGES_DIR):
-    os.makedirs(IMAGES_DIR)
-print ("Setup experimental directory at {0}".format(EXPERIMENT_DIR))
-
-
+## save the hyper-params just in case
 exp_info = dict()
 exp_info['LOSS_METHOD']   = LOSS_METHOD
 exp_info['BATCH_SIZE']    = BATCH_SIZE
@@ -43,63 +42,66 @@ data = pickle.dumps(exp_info)
 exp_pkl.write(data)
 exp_pkl.close()
 
-print
-print 'LOSS_METHOD:   ',LOSS_METHOD
-print 'NUM_LAYERS:    ',NUM_LAYERS
-print 'NETWORK:       ',NETWORK
-print 'DATA:          ',DATA
-print
+print("\n")
+print("LOSS_METHOD: {0}".format(LOSS_METHOD))
+print("NETWORK: {0}".format(NETWORK))
+print("DATA: {0}".format(DATA))
+print("\n")
 
-if NETWORK == 'pix2pix': from pix2pix import *
+## my imports
+sys.path.insert(0, 'nets/')
 if NETWORK == 'resnet': from resnet import *
+elif NETWORK == 'pix2pix': from pix2pix import *
+else: pass
+from utils.data_loader import getPaths, read_and_resize, preprocess, augment
 
-# global step that is saved with a model to keep track of how many steps/epochs
+##------------- training module begins here-----------------------
 global_step = tf.Variable(0, name='global_step', trainable=False)
 # underwater image
 image_u = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='image_u')
 # correct image
 image_r = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='image_r')
 # generated corrected colors
-if NUM_LAYERS==8:
-    layers     = netG8_encoder(image_u)
-    gen_image  = netG8_decoder(layers)
-elif NUM_LAYERS==16:
-    layers     = netG16_encoder(image_u)
-    gen_image  = netG16_decoder(layers)
-else: pass
+layers     = netG16_encoder(image_u)
+gen_image  = netG16_decoder(layers)
+
 # send 'clean' water images to D
 D_real = netD(image_r, LOSS_METHOD)
 # send corrected underwater images to D
 D_fake = netD(gen_image, LOSS_METHOD, reuse=True)
 
-e = 1e-12
+e = 1e-12; n_critic = 1
 if LOSS_METHOD == 'least_squares':
-    print 'Using least squares loss'
+    print("Using least squares loss")
     errD_real = tf.nn.sigmoid(D_real)
     errD_fake = tf.nn.sigmoid(D_fake)
     errG = 0.5*(tf.reduce_mean(tf.square(errD_fake - 1)))
     errD = tf.reduce_mean(0.5*(tf.square(errD_real - 1)) + 0.5*(tf.square(errD_fake)))
-    n_critic = 1
-elif LOSS_METHOD == 'wgan':
-    # cost functions
-    errD = tf.reduce_mean(D_real) - tf.reduce_mean(D_fake)
-    errG = -tf.reduce_mean(D_fake)
-    n_critic = 5
-else:
-    print 'Using original GAN loss'
+elif LOSS_METHOD == 'gan':
+    print("Using original GAN loss")
     errD_real = tf.nn.sigmoid(D_real)
     errD_fake = tf.nn.sigmoid(D_fake)
     errG = tf.reduce_mean(-tf.log(errD_fake + e))
     errD = tf.reduce_mean(-(tf.log(errD_real+e)+tf.log(1-errD_fake+e)))
+elif LOSS_METHOD == 'wgan':
+    print("Using original GAN loss")
+    n_critic = 5
+    # cost functions
+    errG = -tf.reduce_mean(D_fake)
+    errD = tf.reduce_mean(D_real) - tf.reduce_mean(D_fake)
 
-# gradient penalty
-epsilon = tf.random_uniform([], 0.0, 1.0)
-x_hat = image_r*epsilon + (1-epsilon)*gen_image
-d_hat = netD(x_hat, LOSS_METHOD, reuse=True)
-gradients = tf.gradients(d_hat, x_hat)[0]
-slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1]))
-gradient_penalty = 10*tf.reduce_mean((slopes-1.0)**2)
-errD += gradient_penalty
+    # gradient penalty
+    epsilon = tf.random_uniform([], 0.0, 1.0)
+    x_hat = image_r*epsilon + (1-epsilon)*gen_image
+    d_hat = netD(x_hat, LOSS_METHOD, reuse=True)
+    gradients = tf.gradients(d_hat, x_hat)[0]
+    slopes = tf.sqrt(tf.reduce_sum(tf.square(gradients), reduction_indices=[1]))
+    gradient_penalty = 10*tf.reduce_mean((slopes-1.0)**2)
+    errD += gradient_penalty
+else: pass
+
+l1_loss = tf.reduce_mean(tf.abs(gen_image-image_r))
+errG += L1_WEIGHT*l1_loss
 
 
 # tensorboard summaries
@@ -180,7 +182,6 @@ while step < TOTAL_STEP:
             a_img, b_img = augment(a_img, b_img)
         batchA_images[i, ...] = preprocess(a_img)
         batchB_images[i, ...] = preprocess(b_img)
-        
 
     sess.run(G_train_op, feed_dict={image_u:batchA_images, image_r:batchB_images})
     D_loss, G_loss, summary = sess.run([errD, errG, merged_summary_op], feed_dict={image_u:batchA_images, image_r:batchB_images})
@@ -188,7 +189,8 @@ while step < TOTAL_STEP:
     step += 1
     print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, D_loss, G_loss)) 
 
-    if (step%1000==0):
+    ##------------- validation and saving checkpoints -----------------------
+    if (step%VAL_INTERVAL==0):
         print ("Saving model")
         saver.save(sess, EXPERIMENT_DIR+'checkpoint-'+str(step))
         saver.export_meta_graph(EXPERIMENT_DIR+"checkpoint-"+str(step)+".meta")
@@ -196,6 +198,7 @@ while step < TOTAL_STEP:
         idx = np.random.choice(np.arange(num_val), BATCH_SIZE, replace=False)
         batch_paths  = val_paths[idx]
         batch_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
+
         print ("Testing on validation data")
         for i,a in enumerate(batch_paths):
             a_img = misc.imread(a).astype("float32")
@@ -203,8 +206,8 @@ while step < TOTAL_STEP:
 
         gen_images = np.asarray(sess.run(gen_image, feed_dict={image_u:batch_images}))
         for i, (gen, real) in enumerate(zip(gen_images, batch_images)):
-            misc.imsave(IMAGES_DIR+str(step)+"_real.png", real)
-            misc.imsave(IMAGES_DIR+str(step)+"_gen.png", gen)
+            misc.imsave(os.path.join(SAMPLES_DIR, str(step)+ "_real.png"), real)
+            misc.imsave(os.path.join(SAMPLES_DIR, str(step) + "_gen.png"), gen)
             if(i>=5): break
 
 
