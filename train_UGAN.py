@@ -20,7 +20,7 @@ VAL_INTERVAL = 100
 LEARNING_RATE = 1e-4
 ## feel free to change the following to try different mdoels
 LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
-NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
+NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
 DATA = 'underwater_imagenet'
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
