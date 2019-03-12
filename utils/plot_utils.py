@@ -27,7 +27,7 @@ def save_val_samples_funieGAN_UP(samples_dir, gen_imgs, step, N_samples=1, N_ims
             axs[i, j].set_title(titles[j])
             axs[i,j].axis('off')
             cnt += 1
-    fig.savefig(os.path.join(samples_dir, ("%d.png" %step)))
+    fig.savefig(os.path.join(samples_dir, ("_%d.png" %step)))
     plt.close()
 
 
@@ -51,4 +51,4 @@ def viz_gen_and_dis_losses(all_D_losses, all_G_losses, save_dir=None):
     plt.legend(['Discriminator network', 'Generator network'], loc='upper right')
     plt.show();
     if not save_dir:
-        plt.savefig(os.path.join(save_dir, 'conv.png'));
+        plt.savefig(os.path.join(save_dir, '_conv.png'));
