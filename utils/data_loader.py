@@ -80,8 +80,8 @@ class DataLoader():
         self.data_dir = os.path.join(data_dir, dataset_name)
 
         if not test_only:
-            self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # underwater photos
-            self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # normal photos (ground truth)
+            self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # distorted
+            self.trainB_paths = getPaths(os.path.join(self.data_dir, "trainB")) # enhanced
             if (len(self.trainA_paths)<len(self.trainB_paths)):
                 self.trainB_paths = self.trainB_paths[:len(self.trainA_paths)]
             elif (len(self.trainA_paths)>len(self.trainB_paths)):

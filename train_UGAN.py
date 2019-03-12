@@ -12,16 +12,16 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # my imports
 sys.path.insert(0, 'nets/')
-from utils.data_ops import getPaths, augment, preprocess 
+from utils.data_loader import getPaths, read_and_resize, preprocess, augment
  
 
 LEARNING_RATE = 1e-4
 LOSS_METHOD   = 'wgan'
-BATCH_SIZE    = 16
-NUM_LAYERS    = 8
+BATCH_SIZE    = 8
+NUM_LAYERS    = 16
 NETWORK       = 'pix2pix'
 AUGMENT       = True
-EPOCHS        = 20
+EPOCHS        = 50
 DATA          = 'underwater_imagenet'
 
 EXPERIMENT_DIR  = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
@@ -188,7 +188,7 @@ while step < TOTAL_STEP:
     step += 1
     print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, D_loss, G_loss)) 
 
-    if (step%5000==0):
+    if (step%1000==0):
         print ("Saving model")
         saver.save(sess, EXPERIMENT_DIR+'checkpoint-'+str(step))
         saver.export_meta_graph(EXPERIMENT_DIR+"checkpoint-"+str(step)+".meta")
