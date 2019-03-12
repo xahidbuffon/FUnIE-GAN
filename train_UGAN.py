@@ -19,7 +19,7 @@ L1_WEIGHT = 100.0
 VAL_INTERVAL = 100
 LEARNING_RATE = 1e-4
 ## feel free to change the following to try different mdoels
-LOSS_METHOD = 'gan'  # options: {'gan', 'least_squares', 'wgan'}
+LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
 NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
 DATA = 'underwater_imagenet'
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
