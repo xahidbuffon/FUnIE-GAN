@@ -20,10 +20,10 @@ VAL_INTERVAL = 100
 LEARNING_RATE = 1e-4
 ## feel free to change the following to try different mdoels
 LOSS_METHOD = 'gan'  # options: {'gan', 'least_squares', 'wgan'}
-NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
+NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
 DATA = 'underwater_imagenet'
-SAMPLES_DIR = os.path.join("data/samples/uGAN/", DATA+'/run2/')
-EXPERIMENT_DIR = 'checkpoints/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
+EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
+SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
 
 ## setup experimental and sample directories
 if not os.path.exists(SAMPLES_DIR): os.makedirs(SAMPLES_DIR)
@@ -43,9 +43,9 @@ exp_pkl.write(data)
 exp_pkl.close()
 
 print("\n")
-print("LOSS_METHOD: {0}".format(LOSS_METHOD))
-print("NETWORK: {0}".format(NETWORK))
 print("DATA: {0}".format(DATA))
+print("NETWORK: {0}".format(NETWORK))
+print("LOSS_METHOD: {0}".format(LOSS_METHOD))
 print("\n")
 
 ## my imports
@@ -62,8 +62,7 @@ image_u = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='imag
 # correct image
 image_r = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='image_r')
 # generated corrected colors
-layers     = netG16_encoder(image_u)
-gen_image  = netG16_decoder(layers)
+gen_image  = netG(image_u)
 
 # send 'clean' water images to D
 D_real = netD(image_r, LOSS_METHOD)
