@@ -13,14 +13,14 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 ## default settins as mentioned in the original paper
 EPOCHS = 50
 AUGMENT = True
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 NUM_LAYERS = 16
 L1_WEIGHT = 100.0
-VAL_INTERVAL = 100
+VAL_INTERVAL = 1000
 LEARNING_RATE = 1e-4
 ## feel free to change the following to try different mdoels
 LOSS_METHOD = 'gan'  # options: {'gan', 'least_squares', 'wgan'}
-NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
+NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
 DATA = 'underwater_imagenet'
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')

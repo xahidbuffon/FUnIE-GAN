@@ -21,10 +21,10 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 20
-batch_size = 8
-val_interval = 100
-N_val_samples = 3
+num_epoch = 30
+batch_size = 16
+val_interval = 1000
+N_val_samples = 5
 save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
