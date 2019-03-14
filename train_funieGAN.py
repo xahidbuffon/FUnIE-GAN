@@ -21,10 +21,10 @@ if not os.path.exists(checkpoint_dir):
     os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 30
-batch_size = 16
-val_interval = 1000
-N_val_samples = 5
+num_epoch = 50
+batch_size = 8
+val_interval = 5000
+N_val_samples = 3
 save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
@@ -40,7 +40,7 @@ all_D_losses = []; all_G_losses = []
 while (step <= num_step):
     for _, (imgs_distorted, imgs_good) in enumerate(data_loader.load_batch(batch_size)):
         ##  train the discriminator
-        imgs_fake = funie_gan.generator.predict(imgs_B)
+        imgs_fake = funie_gan.generator.predict(imgs_distorted)
         d_loss_real = funie_gan.discriminator.train_on_batch([imgs_good, imgs_distorted], valid)
         d_loss_fake = funie_gan.discriminator.train_on_batch([imgs_fake, imgs_distorted], fake)
         d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
