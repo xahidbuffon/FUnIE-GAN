@@ -53,7 +53,7 @@ sys.path.insert(0, 'nets/')
 if NETWORK == 'resnet': from resnet import *
 elif NETWORK == 'pix2pix': from pix2pix import *
 else: pass
-from utils.data_loader import getPaths, read_and_resize, preprocess, augment
+from utils.data_utils import getPaths, read_and_resize, preprocess, augment
 
 ##------------- training module begins here-----------------------
 global_step = tf.Variable(0, name='global_step', trainable=False)

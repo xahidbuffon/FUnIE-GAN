@@ -4,7 +4,7 @@ import numpy as np
 
 ## local libs
 from nets.funieGAN import FUNIE_GAN
-from utils.data_loader import DataLoader
+from utils.data_utils import DataLoader
 from utils.plot_utils import save_val_samples_funieGAN
 
 ## configure data-loader

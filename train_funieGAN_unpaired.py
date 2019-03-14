@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 ## local libs
-from utils.data_loader import DataLoader
+from utils.data_utils import DataLoader
 from nets.funieGAN_unpaired import FUNIE_GAN_UP
 from utils.plot_utils import save_val_samples_funieGAN_UP
 
