@@ -79,7 +79,7 @@ class FUNIE_GAN_UP():
 
         # Combined model trains generators to fool discriminators
         self.combined = Model(inputs=[img_A, img_B], outputs=[ valid_A, valid_B, reconstr_A, reconstr_B, img_A_id, img_B_id ])
-        self.combined.compile(loss=['mse', 'mse', self.wasserstein_loss, self.wasserstein_loss, 'mae', 'mae'],
+        self.combined.compile(loss=['mse', 'mse', 'mae', 'mae', 'mae', 'mae'],
                             loss_weights=[1, 1, 10, 10, 1, 1], optimizer=optimizer)
 
 
