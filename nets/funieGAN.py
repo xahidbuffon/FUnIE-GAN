@@ -64,7 +64,7 @@ class FUNIE_GAN():
         valid = self.discriminator([fake_A, img_B])
         ## compute the comboned loss
         self.combined = Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[0.2, 0.8], optimizer=optimizer)
+        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[2, 8], optimizer=optimizer)
 
 
     def wasserstein_loss(self, y_true, y_pred):
