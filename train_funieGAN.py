@@ -38,15 +38,15 @@ fake = np.zeros((batch_size,) + funie_gan.disc_patch)
 step = 0
 all_D_losses = []; all_G_losses = []
 while (step <= num_step):
-    for _, (imgs_B, imgs_A) in enumerate(data_loader.load_batch(batch_size)):
+    for _, (imgs_distorted, imgs_good) in enumerate(data_loader.load_batch(batch_size)):
         ##  train the discriminator
-        fake_A = funie_gan.generator.predict(imgs_B)
-        d_loss_real = funie_gan.discriminator.train_on_batch([imgs_A, imgs_B], valid)
-        d_loss_fake = funie_gan.discriminator.train_on_batch([fake_A, imgs_B], fake)
+        imgs_fake = funie_gan.generator.predict(imgs_B)
+        d_loss_real = funie_gan.discriminator.train_on_batch([imgs_good, imgs_distorted], valid)
+        d_loss_fake = funie_gan.discriminator.train_on_batch([imgs_fake, imgs_distorted], fake)
         d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
         ## train the generator
-        g_loss = funie_gan.combined.train_on_batch([imgs_A, imgs_B], [valid, imgs_A])
+        g_loss = funie_gan.combined.train_on_batch([imgs_good, imgs_distorted], [valid, imgs_good])
 
         ## increment step, save losses, and print them 
         step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
@@ -54,9 +54,9 @@ while (step <= num_step):
 
         ## validate and save generated samples at regular intervals 
         if (step % val_interval==0):
-            imgs_B, imgs_A = data_loader.load_val_data(batch_size=N_val_samples)
-            fake_A = funie_gan.generator.predict(imgs_B)
-            gen_imgs = np.concatenate([imgs_B, fake_A, imgs_A])
+            imgs_distorted, imgs_good = data_loader.load_val_data(batch_size=N_val_samples)
+            imgs_fake = funie_gan.generator.predict(imgs_distorted)
+            gen_imgs = np.concatenate([imgs_distorted, imgs_fake, imgs_good])
             gen_imgs = 0.5 * gen_imgs + 0.5 # Rescale to 0-1
             save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=N_val_samples)
 
