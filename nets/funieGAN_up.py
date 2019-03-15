@@ -44,7 +44,7 @@ class FUNIE_GAN_UP():
         self.disc_patch = (patch, patch, 1)
 
         ## number of filters in the first layer of G and D
-        self.gf, self.df = 32, 64
+        self.gf, self.df = 32, 32
         optimizer = Adam(0.0003, 0.5)
 
         # Build and compile the discriminators
@@ -144,9 +144,9 @@ class FUNIE_GAN_UP():
         """
            Inspired by the pix2pix discriminator
         """
-        def d_layer(layer_input, filters, f_size=3, bn=True):
+        def d_layer(layer_input, filters, strides_=2, f_size=3, bn=True):
             ## Discriminator layers
-            d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
+            d = Conv2D(filters, kernel_size=f_size, strides=strides_, padding='same')(layer_input)
             d = LeakyReLU(alpha=0.2)(d)
             if bn: d = BatchNormalization(momentum=0.8)(d)
             return d
