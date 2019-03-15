@@ -41,7 +41,7 @@ class FUNIE_GAN():
 
         ## output shape of D (patchGAN)
         patch = int(self.img_rows/16)
-        self.disc_patch = (32, 32, 1)
+        self.disc_patch = (patch, patch, 1)
 
         ## number of filters in the first layer of G and D
         self.gf, self.df = 32, 32
@@ -146,7 +146,7 @@ class FUNIE_GAN():
         d1 = d_layer(combined_imgs, self.df, bn=False) ; print(d1)
         d2 = d_layer(d1, self.df*2) ; print(d2)
         d3 = d_layer(d2, self.df*4) ; print(d3)
-        d4 = d_layer(d3, self.df*8, strides_=1) ; print(d4)
+        d4 = d_layer(d3, self.df*8) ; print(d4)
         validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
         print(validity); print()
 
