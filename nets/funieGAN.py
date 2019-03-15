@@ -41,7 +41,7 @@ class FUNIE_GAN():
 
         ## output shape of D (patchGAN)
         patch = int(self.img_rows/16)
-        self.disc_patch = (patch, patch, 1)
+        self.disc_patch = (32, 32, 1)
 
         ## number of filters in the first layer of G and D
         self.gf, self.df = 32, 32
@@ -64,7 +64,7 @@ class FUNIE_GAN():
         valid = self.discriminator([fake_A, img_B])
         ## compute the comboned loss
         self.combined = Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[2, 8], optimizer=optimizer)
+        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[1, 10], optimizer=optimizer)
 
 
     def wasserstein_loss(self, y_true, y_pred):
@@ -75,8 +75,8 @@ class FUNIE_GAN():
         vgg_org_content = self.vgg_content(org_content)
         vgg_gen_content = self.vgg_content(gen_content)
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
-        mse_gen_loss = K.mean(K.abs(org_content-gen_content))
-        gen_total_err = 0.7*mse_gen_loss+0.3*content_loss
+        mae_gen_loss = K.mean(K.abs(org_content-gen_content))
+        gen_total_err = 0.7*mae_gen_loss+0.03*content_loss
         return gen_total_err
 
 
@@ -129,9 +129,9 @@ class FUNIE_GAN():
         """
            Inspired by the pix2pix discriminator
         """
-        def d_layer(layer_input, filters, f_size=3, bn=True):
+        def d_layer(layer_input, filters, strides_=2,f_size=3, bn=True):
             ## Discriminator layers
-            d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
+            d = Conv2D(filters, kernel_size=f_size, strides=strides_, padding='same')(layer_input)
             d = LeakyReLU(alpha=0.2)(d)
             if bn: d = BatchNormalization(momentum=0.8)(d)
             return d
@@ -146,7 +146,7 @@ class FUNIE_GAN():
         d1 = d_layer(combined_imgs, self.df, bn=False) ; print(d1)
         d2 = d_layer(d1, self.df*2) ; print(d2)
         d3 = d_layer(d2, self.df*4) ; print(d3)
-        d4 = d_layer(d3, self.df*8) ; print(d4)
+        d4 = d_layer(d3, self.df*8, strides_=1) ; print(d4)
         validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
         print(validity); print()
 
