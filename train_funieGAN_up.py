@@ -5,7 +5,7 @@ import numpy as np
 ## local libs
 from utils.data_utils import DataLoader
 from nets.funieGAN_up import FUNIE_GAN_UP
-from utils.plot_utils import save_val_samples_funieGAN_UP
+from utils.plot_utils import save_val_samples_unpaired
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/"
@@ -70,7 +70,7 @@ while (step <= num_step):
             reconstr_B = funie_gan.g_AB.predict(fake_A)
             gen_imgs = np.concatenate([imgs_good, fake_B, reconstr_A, imgs_distorted, fake_A, reconstr_B])
             gen_imgs = 0.5 * gen_imgs + 0.5 # Rescale to 0-1
-            save_val_samples_funieGAN_UP(samples_dir, gen_imgs, step, N_samples=N_val_samples)
+            save_val_samples_unpaired(samples_dir, gen_imgs, step, N_samples=N_val_samples)
 
         if (step % save_model_interval==0):
             ## save model and weights

@@ -63,7 +63,7 @@ def read_and_resize_pair(pathA, pathB, img_res):
 
 
 def get_local_test_data(data_dir, img_res=(256, 256)):
-    assert (os.path.exists(data_dir), "local image path doesnt exist")
+    assert os.path.exists(data_dir), "local image path doesnt exist"
     imgs = []
     for p in getPaths(data_dir):
         img = read_and_resize(p, img_res)
@@ -120,23 +120,6 @@ class DataLoader():
         imgs_A = preprocess(np.array(imgs_A))
         imgs_B = preprocess(np.array(imgs_B))
         return imgs_A, imgs_B
-
-
-    def load_batch_data(self, batch_size=1):
-        idx = np.random.choice(np.arange(self.num_train), batch_size, replace=False)
-        pathsA = self.trainA_paths[idx]
-        pathsB = self.trainB_paths[idx]
-
-        imgs_A, imgs_B = [], []
-        for idx in range(len(pathsB)):
-            img_A, img_B = read_and_resize_pair(pathsA[idx], pathsB[idx], self.img_res)
-            imgs_A.append(img_A)
-            imgs_B.append(img_B)
-
-        imgs_A = preprocess(np.array(imgs_A))
-        imgs_B = preprocess(np.array(imgs_B))
-        return imgs_A, imgs_B
-
 
 
     def load_batch(self, batch_size=1, data_augment=True):

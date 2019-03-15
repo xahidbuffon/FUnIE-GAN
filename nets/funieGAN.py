@@ -40,8 +40,7 @@ class FUNIE_GAN():
         self.vgg_content = VGG19_Content()
 
         ## output shape of D (patchGAN)
-        patch = int(self.img_rows/16)
-        self.disc_patch = (patch, patch, 1)
+        self.disc_patch = (16, 16, 1)
 
         ## number of filters in the first layer of G and D
         self.gf, self.df = 32, 32
@@ -64,7 +63,7 @@ class FUNIE_GAN():
         valid = self.discriminator([fake_A, img_B])
         ## compute the comboned loss
         self.combined = Model(inputs=[img_A, img_B], outputs=[valid, fake_A])
-        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[1, 10], optimizer=optimizer)
+        self.combined.compile(loss=['mse', self.total_gen_loss], loss_weights=[0.2, 0.8], optimizer=optimizer)
 
 
     def wasserstein_loss(self, y_true, y_pred):
@@ -76,7 +75,7 @@ class FUNIE_GAN():
         vgg_gen_content = self.vgg_content(gen_content)
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mae_gen_loss = K.mean(K.abs(org_content-gen_content))
-        gen_total_err = 0.7*mae_gen_loss+0.03*content_loss
+        gen_total_err = 0.7*mae_gen_loss+0.3*content_loss
         return gen_total_err
 
 

@@ -16,7 +16,7 @@ def save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=3, N_ims=3)
     plt.close()
 
 
-def save_val_samples_funieGAN_UP(samples_dir, gen_imgs, step, N_samples=1, N_ims=6):
+def save_val_samples_unpaired(samples_dir, gen_imgs, step, N_samples=1, N_ims=6):
     row=2*N_samples; col=N_ims//2;
     titles = ['Original','Translated','Reconstructed']
     fig, axs = plt.subplots(row, col)

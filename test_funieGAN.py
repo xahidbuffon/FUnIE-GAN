@@ -12,16 +12,16 @@ from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # for testing arbitrary local data
-data_dir = "data/selected/human/"
-from utils.data_loader import get_local_test_data
+data_dir = "data/test/"
+from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
 
 ## create dir for log and (sampled) validation data
-samples_dir = "data/samples/funieGAN/"
-checkpoint_dir = "checkpoints/funieGAN/underwater_imagenet/"
-model_name_by_epoch = "model_3830_"
+samples_dir = "data/output/funieGAN/"
+checkpoint_dir = "checkpoints/funieGAN/underwater_imagenet/run2/"
+model_name_by_epoch = "model_15320_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
