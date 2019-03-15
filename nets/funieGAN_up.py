@@ -27,7 +27,7 @@ def VGG19_Content(dataset='imagenet'):
 
 
 class FUNIE_GAN_UP():
-    def __init__(self, imrow=256, imcol=256, imchan=3, loss_meth='wgan'):
+    def __init__(self, imrow=256, imcol=256, imchan=3):
         ## input image shape
         self.img_rows, self.img_cols, self.channels = imrow, imcol, imchan
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
