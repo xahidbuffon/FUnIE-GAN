@@ -22,7 +22,7 @@ LEARNING_RATE = 1e-4
 LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
 NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
 DATA = 'underwater_imagenet'
-EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/run2/'
+EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
 
 ## setup experimental and sample directories
