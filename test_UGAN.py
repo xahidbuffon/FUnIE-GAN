@@ -15,12 +15,12 @@ sys.path.insert(0, 'nets/')
 import numpy as np
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
-data_dir = "data/test/"
+data_dir = "data/test/A/"
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
 
-LOSS_METHOD   = 'wgan'
+LOSS_METHOD   = 'least_squares'
 NETWORK       = 'resnet'
 DATA          = 'underwater_imagenet'
 checkpoint_dir  = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
@@ -57,7 +57,7 @@ tot = time.time()-s
 times.append(tot)
    
 
-samples_dir = "data/output/uGAN/"
+samples_dir = "data/test/C/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 step = int(sess.run(global_step))

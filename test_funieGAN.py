@@ -12,7 +12,7 @@ from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # for testing arbitrary local data
-data_dir = "data/test/B/"
+data_dir = "data/test/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))

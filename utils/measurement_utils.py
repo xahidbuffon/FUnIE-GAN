@@ -214,9 +214,9 @@ def getUIQM(x):
     """
     x = x.astype(np.float32)
     ### from https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7300447
-    c1 = 0.4680; c2 = 0.2745; c3 = 0.2576
+    #c1 = 0.4680; c2 = 0.2745; c3 = 0.2576
     ### from https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7300447
-    #c1 = 0.0282; c2 = 0.2953; c3 = 3.5753
+    c1 = 0.0282; c2 = 0.2953; c3 = 3.5753
 
     uicm   = _uicm(x)
     uism   = _uism(x)
