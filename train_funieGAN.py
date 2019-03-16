@@ -22,7 +22,7 @@ if not os.path.exists(checkpoint_dir):
 
 ## hyper-params
 num_epoch = 50
-batch_size = 4
+batch_size = 8
 val_interval = 2000
 N_val_samples = 3
 save_model_interval = data_loader.num_train//batch_size
@@ -70,13 +70,6 @@ while (step <= num_step):
 
         if (step>=num_step): break
          
-
-
-## for visualization
-viz = True
-if viz:
-    from utils.plot_utils import viz_gen_and_dis_losses
-    viz_gen_and_dis_losses(all_D_losses, all_G_losses, checkpoint_dir)
 
 
 
