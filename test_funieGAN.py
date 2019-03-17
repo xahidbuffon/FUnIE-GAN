@@ -12,18 +12,18 @@ from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # for testing arbitrary local data
-data_dir = "data/test/"
+data_dir = "data/test/B/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
 
 ## create dir for log and (sampled) validation data
-samples_dir = "data/output/funieGAN/"
+samples_dir = "data/test/C/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
-checkpoint_dir = "checkpoints/funieGAN/underwater_imagenet/run2/"
-model_name_by_epoch = "model_15320_"
+checkpoint_dir = "checkpoints/funieGAN/underwater_imagenet/"
+model_name_by_epoch = "model_38300_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
