@@ -12,7 +12,7 @@ from nets.cycleGAN import CycleGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # for testing arbitrary local data
-data_dir = "data/test/A/"
+data_dir = "data/test/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
@@ -20,7 +20,7 @@ print ("{0} test images are loaded".format(len(test_paths)))
 
 ## create dir for log and (sampled) validation data
 ## create dir for log and (sampled) validation data
-samples_dir = "data/test/C/"
+samples_dir = "data/output/cycleGAN/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 checkpoint_dir = "checkpoints/cycleGAN/EUVP/"

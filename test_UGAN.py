@@ -15,7 +15,7 @@ sys.path.insert(0, 'nets/')
 import numpy as np
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
-data_dir = "data/test/A/"
+data_dir = "data/test/"
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
@@ -57,7 +57,7 @@ tot = time.time()-s
 times.append(tot)
    
 
-samples_dir = "data/test/C/"
+samples_dir = "data/output/uGAN/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 step = int(sess.run(global_step))
