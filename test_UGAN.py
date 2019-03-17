@@ -21,7 +21,7 @@ print ("{0} test images are loaded".format(len(test_paths)))
 
 
 LOSS_METHOD   = 'least_squares'
-NETWORK       = 'resnet'
+NETWORK       = 'pix2pix'
 DATA          = 'underwater_imagenet'
 checkpoint_dir  = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 
