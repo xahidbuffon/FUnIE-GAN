@@ -38,7 +38,7 @@ def measure_SSIM_PSNRs(GT_dir, Gen_dir):
     ssims, psnrs = [], []
     for img_path in GT_paths:
         name_split = ntpath.basename(img_path).split('.')
-        gen_path = os.path.join(Gen_dir, name_split[0]+'_gen.png') #+name_split[1])
+        gen_path = os.path.join(Gen_dir, name_split[0]+'_gen.jpg') #+name_split[1])
         if (gen_path in Gen_paths):
             r_im = misc.imread(img_path)
             g_im = misc.imread(gen_path)
