@@ -1,5 +1,19 @@
+#!/usr/bin/env python
+"""
+# > Script for training UGAN with different settings. 
+#    - A simplified implementation of the original repo 
+#    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
+#
+# > Notes and Usage:
+#    - set LOSS_METHOD, NETWORK, DATA, and data_dir
+#    - python train_UGAN.py
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
+# imports
 import os
-import cv2
 import sys
 import random
 import numpy as np
@@ -8,9 +22,8 @@ import tensorflow as tf
 import cPickle as pickle
 #export TF_CPP_MIN_LOG_LEVEL=2
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
-
  
-## default settins as mentioned in the original paper
+## default settings as mentioned in the original paper
 EPOCHS = 30
 AUGMENT = True
 BATCH_SIZE = 4
@@ -18,10 +31,11 @@ NUM_LAYERS = 16
 L1_WEIGHT = 100.0
 VAL_INTERVAL = 2000
 LEARNING_RATE = 1e-4
+
 ## feel free to change the following to try different mdoels
 LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
 NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
-DATA = 'underwater_imagenet'
+DATA = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
 
@@ -41,21 +55,20 @@ exp_pkl = open(EXPERIMENT_DIR+'info.pkl', 'wb')
 data = pickle.dumps(exp_info)
 exp_pkl.write(data)
 exp_pkl.close()
-
 print("\n")
 print("DATA: {0}".format(DATA))
 print("NETWORK: {0}".format(NETWORK))
 print("LOSS_METHOD: {0}".format(LOSS_METHOD))
 print("\n")
 
-## my imports
+## local imports
 sys.path.insert(0, 'nets/')
 if NETWORK == 'resnet': from resnet import *
 elif NETWORK == 'pix2pix': from pix2pix import *
 else: pass
 from utils.data_utils import getPaths, read_and_resize, preprocess, augment
 
-##------------- training module begins here-----------------------
+## training pipeline begins
 global_step = tf.Variable(0, name='global_step', trainable=False)
 # underwater image
 image_u = tf.placeholder(tf.float32, shape=(BATCH_SIZE, 256, 256, 3), name='image_u')
@@ -69,6 +82,7 @@ D_real = netD(image_r, LOSS_METHOD)
 # send corrected underwater images to D
 D_fake = netD(gen_image, LOSS_METHOD, reuse=True)
 
+# formulation of different choice of loss functions
 e = 1e-12; n_critic = 1
 if LOSS_METHOD == 'least_squares':
     print("Using least squares loss")
@@ -99,30 +113,31 @@ elif LOSS_METHOD == 'wgan':
     errD += gradient_penalty
 else: pass
 
+# loss function
 l1_loss = tf.reduce_mean(tf.abs(gen_image-image_r))
 errG += L1_WEIGHT*l1_loss
-
 
 # tensorboard summaries
 tf.summary.scalar('d_loss', tf.reduce_mean(errD))
 tf.summary.scalar('g_loss', tf.reduce_mean(errG))
-
 
 # get all trainable variables, and split by network G and network D
 t_vars = tf.trainable_variables()
 d_vars = [var for var in t_vars if 'd_' in var.name]
 g_vars = [var for var in t_vars if 'g_' in var.name]
 
+# call the optimizer
 G_train_op = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(errG, var_list=g_vars, global_step=global_step)
 D_train_op = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(errD, var_list=d_vars)
 
+# complete the graph
 saver = tf.train.Saver(max_to_keep=2)
 init = tf.group(tf.local_variables_initializer(), tf.global_variables_initializer())
 sess = tf.Session()
 sess.run(init)
 summary_writer = tf.summary.FileWriter(EXPERIMENT_DIR+'/logs/', graph=tf.get_default_graph())
 
-
+# checkpoint particulars
 ckpt = tf.train.get_checkpoint_state(EXPERIMENT_DIR)
 if ckpt and ckpt.model_checkpoint_path:
     print "Restoring previous model..."
@@ -135,6 +150,7 @@ if ckpt and ckpt.model_checkpoint_path:
 step = int(sess.run(global_step))
 merged_summary_op = tf.summary.merge_all()
 
+# feed data to the graph's input
 data_dir = "/mnt/data2/color_correction_related/datasets/"
 trainA_paths = getPaths(data_dir+DATA+"/trainA/") # underwater photos
 trainB_paths = getPaths(data_dir+DATA+"/trainB/") # normal photos (ground truth)
@@ -143,7 +159,7 @@ val_paths    = getPaths(data_dir+DATA+"/val/")
 num_train, num_test, num_val = len(trainA_paths), len(test_paths), len(val_paths)
 print ("{0} training pairs\n".format(len(trainB_paths)))
 
-
+# training loop begins
 TOTAL_STEP = (EPOCHS*num_train/BATCH_SIZE)
 while step < TOTAL_STEP:
     # pick random images every time for D
@@ -153,26 +169,23 @@ while step < TOTAL_STEP:
         batchB_paths = trainB_paths[idx]
         batchA_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
         batchB_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-        
+        # enumerate batch and run graph
         for i,(a,b) in enumerate(zip(batchA_paths, batchB_paths)):
             a_img = misc.imread(a)
             b_img = misc.imread(b)
-
             # Data augmentation here - each has 50% chance
             if AUGMENT: 
                 a_img, b_img = augment(a_img, b_img)
             batchA_images[i, ...] = preprocess(a_img)
             batchB_images[i, ...] = preprocess(b_img)
-            
+        # train discriminator
         sess.run(D_train_op, feed_dict={image_u:batchA_images, image_r:batchB_images})
-
     # also get new batch for G
     idx = np.random.choice(np.arange(num_train), BATCH_SIZE, replace=False)
     batchA_paths = trainA_paths[idx]
     batchB_paths = trainB_paths[idx]
     batchA_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
     batchB_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-
     for i,(a,b) in enumerate(zip(batchA_paths, batchB_paths)):
         a_img = misc.imread(a)
         b_img = misc.imread(b)
@@ -181,28 +194,25 @@ while step < TOTAL_STEP:
             a_img, b_img = augment(a_img, b_img)
         batchA_images[i, ...] = preprocess(a_img)
         batchB_images[i, ...] = preprocess(b_img)
-
+    # train generator
     sess.run(G_train_op, feed_dict={image_u:batchA_images, image_r:batchB_images})
     D_loss, G_loss, summary = sess.run([errD, errG, merged_summary_op], feed_dict={image_u:batchA_images, image_r:batchB_images})
     summary_writer.add_summary(summary, step)
     step += 1
     print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, D_loss, G_loss)) 
-
-    ##------------- validation and saving checkpoints -----------------------
+    # validation and saving checkpoints
     if (step%VAL_INTERVAL==0):
         print ("Saving model")
         saver.save(sess, EXPERIMENT_DIR+'checkpoint-'+str(step))
         saver.export_meta_graph(EXPERIMENT_DIR+"checkpoint-"+str(step)+".meta")
-
+        print ("Testing on validation data")
         idx = np.random.choice(np.arange(num_val), BATCH_SIZE, replace=False)
         batch_paths  = val_paths[idx]
         batch_images = np.empty((BATCH_SIZE, 256, 256, 3), dtype=np.float32)
-
-        print ("Testing on validation data")
         for i,a in enumerate(batch_paths):
             a_img = misc.imread(a).astype("float32")
             batch_images[i, ...] = preprocess(misc.imresize(a_img, (256, 256, 3)))
-
+        # save a few generated samples
         gen_images = np.asarray(sess.run(gen_image, feed_dict={image_u:batch_images}))
         for i, (gen, real) in enumerate(zip(gen_images, batch_images)):
             misc.imsave(os.path.join(SAMPLES_DIR, str(step)+ "_real.png"), real)
