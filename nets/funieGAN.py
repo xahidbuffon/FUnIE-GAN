@@ -1,8 +1,16 @@
+#!/usr/bin/env python
+"""
+# > FUnIE-GAN architecture 
+#    - Paper: https://arxiv.org/pdf/1903.09766.pdf
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
 from __future__ import print_function, division
 ## python libs
 import os
 import numpy as np
-
 ## tf-Keras libs
 import tensorflow as tf
 import keras.backend as K
@@ -15,7 +23,6 @@ from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.applications import vgg19
 
 
-
 def VGG19_Content(dataset='imagenet'):
     # Load VGG, trained on imagenet data
     vgg = vgg19.VGG19(include_top=False, weights=dataset)
@@ -25,40 +32,30 @@ def VGG19_Content(dataset='imagenet'):
     return Model(vgg.input, content_outputs)
 
 
-
 class FUNIE_GAN():
     def __init__(self, imrow=256, imcol=256, imchan=3, loss_meth='wgan'):
         ## input image shape
         self.img_rows, self.img_cols, self.channels = imrow, imcol, imchan
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
-
         ## input images and their conditioning images
         img_A = Input(shape=self.img_shape)
         img_B = Input(shape=self.img_shape)
-
         ## conv 5_2 content from vgg19 network
         self.vgg_content = VGG19_Content()
-
         ## output shape of D (patchGAN)
         self.disc_patch = (16, 16, 1)
-
         ## number of filters in the first layer of G and D
         self.gf, self.df = 32, 32
         optimizer = Adam(0.0003, 0.5)
-
         ## Build and compile the discriminator
         self.discriminator = self.FUNIE_discriminator()
         self.discriminator.compile(loss='mse', optimizer=optimizer, metrics=['accuracy'])
-
         ## Build the generator
         self.generator = self.FUNIE_generator()
-
         ## By conditioning on B generate a fake version of A
         fake_A = self.generator(img_B)
-
         ## For the combined model we will only train the generator
         self.discriminator.trainable = False
-
         ## Discriminators determines validity of translated images / condition pairs
         valid = self.discriminator([fake_A, img_B])
         ## compute the comboned loss
@@ -67,15 +64,33 @@ class FUNIE_GAN():
 
 
     def wasserstein_loss(self, y_true, y_pred):
+        # for wasserstein GAN loss
         return K.mean(y_true * y_pred)
+
+    def perceptual_distance(self, y_true, y_pred):
+        """
+           Calculating perceptual distance
+           Thanks to github.com/wandb/superres
+        """
+        y_true = (y_true+1.0)*127.5 # [-1,1] -> [0, 255]
+        y_pred = (y_pred+1.0)*127.5 # [-1,1] -> [0, 255]
+        rmean = (y_true[:, :, :, 0] + y_pred[:, :, :, 0]) / 2
+        r = y_true[:, :, :, 0] - y_pred[:, :, :, 0]
+        g = y_true[:, :, :, 1] - y_pred[:, :, :, 1]
+        b = y_true[:, :, :, 2] - y_pred[:, :, :, 2]
+        return K.mean(K.sqrt((((512+rmean)*r*r)/256) + 4*g*g + (((767-rmean)*b*b)/256)))
 
 
     def total_gen_loss(self, org_content, gen_content):
+        # custom perceptual loss function
         vgg_org_content = self.vgg_content(org_content)
         vgg_gen_content = self.vgg_content(gen_content)
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mae_gen_loss = K.mean(K.abs(org_content-gen_content))
-        gen_total_err = 0.7*mae_gen_loss+0.3*content_loss
+        perceptual_loss = self.perceptual_distance(org_content, gen_content)
+        #gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
+        # updated loss function in v2
+        gen_total_err = 0.6*mae_gen_loss+0.3*content_loss+0.1*perceptual_loss
         return gen_total_err
 
 
@@ -84,7 +99,6 @@ class FUNIE_GAN():
            Inspired by the U-Net Generator with skip connections
            This is a much simpler architecture with fewer parameters
         """
-
         def conv2d(layer_input, filters, f_size=3, bn=True):
             ## for downsampling
             d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
@@ -122,8 +136,6 @@ class FUNIE_GAN():
         return Model(d0, output_img)
 
 
-
-
     def FUNIE_discriminator(self):
         """
            Inspired by the pix2pix discriminator
@@ -137,7 +149,6 @@ class FUNIE_GAN():
 
         img_A = Input(shape=self.img_shape)
         img_B = Input(shape=self.img_shape)
-
         print("Printing Discriminator model architecture")
         ## input
         combined_imgs = Concatenate(axis=-1)([img_A, img_B]) ; print(combined_imgs)
@@ -148,9 +159,7 @@ class FUNIE_GAN():
         d4 = d_layer(d3, self.df*8) ; print(d4)
         validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
         print(validity); print()
-
         return Model([img_A, img_B], validity)
-
 
 
 if __name__=="__main__":

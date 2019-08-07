@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+"""
+# > Script for training FUnIE-GAN on paired data 
+#    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
+#
+# > Notes and Usage:
+#    - set LOSS_METHOD, NETWORK, DATA, and data_dir
+#    - python train_UGAN.py
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
 ## python libs
 import os
 import numpy as np
@@ -8,10 +21,9 @@ from nets.funieGAN_up import FUNIE_GAN_UP
 from utils.plot_utils import save_val_samples_unpaired
 
 ## configure data-loader
-data_dir = "/mnt/data2/color_correction_related/datasets/"
-dataset_name = "EUVP"
-#dataset_name = "underwater_imagenet"
-data_loader = DataLoader(data_dir, dataset_name)
+data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
+dataset_name = "underwater_imagenet"
+data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name
 
 ## create dir for log and (sampled) validation data
 samples_dir = os.path.join("data/samples/funieGAN_up/", dataset_name)
