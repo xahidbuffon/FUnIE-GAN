@@ -24,18 +24,19 @@ import cPickle as pickle
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
  
 ## default settings as mentioned in the original paper
-EPOCHS = 30
+EPOCHS = 1 # 30
 AUGMENT = True
 BATCH_SIZE = 4
 NUM_LAYERS = 16
 L1_WEIGHT = 100.0
-VAL_INTERVAL = 2000
+VAL_INTERVAL = 1000
 LEARNING_RATE = 1e-4
 
 ## feel free to change the following to try different mdoels
-LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
+LOSS_METHOD = 'least_squares'  # options: {'gan', 'least_squares', 'wgan'}
 NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
-DATA = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
+data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
+DATA = 'underwater_dark' # options: {'underwater_imagenet', 'underwater_dark'}
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
 
@@ -151,12 +152,10 @@ step = int(sess.run(global_step))
 merged_summary_op = tf.summary.merge_all()
 
 # feed data to the graph's input
-data_dir = "/mnt/data2/color_correction_related/datasets/"
 trainA_paths = getPaths(data_dir+DATA+"/trainA/") # underwater photos
 trainB_paths = getPaths(data_dir+DATA+"/trainB/") # normal photos (ground truth)
-test_paths   = getPaths(data_dir+DATA+"/test/")
-val_paths    = getPaths(data_dir+DATA+"/val/")
-num_train, num_test, num_val = len(trainA_paths), len(test_paths), len(val_paths)
+val_paths    = getPaths(data_dir+DATA+"/validation/")
+num_train, num_val = len(trainA_paths), len(val_paths)
 print ("{0} training pairs\n".format(len(trainB_paths)))
 
 # training loop begins
@@ -199,7 +198,8 @@ while step < TOTAL_STEP:
     D_loss, G_loss, summary = sess.run([errD, errG, merged_summary_op], feed_dict={image_u:batchA_images, image_r:batchB_images})
     summary_writer.add_summary(summary, step)
     step += 1
-    print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, D_loss, G_loss)) 
+    if step%10==0:
+        print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, TOTAL_STEP, D_loss, G_loss)) 
     # validation and saving checkpoints
     if (step%VAL_INTERVAL==0):
         print ("Saving model")

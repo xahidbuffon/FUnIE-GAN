@@ -14,7 +14,6 @@
 """
 # imports
 import os
-import cv2
 import sys
 import time
 import ntpath
@@ -35,9 +34,9 @@ test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
 # change to load the right model (checkpoint_dir)
-LOSS_METHOD   = 'least_squares'
-NETWORK       = 'pix2pix'
-DATA          = 'underwater_imagenet'
+LOSS_METHOD   = 'least_squares' # options: {'gan', 'least_squares', 'wgan'}
+NETWORK       = 'pix2pix' # options: {'pix2pix', 'resnet'}
+DATA          = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 checkpoint_dir  = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 
 # local imports
@@ -73,7 +72,7 @@ tot = time.time()-s
 times.append(tot)
 
 # keep the samples   
-samples_dir = "data/test/C/"
+samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 # testing loop

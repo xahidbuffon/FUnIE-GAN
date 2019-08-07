@@ -1,7 +1,16 @@
+"""
+# > A ResNet-based model, adopted as the original UGAN paper 
+#    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
+
 import tensorflow as tf
 import tensorflow.contrib.layers as tcl
-
 from tensorflow.nn import relu, tanh
+
 
 def lrelu(x, leak=0.2):
     return tf.maximum(leak*x, x)
@@ -15,7 +24,6 @@ def resBlock(x, num):
     print(conv2)
     output = tf.add(x,conv2)
     print(output)
-
     return output
 
 
