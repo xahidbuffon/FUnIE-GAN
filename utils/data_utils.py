@@ -95,7 +95,7 @@ class DataLoader():
             elif (len(self.trainA_paths)>len(self.trainB_paths)):
                 self.trainA_paths = self.trainA_paths[:len(self.trainB_paths)]
             else: pass
-            self.val_paths = getPaths(os.path.join(self.data_dir, "val"))
+            self.val_paths = getPaths(os.path.join(self.data_dir, "validation"))
             self.num_train, self.num_val = len(self.trainA_paths), len(self.val_paths)
             print ("{0} training pairs\n".format(self.num_train))
         else:

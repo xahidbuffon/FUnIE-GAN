@@ -35,8 +35,8 @@ print ("{0} test images are loaded".format(len(test_paths)))
 
 # change to load the right model (checkpoint_dir)
 LOSS_METHOD   = 'least_squares' # options: {'gan', 'least_squares', 'wgan'}
-NETWORK       = 'pix2pix' # options: {'pix2pix', 'resnet'}
-DATA          = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
+NETWORK       = 'resnet' # options: {'pix2pix', 'resnet'}
+DATA          = 'underwater_dark' # options: {'underwater_imagenet', 'underwater_dark'}
 checkpoint_dir  = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 
 # local imports
