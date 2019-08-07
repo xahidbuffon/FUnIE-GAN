@@ -3,8 +3,8 @@
 # > Script for training cycle-GAN on the unpaired data 
 #
 # > Notes and Usage:
-#    - set data_dir and other hyper-parameters
-#    - python train_cycleGAN.py
+#    - set data_dir and model paths
+#    - python test_cycleGAN.py
 #
 # Maintainer: Jahid (email: islam034@umn.edu)
 # Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
@@ -22,17 +22,17 @@ from nets.cycleGAN import CycleGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # test set directories
-data_dir = "data/test/A/"
+data_dir = "data/test/D/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 # create dir for log and (sampled) validation data
-samples_dir = "data/test/C/"
+samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 # load model
 checkpoint_dir = "checkpoints/cycleGAN/EUVP/"
-model_name_by_epoch = "model_3163_"
+model_name_by_epoch = "model_6326_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity

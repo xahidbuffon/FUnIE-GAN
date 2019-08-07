@@ -30,7 +30,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 # hyper-params
-num_epoch = 2
+num_epoch = 50
 batch_size = 4
 val_interval = 50
 N_val_samples = 1

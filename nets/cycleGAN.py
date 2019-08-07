@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 # > Cycle-GAN implementation, adopted as the original paper 
-# > Thanks to 
+# > Thanks to github.com/eriklindernoren/Keras-GAN
 #
 # Maintainer: Jahid (email: islam034@umn.edu)
 # Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
