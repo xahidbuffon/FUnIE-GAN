@@ -1,12 +1,15 @@
+#!/usr/bin/env python
 """
-   Computes the Underwater Image Quality Measure (UIQM)
+# > Modules for computing the Underwater Image Quality Measure (UIQM)
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
 """
 from scipy import ndimage
 from PIL import Image
 import numpy as np
 import math
-
-
 
 
 def mu_a(x, alpha_L=0.1, alpha_R=0.1):

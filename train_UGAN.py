@@ -24,7 +24,7 @@ import cPickle as pickle
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
  
 ## default settings as mentioned in the original paper
-EPOCHS = 1 # 30
+EPOCHS = 30
 AUGMENT = True
 BATCH_SIZE = 4
 NUM_LAYERS = 16
@@ -33,10 +33,10 @@ VAL_INTERVAL = 1000
 LEARNING_RATE = 1e-4
 
 ## feel free to change the following to try different mdoels
-LOSS_METHOD = 'least_squares'  # options: {'gan', 'least_squares', 'wgan'}
-NETWORK = 'resnet'   # options: {'pix2pix', 'resnet'}
+LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
+NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
 data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
-DATA = 'underwater_dark' # options: {'underwater_imagenet', 'underwater_dark'}
+DATA = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')
 

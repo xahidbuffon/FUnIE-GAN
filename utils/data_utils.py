@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+"""
+# > Various modules for handling data 
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
 from __future__ import division
 from __future__ import absolute_import
 import os
@@ -77,7 +85,7 @@ class DataLoader():
     def __init__(self, data_dir, dataset_name, img_res=(256, 256), test_only=False):
         self.img_res = img_res
         self.DATA = dataset_name
-        self.data_dir = os.path.join(data_dir, dataset_name)
+        self.data_dir = data_dir
 
         if not test_only:
             self.trainA_paths = getPaths(os.path.join(self.data_dir, "trainA")) # distorted

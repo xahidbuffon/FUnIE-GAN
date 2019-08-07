@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+"""
+# > Cycle-GAN implementation, adopted as the original paper 
+# > Thanks to 
+#
+# Maintainer: Jahid (email: islam034@umn.edu)
+# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
+# Any part of this repo can be used for academic and educational purposes only
+"""
+
 from __future__ import print_function, division
 ## python libs
 import os

@@ -19,7 +19,7 @@ from nets.cycleGAN import CycleGAN
 from utils.plot_utils import save_val_samples_unpaired
 
 # configure data-loader
-data_dir = "/mnt/data2/color_correction_related/datasets/"
+data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Unpaired/"
 dataset_name = "EUVP"
 data_loader = DataLoader(data_dir, dataset_name)
 
@@ -30,7 +30,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 # hyper-params
-num_epoch = 50
+num_epoch = 2
 batch_size = 4
 val_interval = 50
 N_val_samples = 1
@@ -63,7 +63,8 @@ while (step <= num_step):
                                    [valid, valid, imgs_good, imgs_distorted, imgs_good, imgs_distorted])
         # increment step, save losses, and print them 
         step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
-        print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
+        if step%10==0:
+            print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
 
         # validate and save generated samples at regular intervals 
         if (step % val_interval==0):
