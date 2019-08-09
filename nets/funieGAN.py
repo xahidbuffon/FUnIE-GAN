@@ -88,16 +88,16 @@ class FUNIE_GAN():
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mae_gen_loss = K.mean(K.abs(org_content-gen_content))
         perceptual_loss = self.perceptual_distance(org_content, gen_content)
-        #gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
+        gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
         # updated loss function in v2
-        gen_total_err = 0.6*mae_gen_loss+0.3*content_loss+0.1*perceptual_loss
+        #gen_total_err = 0.6*mae_gen_loss+0.3*content_loss+0.1*perceptual_loss
         return gen_total_err
 
 
     def FUNIE_generator(self):
         """
            Inspired by the U-Net Generator with skip connections
-           This is a much simpler architecture with fewer parameters
+           This is a much simpler architecture with fewer parameters (faster inference)
         """
         def conv2d(layer_input, filters, f_size=3, bn=True):
             ## for downsampling
