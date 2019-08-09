@@ -63,7 +63,7 @@ while (step <= num_step):
                                    [valid, valid, imgs_good, imgs_distorted, imgs_good, imgs_distorted])
         # increment step, save losses, and print them 
         step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
-        if step%10==0:
+        if (step<=1 or step%50==0):
             print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
 
         # validate and save generated samples at regular intervals 

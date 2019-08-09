@@ -42,8 +42,7 @@ class FUNIE_GAN_UP():
         ## conv 5_2 content from vgg19 network
         self.vgg_content = VGG19_Content()
         ## output shape of D (patchGAN)
-        patch = int(self.img_rows/16)
-        self.disc_patch = (patch, patch, 1)
+        self.disc_patch = (16, 16, 1)
         # number of additional res block
         self.n_residual_blocks = 5
         ## number of filters in the first layer of G and D
@@ -104,9 +103,9 @@ class FUNIE_GAN_UP():
         content_loss = K.mean(K.square(vgg_org_content - vgg_gen_content), axis=-1)
         mae_gen_loss = K.mean(K.abs(org_content-gen_content))
         perceptual_loss = self.perceptual_distance(org_content, gen_content)
-        gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
+        #gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
         # updated loss function in v2
-        #gen_total_err = 0.6*mae_gen_loss+0.3*content_loss+0.1*perceptual_loss
+        gen_total_err = 0.3*mae_gen_loss+0.4*content_loss+0.3*perceptual_loss
         return gen_total_err
 
 
@@ -195,7 +194,8 @@ class FUNIE_GAN_UP():
         d2 = d_layer(d1, self.df*2) ; print(d2)
         d3 = d_layer(d2, self.df*4) ; print(d3)
         d4 = d_layer(d3, self.df*8) ; print(d4)
-        validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
+        d5 = d_layer(d4, self.df*8, strides_=1) ; print(d5)
+        validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d5)
         print(validity); print()
 
         return Model(img, validity)

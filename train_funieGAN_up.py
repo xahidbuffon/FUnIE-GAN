@@ -33,10 +33,10 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 20
-batch_size = 4
-val_interval = 1000
-N_val_samples = 1
+num_epoch = 25
+batch_size = 8
+val_interval = 2000
+N_val_samples = 5
 save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval
 
@@ -67,7 +67,8 @@ while (step <= num_step):
                                    [valid, valid, imgs_good, imgs_distorted, imgs_good, imgs_distorted])
         ## increment step, save losses, and print them 
         step += 1; all_D_losses.append(d_loss[0]);  all_G_losses.append(g_loss[0]); 
-        print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
+        if (step<=1 or step%50==0):
+            print ("Step {0}/{1}: lossD: {2}, lossG: {3}".format(step, num_step, d_loss[0], g_loss[0])) 
         ## validate and save generated samples at regular intervals 
         if (step % val_interval==0):
             imgs_good, imgs_distorted = data_loader.load_val_data(batch_size=N_val_samples)
