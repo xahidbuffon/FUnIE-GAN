@@ -21,8 +21,7 @@ from utils.plot_utils import save_val_samples_funieGAN
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
-data_dir = "/mnt/data2/color_correction_related/datasets/EUVP_old/"
-dataset_name = "underwater_imagenet_dark" # options: {'underwater_imagenet', 'underwater_dark'}
+dataset_name = "underwater_imagenet" # options: {'underwater_imagenet', 'underwater_dark'}
 data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
 ## create dir for log and (sampled) validation data
 samples_dir = os.path.join("data/samples/funieGAN/", dataset_name)
@@ -31,9 +30,9 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 50
+num_epoch = 25
 batch_size = 8
-val_interval = 5000
+val_interval = 1000
 N_val_samples = 3
 save_model_interval = data_loader.num_train//batch_size
 num_step = num_epoch*save_model_interval

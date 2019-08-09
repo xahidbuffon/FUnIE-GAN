@@ -29,7 +29,7 @@ import numpy as np
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # test set directories
-data_dir = "data/test/B/"
+data_dir = "data/test/A/"
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 

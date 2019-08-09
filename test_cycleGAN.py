@@ -22,7 +22,7 @@ from nets.cycleGAN import CycleGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # test set directories
-data_dir = "data/test/D/"
+data_dir = "data/test/random/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
