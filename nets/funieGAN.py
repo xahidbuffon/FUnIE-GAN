@@ -22,7 +22,6 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.applications import vgg19
 
-
 def VGG19_Content(dataset='imagenet'):
     # Load VGG, trained on imagenet data
     vgg = vgg19.VGG19(include_top=False, weights=dataset)
@@ -66,6 +65,7 @@ class FUNIE_GAN():
     def wasserstein_loss(self, y_true, y_pred):
         # for wasserstein GAN loss
         return K.mean(y_true * y_pred)
+
 
     def perceptual_distance(self, y_true, y_pred):
         """
@@ -165,5 +165,8 @@ class FUNIE_GAN():
 if __name__=="__main__":
     # for testing the initialization
     funie_gan = FUNIE_GAN()
+    #gen = funie_gan.FUNIE_generator()
+    #print (gen.summary())
+
 
 
