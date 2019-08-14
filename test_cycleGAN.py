@@ -18,8 +18,7 @@ import numpy as np
 from scipy import misc
 from keras.models import model_from_json
 ## local libs
-from nets.cycleGAN import CycleGAN
-from utils.data_utils import getPaths, read_and_resize, preprocess
+from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
 # test set directories
 data_dir = "data/test/random/"
@@ -30,14 +29,14 @@ print ("{0} test images are loaded".format(len(test_paths)))
 samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
-# load model
-checkpoint_dir = "checkpoints/cycleGAN/EUVP/"
+# model paths
+checkpoint_dir = "checkpoints/cycleGAN/"
 model_name_by_epoch = "model_6326_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
 assert (os.path.exists(model_h5) and os.path.exists(model_json))
-cycle_gan= CycleGAN()
+# load model
 with open(model_json, "r") as json_file:
     loaded_model_json = json_file.read()
 times = []; s = time.time()
@@ -58,6 +57,7 @@ for img_path in test_paths:
     # generate enhanced image
     s = time.time()
     gen = cycle_gan_generator.predict(im)
+    gen = deprocess(gen) # Rescale to 0-1
     tot = time.time()-s
     times.append(tot)
     # save samples

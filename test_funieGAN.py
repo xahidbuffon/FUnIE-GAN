@@ -18,7 +18,6 @@ import numpy as np
 from scipy import misc
 from keras.models import model_from_json
 ## local libs
-from nets.funieGAN import FUNIE_GAN
 from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
@@ -37,14 +36,10 @@ checkpoint_dir  = 'checkpoints/funieGAN/' + dataset_name + '/'
 model_name_by_epoch = "model_26970_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
-print (model_h5)
 # sanity
 assert (os.path.exists(model_h5) and os.path.exists(model_json))
 
-## load model arch
-funie_gan = FUNIE_GAN()
-
-# load json and create model
+# load model
 with open(model_json, "r") as json_file:
     loaded_model_json = json_file.read()
 funie_gan_generator = model_from_json(loaded_model_json)
