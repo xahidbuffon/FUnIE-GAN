@@ -22,8 +22,8 @@ from nets.funieGAN_up import FUNIE_GAN_UP
 from utils.plot_utils import save_val_samples_unpaired
 
 ## configure data-loader
-data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
-dataset_name = "underwater_imagenet"
+data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired"
+dataset_name = "underwater_dark"
 data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
 
 ## create dir for log and (sampled) validation data
@@ -33,7 +33,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 25
+num_epoch = 50
 batch_size = 4
 val_interval = 2000
 N_val_samples = 2

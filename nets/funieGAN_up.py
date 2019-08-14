@@ -105,7 +105,7 @@ class FUNIE_GAN_UP():
         perceptual_loss = self.perceptual_distance(org_content, gen_content)
         #gen_total_err = 0.7*mae_gen_loss+0.3*content_loss # v1
         # updated loss function in v2
-        gen_total_err = 0.3*mae_gen_loss+0.4*content_loss+0.3*perceptual_loss
+        gen_total_err = 0.7*mae_gen_loss+0.2*content_loss+0.1*perceptual_loss
         return gen_total_err
 
 
