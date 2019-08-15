@@ -17,9 +17,9 @@ import keras.backend as K
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.layers import Input, Dropout, Concatenate
-from keras.layers import BatchNormalization, Activation
 from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
+from keras.layers import BatchNormalization, Activation, MaxPooling2D
 from keras.applications import vgg19
 
 def VGG19_Content(dataset='imagenet'):
@@ -50,7 +50,7 @@ class FUNIE_GAN():
         self.discriminator = self.FUNIE_discriminator()
         self.discriminator.compile(loss='mse', optimizer=optimizer, metrics=['accuracy'])
         ## Build the generator
-        self.generator = self.FUNIE_generator()
+        self.generator = self.FUNIE_generator2()
         ## By conditioning on B generate a fake version of A
         fake_A = self.generator(img_B)
         ## For the combined model we will only train the generator
@@ -114,26 +114,67 @@ class FUNIE_GAN():
             u = BatchNormalization(momentum=0.8)(u)
             u = Concatenate()([u, skip_input])
             return u
-
-        print("Printing Generator model architecture")
         ## input
         d0 = Input(shape=self.img_shape); print(d0)
         ## downsample
-        d1 = conv2d(d0, self.gf*1, f_size=5, bn=False) ;print(d1)
-        d2 = conv2d(d1, self.gf*4, f_size=4, bn=True)  ;print(d2)
-        d3 = conv2d(d2, self.gf*8, f_size=4, bn=True)  ;print(d3)
-        d4 = conv2d(d3, self.gf*8, f_size=3, bn=True)  ;print(d4)
-        d5 = conv2d(d4, self.gf*8, f_size=3, bn=True)  ;print(d5); print();
+        d1 = conv2d(d0, self.gf*1, f_size=5, bn=False)
+        d2 = conv2d(d1, self.gf*4, f_size=4, bn=True)
+        d3 = conv2d(d2, self.gf*8, f_size=4, bn=True)
+        d4 = conv2d(d3, self.gf*8, f_size=3, bn=True)
+        d5 = conv2d(d4, self.gf*8, f_size=3, bn=True)
         ## upsample
-        u1 = deconv2d(d5, d4, self.gf*8) ;print(u1)
-        u2 = deconv2d(u1, d3, self.gf*8) ;print(u2)
-        u3 = deconv2d(u2, d2, self.gf*4) ;print(u3)
-        u4 = deconv2d(u3, d1, self.gf*1) ;print(u4)
-        u5 = UpSampling2D(size=2)(u4)    ;print(u5)
+        u1 = deconv2d(d5, d4, self.gf*8)
+        u2 = deconv2d(u1, d3, self.gf*8)
+        u3 = deconv2d(u2, d2, self.gf*4)
+        u4 = deconv2d(u3, d1, self.gf*1)
+        u5 = UpSampling2D(size=2)(u4)
         output_img = Conv2D(self.channels, kernel_size=4, strides=1, padding='same', activation='tanh')(u5)
         print(output_img); print();
 
         return Model(d0, output_img)
+
+
+    def FUNIE_generator2(self):
+        """
+           Another Generator based on U-Net 
+        """
+        def conv2d(layer_input, filters, f_size=3, bn=True):
+            ## for downsampling
+            d = Conv2D(filters, kernel_size=f_size, padding='same')(layer_input)
+            d = LeakyReLU(alpha=0.2)(d)
+            if bn: d = BatchNormalization(momentum=0.75)(d)
+            return d
+
+        def deconv2d(layer_input, skip_input, filters, f_size=3, dropout_rate=0):
+            ## for upsampling
+            u = UpSampling2D(size=2)(layer_input)
+            u = Conv2D(filters, kernel_size=f_size, strides=1, padding='same', activation='relu')(u)
+            if dropout_rate: u = Dropout(dropout_rate)(u)
+            u = BatchNormalization(momentum=0.8)(u)
+            u = Concatenate()([u, skip_input])
+            return u
+        ## input
+        d0 = Input(shape=self.img_shape); print(d0)
+        ## downsample
+        d1 = conv2d(d0, self.gf*1, f_size=5, bn=False)
+        d1a = MaxPooling2D(pool_size=(2, 2))(d1)
+        d2 = conv2d(d1a, self.gf*2, f_size=4, bn=True)
+        d3 = conv2d(d2, self.gf*2, f_size=4, bn=True)
+        d3a = MaxPooling2D(pool_size=(2, 2))(d3)
+        d4 = conv2d(d3a, self.gf*4, f_size=3, bn=True)
+        d5 = conv2d(d4, self.gf*4, f_size=3, bn=True)
+        d5a = MaxPooling2D(pool_size=(2, 2))(d5)
+        d6 = conv2d(d5a, self.gf*8, f_size=3, bn=True)
+        
+        ## upsample
+        u1 = deconv2d(d6, d5, self.gf*8)
+        u2 = deconv2d(u1, d3, self.gf*8)
+        u3 = deconv2d(u2, d1, self.gf*4)
+        u4 = conv2d(u3, self.gf*4, f_size=3)
+        u5 = conv2d(u4, self.gf*8, f_size=3)
+        output_img = Conv2D(self.channels, kernel_size=4, strides=1, padding='same', activation='tanh')(u5)
+        return Model(d0, output_img)
+
 
 
     def FUNIE_discriminator(self):
@@ -149,16 +190,15 @@ class FUNIE_GAN():
 
         img_A = Input(shape=self.img_shape)
         img_B = Input(shape=self.img_shape)
-        print("Printing Discriminator model architecture")
         ## input
-        combined_imgs = Concatenate(axis=-1)([img_A, img_B]) ; print(combined_imgs)
+        combined_imgs = Concatenate(axis=-1)([img_A, img_B])
         ## Discriminator layers
-        d1 = d_layer(combined_imgs, self.df, bn=False) ; print(d1)
-        d2 = d_layer(d1, self.df*2) ; print(d2)
-        d3 = d_layer(d2, self.df*4) ; print(d3)
-        d4 = d_layer(d3, self.df*8) ; print(d4)
+        d1 = d_layer(combined_imgs, self.df, bn=False)
+        d2 = d_layer(d1, self.df*2)
+        d3 = d_layer(d2, self.df*4) 
+        d4 = d_layer(d3, self.df*8)
         validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
-        print(validity); print()
+        # return model
         return Model([img_A, img_B], validity)
 
 
