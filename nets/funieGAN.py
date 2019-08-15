@@ -94,7 +94,7 @@ class FUNIE_GAN():
         return gen_total_err
 
 
-    def FUNIE_generator(self):
+    def FUNIE_generator1(self):
         """
            Inspired by the U-Net Generator with skip connections
            This is a much simpler architecture with fewer parameters (faster inference)
@@ -136,7 +136,8 @@ class FUNIE_GAN():
 
     def FUNIE_generator2(self):
         """
-           Another Generator based on U-Net 
+           Inspired by the U-Net Generator with skip connections
+           This is a much simpler architecture with fewer parameters (faster inference)
         """
         def conv2d(layer_input, filters, f_size=3, bn=True):
             ## for downsampling

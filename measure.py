@@ -3,7 +3,7 @@
 # > Script for measuring quantitative performances in terms of
 #    - Underwater Image Quality Measure (UIQM)
 #    - Structural Similarity Metric (SSIM) 
-#    - Peak Signal-to-Noise Ratio (PSNR) (PSNR)
+#    - Peak Signal to Noise Ratio (PSNR)
 #
 # Maintainer: Jahid (email: islam034@umn.edu)
 # Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
@@ -71,12 +71,5 @@ gen_uqims = measure_UIQMs(GEN_im_dir)
 print ("Generated UQIM >> Mean: {0} std: {1}".format(np.mean(gen_uqims), np.std(gen_uqims)))
 real_uqims = measure_UIQMs(REAL_im_dir)
 print ("Inputs UQIM   >> Mean: {0} std: {1}".format(np.mean(real_uqims), np.std(real_uqims)))
-
-
-
-
-
-
-
 
 

@@ -6,13 +6,12 @@
 # Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
 # Any part of this repo can be used for academic and educational purposes only
 """
-
 import os
 import matplotlib.pyplot as plt
 
 def save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=3, N_ims=3):
     row=N_samples; col=N_ims;
-    titles = ['Condition', 'Generated', 'Original']
+    titles = ['Input', 'Generated', 'Original']
     fig, axs = plt.subplots(row, col)
     cnt = 0
     for j in range(col):
@@ -40,7 +39,6 @@ def save_val_samples_unpaired(samples_dir, gen_imgs, step, N_samples=1, N_ims=6)
     plt.close()
 
 
-
 def save_test_samples_funieGAN(samples_dir, gen_imgs, step=0):
     fig, axs = plt.subplots(1, 2)
     axs[0].imshow(gen_imgs[0])
@@ -60,4 +58,5 @@ def viz_gen_and_dis_losses(all_D_losses, all_G_losses, save_dir=None):
     plt.legend(['Discriminator network', 'Generator network'], loc='upper right')
     plt.show();
     if not save_dir:
-        plt.savefig(os.path.join(save_dir, '_conv.png'));
+        plt.savefig(os.path.join(save_dir, '_conv.png'))
+
