@@ -1,17 +1,19 @@
 ## Resources
-- Implementations of FUnIE-GAN, our recent work on underwater image enhancement
-- Simplified implementations of our previous work, UGAN and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
+- Implementations of [FUnIE-GAN](https://arxiv.org/abs/1903.09766) for underwater image enhancement
+- Simplified implementations of UGAN and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Cycle-GAN and other relevant modules 
 - Modules for quantifying image quality metrics: UIQM, SSIM, and PSNR
-- Implementation: TensorFlow 1.11.0 (Python 2.7)
+- Implementation: TensorFlow (>= 1.11.0) and Keras (>= 2.2) (Python 2.7)
   
+| Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
+|:--------------------|:--------------------|:--------------------|
+| ![det-1a](/data/fig1a.jpg) | ![det-1b](/data/col.jpg) | ![det-1c](/data/con.jpg)     |
+
 | Perceptual enhancement of underwater imagery | Performances improvement for visual detection  | 
 |:--------------------|:--------------------|
 | ![det-enh](/data/gif1.gif) | ![det-gif](/data/gif2.gif)     |
 
-| Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
-|:--------------------|:--------------------|:--------------------|
-| ![det-7](/data/fig1a.jpg) | ![det-7](/data/col.jpg) | ![det-7](/data/con.jpg)     |
+
 
 
 ## Pointers
@@ -21,17 +23,12 @@
 
 
 
-
-
-
-
-
-#### Citation
-- Feel free to cite the paper you find the code/data useful:
+#### Bib
 ```
 article{islam2019fast,
     title={Fast Underwater Image Enhancement for Improved Visual Perception},
     author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
     journal={arXiv preprint arXiv:1903.09766},
     year={2019}
-}```
+}
+```
