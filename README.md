@@ -16,7 +16,7 @@
 ## Testing the detector
 | Perceptual enhancement of underwater imagery | Improving visual detection performances | 
 |:--------------------|:--------------------|
-| ![det-7](/data/fig1_a.jpg) | ![det-7](/data/fig1_b.jpg)     |
+| ![det-7](/data/fig1a.jpg) | ![det-7](/data/fig1b.jpg)     |
 
 
 
