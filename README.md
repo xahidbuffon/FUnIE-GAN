@@ -7,7 +7,7 @@
   
 | Perceptual enhancement of underwater imagery | Performances improvement for visual detection  | 
 |:--------------------|:--------------------|
-| ![det-7](/data/fig1a.jpg) | ![det-7](/data/fig1b.jpg)     |
+| ![det-enh](/data/fig1a.jpg) | ![det-gif](/data/gif2.gif)     |
 
 | Improved color and sharpness | Rectified hue and contrast   | 
 |:--------------------|:--------------------|
