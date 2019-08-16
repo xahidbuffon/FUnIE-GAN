@@ -5,18 +5,23 @@
 - Modules for quantifying image quality metrics: UIQM, SSIM, and PSNR
 - Implementation: TensorFlow 1.11.0 (Python 2.7)
   
+| Perceptual enhancement of underwater imagery | Performances improvement for visual detection  | 
+|:--------------------|:--------------------|
+| ![det-7](/data/fig1a.jpg) | ![det-7](/data/fig1b.jpg)     |
+
+| Improved color and sharpness | Rectified hue and contrast   | 
+|:--------------------|:--------------------|
+| ![det-7](/data/col.jpg) | ![det-7](/data/con.jpg)     |
+
+
 ## Pointers
 - Paper: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
-- A few model weightss are provided in saved_models/
+- A few model weights are provided in saved_models/
 
 
 
 
-## Testing the detector
-| Perceptual enhancement of underwater imagery | Improving visual detection performances | 
-|:--------------------|:--------------------|
-| ![det-7](/data/fig1a.jpg) | ![det-7](/data/fig1b.jpg)     |
 
 
 
