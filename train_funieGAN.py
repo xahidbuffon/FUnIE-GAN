@@ -21,7 +21,7 @@ from utils.plot_utils import save_val_samples_funieGAN
 
 ## configure data-loader
 data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
-dataset_name = "underwater_imagenet" # options: {'underwater_imagenet', 'underwater_dark'}
+dataset_name = "underwater_dark" # options: {'underwater_imagenet', 'underwater_dark'}
 data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
 ## create dir for log and (sampled) validation data
 samples_dir = os.path.join("data/samples/funieGAN/", dataset_name)
