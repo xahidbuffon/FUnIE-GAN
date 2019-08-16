@@ -9,7 +9,7 @@
 |:--------------------|:--------------------|
 | ![det-enh](/data/fig1a.jpg) | ![det-gif](/data/gif2.gif)     |
 
-
+| Improved color and sharpness | Rectified hue and contrast   | Rectified hue and contrast   | 
 |:--------------------|:--------------------|:--------------------|
 | ![det-7](/data/col.jpg) | ![det-7](/data/col.jpg) | ![det-7](/data/con.jpg)     |
 
