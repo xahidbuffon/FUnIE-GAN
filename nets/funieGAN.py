@@ -166,7 +166,6 @@ class FUNIE_GAN():
         d5 = conv2d(d4, self.gf*4, f_size=3, bn=True)
         d5a = MaxPooling2D(pool_size=(2, 2))(d5)
         d6 = conv2d(d5a, self.gf*8, f_size=3, bn=True)
-        
         ## upsample
         u1 = deconv2d(d6, d5, self.gf*8)
         u2 = deconv2d(u1, d3, self.gf*8)
