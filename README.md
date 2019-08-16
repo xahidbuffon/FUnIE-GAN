@@ -9,7 +9,7 @@
 |:--------------------|:--------------------|
 | ![det-enh](/data/fig1a.jpg) | ![det-gif](/data/gif2.gif)     |
 
-| Perceptual enhancement | Improved color and sharpness   | Rectified hue and contrast   | 
+| Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
 |:--------------------|:--------------------|:--------------------|
 | ![det-7](/data/fig1a.jpg) | ![det-7](/data/col.jpg) | ![det-7](/data/con.jpg)     |
 
