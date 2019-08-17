@@ -38,6 +38,7 @@
 	- Issues with unpaired training (discussed in the paper: section 4.6)
 		- Inconsistent coloring, inaccurate modeling of textures 
 
+
 ### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
 | Paper  | Theme | Code   | Data |
@@ -75,6 +76,17 @@
 - [Diving Deeper into Underwater Image Enhancement: A Survey](https://arxiv.org/abs/1907.07863)
 
 
+### Acknowledgements
+- https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap
+- https://github.com/PacktPublishing/Advanced-Deep-Learning-with-Keras
+- https://github.com/cameronfabbri/Underwater-Color-Correction
+- https://github.com/eriklindernoren/Keras-GAN
+- https://github.com/matterport/Mask_RCNN
+- https://github.com/phillipi/pix2pix
+- https://github.com/wandb/superres
+- https://github.com/aiff22/DPED
+- https://github.com/roatienza/Deep-Learning-Experiments
+- https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
 
 
