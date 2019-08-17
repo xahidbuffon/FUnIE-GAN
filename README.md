@@ -31,11 +31,11 @@
 #### Usage
 - Download the data, setup data-paths in the training-scripts
 - Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up/Cycle-GAN 
-	- Checkpoints: checkpoints/model-name/dataset-name
-	- Samples outputs: data/samples/model-name/dataset-name
+	- Checkpoints dir: checkpoints/model-name/dataset-name
+	- Sample dir: data/samples/model-name/dataset-name
 - Use the test-scripts for evaluating different models
-	- A few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
-	- Generated images: data/output 
+	- Few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
+	- Output dir: data/output 
 - Use the [measure.py](measure.py) for quantitative analysis based on UIQM, SSIM, and PSNR 
 
 
