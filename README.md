@@ -14,7 +14,7 @@
 | ![det-enh](/data/gif1.gif) | ![det-gif](/data/gif2.gif)     |
 
 
-### Pointers
+### FUnIE-GAN Pointers
 - Paper: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
 - A few model weights are provided in saved_models/ directory
@@ -31,12 +31,16 @@
 	#### Usage
 	- which scripts to run
 	- which models to choose
+	- which models to choose
 
 	#### Constraints and Challenges
-	- Trade-off between performance and running time
-		- Constraints: running time >= 10 FPS on Jetson-TX2 and model size <= 17MB 
-	- Issues with unpaired training (discussed in the paper: section 4.6)
-		- Inconsistent coloring, inaccurate modeling of textures 
+	- Trade-offs between performance and running time
+		- Running time >= 10 FPS on Jetson-TX2  
+		- Model size <= 17MB (no quantization) 
+	- Issues with unpaired training (as discussed in the paper)
+		- Inconsistent coloring, inaccurate modeling of sunlight
+		- Often poor hue rectification (dominant blue/green hue) 
+		- Hard to achieve training stability
 
 
 ### Underwater Image Enhancement: Recent Research and Resources 
@@ -84,7 +88,6 @@
 - https://github.com/phillipi/pix2pix
 - https://github.com/wandb/superres
 - https://github.com/aiff22/DPED
-- https://github.com/matterport/Mask_RCNN
 - https://github.com/roatienza/Deep-Learning-Experiments
 - https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
