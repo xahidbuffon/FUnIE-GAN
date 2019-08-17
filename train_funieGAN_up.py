@@ -93,9 +93,3 @@ while (step <= num_step):
         if (step>=num_step): break
          
 
-
-
-
-
-
-
