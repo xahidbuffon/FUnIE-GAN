@@ -28,6 +28,14 @@ article{islam2019fast,
 }
 ```
 
+#### Usage
+- scripts to run
+- which models to choose
+
+#### Challenges
+- Performance vs running time
+- Issues with unpaired training
+
 ### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
 | Paper  | Theme | Code   | Data |
