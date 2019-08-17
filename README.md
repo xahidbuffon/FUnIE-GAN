@@ -39,6 +39,7 @@
 
 #### Constraints and Challenges
 - Trade-offs between performance and running time
+- Requirements to meet:
 	- Running time >= 10 FPS on Jetson-TX2 
 	- Model size <= 17MB (no quantization) 
 - Issues with unpaired training (as discussed in the paper)
