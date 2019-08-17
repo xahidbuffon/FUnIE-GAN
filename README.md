@@ -30,7 +30,7 @@ article{islam2019fast,
 
 ### Underwater Image Enhancement: Other Relevant Resources 
 #### 2019
-| Paper  | Theme/contributions | Code   | Data |
+| Paper  | Theme | Code   | Data |
 |:------------------------|:---------------------|:---------------------|:---------------------|
 | [FUnIE-GAN](https://arxiv.org/abs/1903.09766)  | Fast cGAN-based model, loss function and dataset formulation | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
 | [Multiscale Dense-GAN](https://ieeexplore.ieee.org/abstract/document/8730425)  | Residual multiscale dense block as generator | | |
@@ -42,11 +42,26 @@ article{islam2019fast,
 | [WAug Encoder-Decoder](http://openaccess.thecvf.com/content_CVPRW_2019/html/AAMVEM/Jamadandi_Exemplar-based_Underwater_Image_Enhancement_Augmented_by_Wavelet_Corrected_Transforms_CVPRW_2019_paper.html) |  Encoder-decoder module with wavelet pooling and unpooling | [GitHub](https://github.com/AdarshMJ/Underwater-Image-Enhancement-via-Style-Transfer) | |
 
 #### 2017-18
-| Paper  | Theme/contributions | Code   | Data |
+| Paper  | Theme | Code   | Data |
 |:------------------------|:---------------------|:---------------------|:---------------------|
 | [UGAN](https://ieeexplore.ieee.org/document/8460552)  | Several GAN-based models, dataset formulation | [GitHub](https://github.com/cameronfabbri/Underwater-Color-Correction) | [Uw-imagenet](http://irvlab.cs.umn.edu/resources/) |
 | [Underwater-GAN](https://link.springer.com/chapter/10.1007/978-3-030-05792-3_7) | Loss function formulation, cGAN-based model | | |
 | [LAB-MSR](https://www.sciencedirect.com/science/article/pii/S0925231217305246) | Multi-scale Retinex-based framework | | |
-| [Water-GAN](https://ieeexplore.ieee.org/abstract/document/7995024) | Data generation from in-air image and depth pairings | [GitHub](https://github.com/kskin/WaterGAN) | [Data](https://github.com/kskin/WaterGAN) |
+| [Water-GAN](https://ieeexplore.ieee.org/abstract/document/7995024) | Data generation from in-air image and depth pairings | [GitHub](https://github.com/kskin/WaterGAN) | [MHL, Field data](https://github.com/kskin/WaterGAN) |
+| [UIE-Net](https://ieeexplore.ieee.org/abstract/document/8296508)| CNN-based model for color correction and haze removal | | |
+
+#### Non-deep Models
+
+
+#### Reviews, Metrics, and Benchmarks
+- [Real-world Underwater Enhancement: Challenges, Benchmarks, and Solutions](https://arxiv.org/abs/1901.05320)
+- [Human-Visual-System-Inspired Underwater Image Quality Measures](https://ieeexplore.ieee.org/abstract/document/7305804)
+- [An Underwater Image Enhancement Benchmark Dataset and Beyond](https://arxiv.org/abs/1901.05495)
+- [An Experimental-based Review of Image Enhancement and Image Restoration Methods for Underwater Imaging](https://arxiv.org/abs/1907.03246)
+- [Diving Deeper into Underwater Image Enhancement: A Survey](https://arxiv.org/abs/1907.07863)
+
+
+
+
 
 
