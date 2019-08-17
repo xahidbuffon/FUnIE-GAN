@@ -1,9 +1,9 @@
 #### Resources
-- Implementations of [FUnIE-GAN](https://arxiv.org/abs/1903.09766) for underwater image enhancement
-- Simplified implementations of UGAN and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
-- Cycle-GAN and other relevant modules 
-- Modules for quantifying image quality base on UIQM, SSIM, and PSNR
-- Implementation: TensorFlow >= 1.11.0 and Keras >= 2.2 (Python 2.7)
+- Implementations of **[FUnIE-GAN](https://arxiv.org/abs/1903.09766)** for underwater image enhancement
+- Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
+- **Cycle-GAN** and other relevant modules 
+- Modules for quantifying image quality base on **UIQM**, **SSIM**, and **PSNR**
+- Implementation: TensorFlow >= 1.11.0, Keras >= 2.2, and Python 2.7
   
 | Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
 |:--------------------|:--------------------|:--------------------|
@@ -29,3 +29,6 @@ article{islam2019fast,
     year={2019}
 }
 ```
+
+#### 
+
