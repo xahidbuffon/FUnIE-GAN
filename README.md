@@ -28,7 +28,7 @@ article{islam2019fast,
 }
 ```
 
-### Underwater Image Enhancement: Other Relevant Resources 
+### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
 | Paper  | Theme | Code   | Data |
 |:------------------------|:---------------------|:---------------------|:---------------------|
