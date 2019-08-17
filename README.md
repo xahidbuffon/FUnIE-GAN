@@ -42,6 +42,11 @@ article{islam2019fast,
 | [WAug Encoder-Decoder](http://openaccess.thecvf.com/content_CVPRW_2019/html/AAMVEM/Jamadandi_Exemplar-based_Underwater_Image_Enhancement_Augmented_by_Wavelet_Corrected_Transforms_CVPRW_2019_paper.html) |  Encoder-decoder module with wavelet pooling and unpooling | [GitHub](https://github.com/AdarshMJ/Underwater-Image-Enhancement-via-Style-Transfer) | |
 
 #### 2017-18
-| [UGAN](https://ieeexplore.ieee.org/document/8460552)  | Several GAN-based models, synthetic dataset formulation | [GitHub](https://github.com/cameronfabbri/Underwater-Color-Correction) | [Un-imagenet](http://irvlab.cs.umn.edu/resources/) |
+| Paper  | Theme/contributions | Code   | Data |
+|:------------------------|:---------------------|:---------------------|:---------------------|
+| [UGAN](https://ieeexplore.ieee.org/document/8460552)  | Several GAN-based models, dataset formulation | [GitHub](https://github.com/cameronfabbri/Underwater-Color-Correction) | [Uw-imagenet](http://irvlab.cs.umn.edu/resources/) |
+| [Underwater-GAN](https://link.springer.com/chapter/10.1007/978-3-030-05792-3_7) | Loss function formulation, cGAN-based model | | |
+| [LAB-MSR](https://www.sciencedirect.com/science/article/pii/S0925231217305246) | Multi-scale Retinex-based framework | | |
+| [Water-GAN](https://ieeexplore.ieee.org/abstract/document/7995024) | Data generation from in-air image and depth pairings | [GitHub](https://github.com/kskin/WaterGAN) | [Data](https://github.com/kskin/WaterGAN) |
 
 
