@@ -31,7 +31,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 # model paths
 checkpoint_dir = "checkpoints/cycleGAN/"
-model_name_by_epoch = "model_6326_"
+model_name_by_epoch = "model_89900_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity

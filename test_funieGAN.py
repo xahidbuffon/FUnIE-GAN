@@ -22,7 +22,7 @@ from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
 ## for testing arbitrary local data
-data_dir = "data/test/random/"
+data_dir = "data/test/A/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
@@ -31,9 +31,9 @@ print ("{0} test images are loaded".format(len(test_paths)))
 samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
-dataset_name = 'underwater_dark' # options: {'underwater_imagenet', 'underwater_dark'}
+dataset_name = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 checkpoint_dir  = 'checkpoints/funieGAN/' + dataset_name + '/'
-model_name_by_epoch = "model_26970_"
+model_name_by_epoch = "model_15320_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
