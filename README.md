@@ -29,8 +29,10 @@ article{islam2019fast,
 ```
 
 ### Underwater Image Enhancement: Other Relevant Resources 
-| Year | Paper  | Code   | Data |
-|:------|:------------------------|:---------------------|:---------------------|
-| 2019 | [FUnIE-GAN](https://arxiv.org/abs/1903.09766)  | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
-|  | [Multiscale Dense GAN](https://ieeexplore.ieee.org/abstract/document/8730425)  |  |  |
+| Year | Paper  | Theme | Code   | Data |
+|:------|:------------------------|:---------------------|:---------------------|:---------------------|
+| 2019 | [FUnIE-GAN](https://arxiv.org/abs/1903.09766)  | Conditional GAN, loss function design, proposed dataset | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
+|  | [Multiscale Dense GAN](https://ieeexplore.ieee.org/abstract/document/8730425)  | Residual multiscale dense block as generator | | |
 |  | [Fusion GAN](https://arxiv.org/pdf/1906.06819.pdf)  |  | [U45](https://github.com/IPNUISTlegal/underwater-test-dataset-U45-) |
+|  | [UDAE](https://arxiv.org/abs/1905.09000) | U-Net Denoising Autoencoder |  | | 
+|  | [VDSR](https://ieeexplore.ieee.org/abstract/document/8763933) | ResNet-based model, loss function design  |  | | 
