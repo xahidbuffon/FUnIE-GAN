@@ -28,19 +28,25 @@
 	}
 	```
 
-	#### Usage
-	- which scripts to run
-	- which models to choose
-	- which models to choose
+#### Usage
+- Download the data, setup data-paths in the training-scripts
+- Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up/Cycle-GAN 
+	- Checkpoints: checkpoints/model-name/dataset-name
+	- Samples outputs: data/samples/model-name/dataset-name
+- Use the test-scripts for evaluating different models
+	- A few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
+	- Generated images: data/output 
+- Use the [measure.py](measure.py) for quantitative analysis based on UIQM, SSIM, and PSNR 
 
-	#### Constraints and Challenges
-	- Trade-offs between performance and running time
-		- Running time >= 10 FPS on Jetson-TX2  
-		- Model size <= 17MB (no quantization) 
-	- Issues with unpaired training (as discussed in the paper)
-		- Inconsistent coloring, inaccurate modeling of sunlight
-		- Often poor hue rectification (dominant blue/green hue) 
-		- Hard to achieve training stability
+
+#### Constraints and Challenges
+- Trade-offs between performance and running time
+	- Running time >= 10 FPS on Jetson-TX2 
+	- Model size <= 17MB (no quantization) 
+- Issues with unpaired training (as discussed in the paper)
+	- Inconsistent coloring, inaccurate modeling of sunlight
+	- Often poor hue rectification (dominant blue/green hue) 
+	- Hard to achieve training stability
 
 
 ### Underwater Image Enhancement: Recent Research and Resources 
