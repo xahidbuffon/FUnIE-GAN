@@ -19,22 +19,24 @@
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
 - A few model weights are provided in saved_models/ directory
 - Bibliography entry for citation:
-```
-article{islam2019fast,
-    title={Fast Underwater Image Enhancement for Improved Visual Perception},
-    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
-    journal={arXiv preprint arXiv:1903.09766},
-    year={2019}
-}
-```
+	```
+	article{islam2019fast,
+	    title={Fast Underwater Image Enhancement for Improved Visual Perception},
+	    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
+	    journal={arXiv preprint arXiv:1903.09766},
+	    year={2019}
+	}
+	```
 
 #### Usage
-- scripts to run
+- which scripts to run
 - which models to choose
 
-#### Challenges
-- Performance vs running time
-- Issues with unpaired training
+#### Constraints and Challenges
+- Trade-off between performance and running time
+	- Constraints: running time >= 10 FPS on Jetson-TX2 and model size <= 20MB 
+- Issues with unpaired training (discussed in the paper)
+	- Inconsistent coloring, inaccurate modeling of textures 
 
 ### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
