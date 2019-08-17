@@ -14,11 +14,11 @@
 | ![det-enh](/data/gif1.gif) | ![det-gif](/data/gif2.gif)     |
 
 
-#### Pointers
+### Pointers
 - Paper: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
-- A few model weights are provided in saved_models/
-- Feel free to cite as
+- A few model weights are provided in saved_models/ directory
+- Bibliography entry for citation:
 ```
 article{islam2019fast,
     title={Fast Underwater Image Enhancement for Improved Visual Perception},
@@ -28,5 +28,5 @@ article{islam2019fast,
 }
 ```
 
-### Underwater image enhancement: relevant resources 
+#### Underwater image enhancement: state of the art and relevant resources 
 
