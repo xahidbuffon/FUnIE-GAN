@@ -19,9 +19,9 @@ from nets.cycleGAN import CycleGAN
 from utils.plot_utils import save_val_samples_unpaired
 
 # configure data-loader
-data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Unpaired/"
-dataset_name = "EUVP"
-data_loader = DataLoader(data_dir, dataset_name)
+data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/"
+dataset_name = "Unpaired"
+data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
 
 # create dir for log and (sampled) validation data
 samples_dir = os.path.join("data/samples/cycleGAN/", dataset_name)
