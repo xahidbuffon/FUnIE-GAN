@@ -1,4 +1,4 @@
-#### Resources
+### Resources
 - Implementations of **[FUnIE-GAN](https://arxiv.org/abs/1903.09766)** for underwater image enhancement
 - Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - **Cycle-GAN** and other relevant modules 
@@ -18,9 +18,7 @@
 - Paper: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
 - A few model weights are provided in saved_models/
-
-
-#### Bib
+- Feel free to cite as
 ```
 article{islam2019fast,
     title={Fast Underwater Image Enhancement for Improved Visual Perception},
@@ -30,5 +28,5 @@ article{islam2019fast,
 }
 ```
 
-#### 
+### Underwater image enhancement: relevant resources 
 
