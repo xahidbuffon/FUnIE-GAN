@@ -29,17 +29,16 @@
 #### Usage
 - Download the data, setup data-paths in the training-scripts
 - Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up/Cycle-GAN 
-	- Checkpoints dir: checkpoints/model-name/dataset-name
-	- Sample dir: data/samples/model-name/dataset-name
+	- Checkpoints: checkpoints/model-name/dataset-name
+	- Samples: data/samples/model-name/dataset-name
 - Use the test-scripts for evaluating different models
 	- A few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
-	- Output dir: data/output 
+	- Output: data/output 
 - Use the [measure.py](measure.py) for quantitative analysis based on UIQM, SSIM, and PSNR 
 - A few saved models are provided in saved_models/ (base model: gen1/)
 
 #### Constraints and Challenges
-- Trade-offs between performance and running time
-- Requirements to meet:
+- Trade-offs between performance and running time. Requirements:
 	- Running time >= 10 FPS on Jetson-TX2 
 	- Model size <= 17MB (no quantization) 
 - Issues with unpaired training (as discussed in the paper)
