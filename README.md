@@ -31,5 +31,6 @@ article{islam2019fast,
 ### Underwater Image Enhancement: Other Relevant Resources 
 | Year | Paper  | Code   | Data |
 |:------|:------------------------|:---------------------|:---------------------|
-| 2019 | [FUnIE-GAN: Fast Underwater Image Enhancement for Improved Visual Perception](https://arxiv.org/abs/1903.09766)  | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
-|  | [Underwater Image Enhancement Using a Multiscale Dense Generative Adversarial Network](https://ieeexplore.ieee.org/abstract/document/8730425)  |  |  |
+| 2019 | [FUnIE-GAN](https://arxiv.org/abs/1903.09766)  | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
+|  | [Multiscale Dense GAN](https://ieeexplore.ieee.org/abstract/document/8730425)  |  |  |
+|  | [Fusion GAN](https://arxiv.org/pdf/1906.06819.pdf)  |  | [U45](https://github.com/IPNUISTlegal/underwater-test-dataset-U45-) |
