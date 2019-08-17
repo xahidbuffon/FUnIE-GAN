@@ -28,15 +28,15 @@
 	}
 	```
 
-#### Usage
-- which scripts to run
-- which models to choose
+	#### Usage
+	- which scripts to run
+	- which models to choose
 
-#### Constraints and Challenges
-- Trade-off between performance and running time
-	- Constraints: running time >= 10 FPS on Jetson-TX2 and model size <= 20MB 
-- Issues with unpaired training (discussed in the paper)
-	- Inconsistent coloring, inaccurate modeling of textures 
+	#### Constraints and Challenges
+	- Trade-off between performance and running time
+		- Constraints: running time >= 10 FPS on Jetson-TX2 and model size <= 17MB 
+	- Issues with unpaired training (discussed in the paper: section 4.6)
+		- Inconsistent coloring, inaccurate modeling of textures 
 
 ### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
