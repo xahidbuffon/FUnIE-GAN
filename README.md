@@ -81,10 +81,10 @@
 - https://github.com/PacktPublishing/Advanced-Deep-Learning-with-Keras
 - https://github.com/cameronfabbri/Underwater-Color-Correction
 - https://github.com/eriklindernoren/Keras-GAN
-- https://github.com/matterport/Mask_RCNN
 - https://github.com/phillipi/pix2pix
 - https://github.com/wandb/superres
 - https://github.com/aiff22/DPED
+- https://github.com/matterport/Mask_RCNN
 - https://github.com/roatienza/Deep-Learning-Experiments
 - https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
