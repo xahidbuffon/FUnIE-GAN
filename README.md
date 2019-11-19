@@ -39,7 +39,7 @@
 
 #### Constraints and Challenges
 - Trade-offs between performance and running time. Requirements:
-	- Running time >= 10 FPS on Jetson-TX2 
+	- Running time >= 10 FPS on Jetson-TX2 (optimized model) 
 	- Model size <= 17MB (no quantization) 
 - Issues with unpaired training (as discussed in the paper)
 	- Inconsistent coloring, inaccurate modeling of sunlight
