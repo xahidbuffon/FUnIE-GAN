@@ -22,7 +22,7 @@ from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
 ## for testing arbitrary local data
-data_dir = "data/test/A/"
+data_dir = "data/test/random/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
@@ -74,7 +74,8 @@ if (num_test==0):
     print ("\nFound no images for test")
 else:
     print ("\nTotal images: {0}".format(num_test)) 
-    Ttime = sum(times)
-    print ("Time taken: {0} sec at {1} fps".format(Ttime, num_test/Ttime))
+    # accumulate frame processing times (without bootstrap)
+    Ttime, Mtime = np.sum(times[1:]), np.mean(times[1:]) 
+    print ("Time taken: {0} sec at {1} fps".format(Ttime, 1./Mtime))
     print("\nSaved generated images in in {0}\n".format(samples_dir))
 
