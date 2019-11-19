@@ -17,7 +17,7 @@ import keras.backend as K
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.layers import Input, Dropout, Concatenate
-from keras.layers.advanced_activations import LeakyReLU
+#from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.layers import BatchNormalization, Activation, MaxPooling2D
 from keras.applications import vgg19
@@ -102,7 +102,8 @@ class FUNIE_GAN():
         def conv2d(layer_input, filters, f_size=3, bn=True):
             ## for downsampling
             d = Conv2D(filters, kernel_size=f_size, strides=2, padding='same')(layer_input)
-            d = LeakyReLU(alpha=0.2)(d)
+            #d = LeakyReLU(alpha=0.2)(d)
+            d = Activation('relu')(d)
             if bn: d = BatchNormalization(momentum=0.8)(d)
             return d
 
@@ -142,7 +143,8 @@ class FUNIE_GAN():
         def conv2d(layer_input, filters, f_size=3, bn=True):
             ## for downsampling
             d = Conv2D(filters, kernel_size=f_size, padding='same')(layer_input)
-            d = LeakyReLU(alpha=0.2)(d)
+            #d = LeakyReLU(alpha=0.2)(d)
+            d = Activation('relu')(d)
             if bn: d = BatchNormalization(momentum=0.75)(d)
             return d
 
@@ -184,7 +186,8 @@ class FUNIE_GAN():
         def d_layer(layer_input, filters, strides_=2,f_size=3, bn=True):
             ## Discriminator layers
             d = Conv2D(filters, kernel_size=f_size, strides=strides_, padding='same')(layer_input)
-            d = LeakyReLU(alpha=0.2)(d)
+            #d = LeakyReLU(alpha=0.2)(d)
+            d = Activation('relu')(d)
             if bn: d = BatchNormalization(momentum=0.8)(d)
             return d
 

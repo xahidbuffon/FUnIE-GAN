@@ -59,6 +59,8 @@
 | [JWCDN](https://arxiv.org/abs/1907.05595) | Joint wavelength compensation and dehazing  | [GitHub](https://github.com/mohitkumarahuja/Underwater-Image-Enhancement-by-Wavelength-Compensation-and-Dehazing) |  | 
 | [AWMD-Cycle-GAN](https://www.mdpi.com/2077-1312/7/7/200) | Adaptive weighting for multi-discriminator training  | | | 
 | [WAug Encoder-Decoder](http://openaccess.thecvf.com/content_CVPRW_2019/html/AAMVEM/Jamadandi_Exemplar-based_Underwater_Image_Enhancement_Augmented_by_Wavelet_Corrected_Transforms_CVPRW_2019_paper.html) |  Encoder-decoder module with wavelet pooling and unpooling | [GitHub](https://github.com/AdarshMJ/Underwater-Image-Enhancement-via-Style-Transfer) | |
+| [DUIENet](https://arxiv.org/abs/1901.05495) | Dataset and benchmark  | [UIEBD](https://li-chongyi.github.io/proj_benchmark.html) |[GitHub](https://github.com/Li-Chongyi/DUIENet_Code) |
+
 
 #### 2017-18
 | Paper  | Theme | Code   | Data |
@@ -70,6 +72,7 @@
 | [UIE-Net](https://ieeexplore.ieee.org/abstract/document/8296508)| CNN-based model for color correction and haze removal | | |
 
 #### Non-deep Models
+- [Physics-based model: Sea-Thru](http://openaccess.thecvf.com/content_CVPR_2019/papers/Akkaynak_Sea-Thru_A_Method_for_Removing_Water_From_Underwater_Images_CVPR_2019_paper.pdf)
 - [Local Color Mapping Combined with Color Transfer](https://ieeexplore.ieee.org/abstract/document/8659313) ([code](https://github.com/rprotasiuk/underwater_enhancement))
 - [Real-time Model-based Image Color Correction for Underwater Robots](https://arxiv.org/abs/1904.06437)
 - [All-In-One Underwater Image Enhancement using Domain-Adversarial Learning](http://openaccess.thecvf.com/content_CVPRW_2019/papers/UG2+%20Prize%20Challenge/Uplavikar_All-in-One_Underwater_Image_Enhancement_Using_Domain-Adversarial_Learning_CVPRW_2019_paper.pdf) ([code](https://github.com/TAMU-VITA/All-In-One-Underwater-Image-Enhancement-using-Domain-Adversarial-Learning))
