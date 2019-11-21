@@ -33,7 +33,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 dataset_name = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 checkpoint_dir  = 'checkpoints/funieGAN/' + dataset_name + '/'
-model_name_by_epoch = "model_15320_"
+model_name_by_epoch = "model_15320_" 
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
@@ -44,14 +44,12 @@ with open(model_json, "r") as json_file:
     loaded_model_json = json_file.read()
 funie_gan_generator = model_from_json(loaded_model_json)
 
-times = []; s = time.time()
 # load weights into new model
 funie_gan_generator.load_weights(model_h5)
-tot = time.time()-s
-times.append(tot)
 print("\nLoaded data and model")
 
 # testing loop
+times = []; s = time.time()
 for img_path in test_paths:
     # prepare data
     img_name = ntpath.basename(img_path).split('.')[0]
