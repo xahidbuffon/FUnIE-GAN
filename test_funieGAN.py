@@ -31,8 +31,8 @@ print ("{0} test images are loaded".format(len(test_paths)))
 samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
-checkpoint_dir  = 'saved_models/gen_1/'
-model_name_by_epoch = "model_15320_" 
+checkpoint_dir  = 'saved_models/gen_2/'
+model_name_by_epoch = "model_36210_" 
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
