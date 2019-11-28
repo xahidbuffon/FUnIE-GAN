@@ -12,7 +12,6 @@
 """
 # imports
 import os
-import time
 import ntpath
 import numpy as np
 from scipy import misc
@@ -31,7 +30,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 # model paths
 checkpoint_dir = "checkpoints/cycleGAN/"
-model_name_by_epoch = "model_89900_"
+model_name_by_epoch = "model_51552_"
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
 # sanity
@@ -39,12 +38,10 @@ assert (os.path.exists(model_h5) and os.path.exists(model_json))
 # load model
 with open(model_json, "r") as json_file:
     loaded_model_json = json_file.read()
-times = []; s = time.time()
+
 cycle_gan_generator = model_from_json(loaded_model_json)
 # load weights
 cycle_gan_generator.load_weights(model_h5)
-tot = time.time()-s
-times.append(tot)
 print("\nLoaded data and model")
 
 # testing loop
@@ -55,23 +52,17 @@ for img_path in test_paths:
     im = preprocess(im)
     im = np.expand_dims(im, axis=0) # (1,256,256,3)
     # generate enhanced image
-    s = time.time()
     gen = cycle_gan_generator.predict(im)
     gen = deprocess(gen) # Rescale to 0-1
-    tot = time.time()-s
-    times.append(tot)
     # save samples
     misc.imsave(samples_dir+img_name+'_real.png', im[0])
     misc.imsave(samples_dir+img_name+'_gen.png', gen[0])
 
-# some statistics    
 num_test = len(test_paths)
 if (num_test==0):
     print ("\nFound no images for test")
 else:
     print ("\nTotal images: {0}".format(num_test)) 
-    Ttime = sum(times)
-    print ("Time taken: {0} sec at {1} fps".format(Ttime, num_test/Ttime))
     print("\nSaved generated images in in {0}\n".format(samples_dir))
 
 

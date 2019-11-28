@@ -35,7 +35,7 @@ LEARNING_RATE = 1e-4
 ## feel free to change the following to try different mdoels
 LOSS_METHOD = 'wgan'  # options: {'gan', 'least_squares', 'wgan'}
 NETWORK = 'pix2pix'   # options: {'pix2pix', 'resnet'}
-data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/Paired/"
+data_dir = "/mnt/data1/color_correction_related/datasets/EUVP/Paired/"
 DATA = 'underwater_imagenet' # options: {'underwater_imagenet', 'underwater_dark'}
 EXPERIMENT_DIR = 'checkpoints/UGAN/'+LOSS_METHOD+'_'+NETWORK+'_'+DATA+'/'
 SAMPLES_DIR = os.path.join(EXPERIMENT_DIR, 'samples/')

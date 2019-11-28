@@ -22,7 +22,7 @@ from nets.funieGAN_up import FUNIE_GAN_UP
 from utils.plot_utils import save_val_samples_unpaired
 
 ## configure data-loader
-data_dir = "/mnt/data2/color_correction_related/datasets/EUVP/"
+data_dir = "/mnt/data1/color_correction_related/datasets/EUVP/"
 dataset_name = "Unpaired"
 data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
 
