@@ -27,7 +27,7 @@
 	```
 #### Usage
 - Download the data, setup data-paths in the training-scripts
-- Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up/Cycle-GAN 
+- Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up 
 	- Checkpoints: checkpoints/model-name/dataset-name
 	- Samples: data/samples/model-name/dataset-name
 - Use the test-scripts for evaluating different models
