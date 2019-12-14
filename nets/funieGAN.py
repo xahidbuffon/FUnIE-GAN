@@ -209,7 +209,7 @@ if __name__=="__main__":
     # for testing the initialization
     funie_gan = FUNIE_GAN()
     gen = funie_gan.FUNIE_generator1()
-    #print (gen.summary())
+    print (gen.summary())
 
 
 

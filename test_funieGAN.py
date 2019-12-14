@@ -47,7 +47,6 @@ assert (os.path.exists(model_h5) and os.path.exists(model_json))
 with open(model_json, "r") as json_file:
     loaded_model_json = json_file.read()
 funie_gan_generator = model_from_json(loaded_model_json)
-
 # load weights into new model
 funie_gan_generator.load_weights(model_h5)
 print("\nLoaded data and model")
