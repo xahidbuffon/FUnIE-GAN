@@ -72,18 +72,20 @@
 
 #### Non-deep Models
 - [Sea-Thru](http://openaccess.thecvf.com/content_CVPR_2019/papers/Akkaynak_Sea-Thru_A_Method_for_Removing_Water_From_Underwater_Images_CVPR_2019_paper.pdf) ([Project-page](https://www.deryaakkaynak.com/sea-thru))
-- [Haze-line-aware color restoration](https://arxiv.org/pdf/1811.01343.pdf) ([code](https://github.com/danaberman/underwater-hl))
+- [Haze-line-aware Color Restoration](https://arxiv.org/pdf/1811.01343.pdf) ([code](https://github.com/danaberman/underwater-hl))
 - [Local Color Mapping Combined with Color Transfer](https://ieeexplore.ieee.org/abstract/document/8659313) ([code](https://github.com/rprotasiuk/underwater_enhancement))
 - [Real-time Model-based Image Color Correction for Underwater Robots](https://arxiv.org/abs/1904.06437)
 - [All-In-One Underwater Image Enhancement using Domain-Adversarial Learning](http://openaccess.thecvf.com/content_CVPRW_2019/papers/UG2+%20Prize%20Challenge/Uplavikar_All-in-One_Underwater_Image_Enhancement_Using_Domain-Adversarial_Learning_CVPRW_2019_paper.pdf) ([code](https://github.com/TAMU-VITA/All-In-One-Underwater-Image-Enhancement-using-Domain-Adversarial-Learning))
 - [Difference Backtracking Deblurring Method for Underwater Images](https://link.springer.com/article/10.1007/s11042-019-7420-z)
 - [Guided Trigonometric Bilateral Filter and Fast Automatic Color correction](https://ieeexplore.ieee.org/abstract/document/6738704)
+- [Red-channel Underwater Image Restoration](https://www.sciencedirect.com/science/article/pii/S1047320314001874)([code](https://github.com/agaldran/UnderWater))
+
 
 #### Reviews, Metrics, and Benchmarks
 - [Real-world Underwater Enhancement: Challenges, Benchmarks, and Solutions](https://arxiv.org/abs/1901.05320)
 - [Human-Visual-System-Inspired Underwater Image Quality Measures](https://ieeexplore.ieee.org/abstract/document/7305804)
 - [An Underwater Image Enhancement Benchmark Dataset and Beyond](https://arxiv.org/abs/1901.05495)
-- [An Experimental-based Review of Image Enhancement and Image Restoration Methods](https://arxiv.org/abs/1907.03246)
+- [An Experimental-based Review of Image Enhancement and Image Restoration Methods](https://arxiv.org/abs/1907.03246) ([code](https://github.com/wangyanckxx/Single-Underwater-Image-Enhancement-and-Color-Restoration))
 - [Diving Deeper into Underwater Image Enhancement: A Survey](https://arxiv.org/abs/1907.07863)
 
 
