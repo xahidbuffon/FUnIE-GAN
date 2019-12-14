@@ -32,11 +32,11 @@ samples_dir = "data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 ## test funie-gan
-#checkpoint_dir  = 'saved_models/gen_p/'
-#model_name_by_epoch = "model_15320_" 
+checkpoint_dir  = 'saved_models/gen_p/'
+model_name_by_epoch = "model_15320_" 
 ## test funie-gan-up
-checkpoint_dir  = 'saved_models/gen_up/'
-model_name_by_epoch = "model_35442_" 
+#checkpoint_dir  = 'saved_models/gen_up/'
+#model_name_by_epoch = "model_35442_" 
 
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  
 model_json = checkpoint_dir + model_name_by_epoch + ".json"
