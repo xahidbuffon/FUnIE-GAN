@@ -146,7 +146,7 @@ def _uiconm(x, window_size):
     """
       Underwater image contrast measure
       https://github.com/tkrahn108/UIQM/blob/master/src/uiconm.cpp
-      https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5609219
+      https://ieeexplore.ieee.org/abstract/document/5609219
     """
     plip_lambda = 1026.0
     plip_gamma  = 1026.0
@@ -183,9 +183,9 @@ def getUIQM(x):
       x: image
     """
     x = x.astype(np.float32)
-    ### from https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7300447
+    ### UCIQE: https://ieeexplore.ieee.org/abstract/document/7300447
     #c1 = 0.4680; c2 = 0.2745; c3 = 0.2576
-    ### from https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7300447
+    ### UIQM https://ieeexplore.ieee.org/abstract/document/7305804
     c1 = 0.0282; c2 = 0.2953; c3 = 3.5753
     uicm   = _uicm(x)
     uism   = _uism(x)
