@@ -87,6 +87,7 @@
 - [An Underwater Image Enhancement Benchmark Dataset and Beyond](https://arxiv.org/abs/1901.05495)
 - [An Experimental-based Review of Image Enhancement and Image Restoration Methods](https://arxiv.org/abs/1907.03246) ([code](https://github.com/wangyanckxx/Single-Underwater-Image-Enhancement-and-Color-Restoration))
 - [Diving Deeper into Underwater Image Enhancement: A Survey](https://arxiv.org/abs/1907.07863)
+- [A Revised Underwater Image Formation Model](http://openaccess.thecvf.com/content_cvpr_2018/papers/Akkaynak_A_Revised_Underwater_CVPR_2018_paper.pdf)
 
 
 ### Acknowledgements
