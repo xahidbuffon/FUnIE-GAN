@@ -21,13 +21,13 @@
 	article{islam2019fast,
 	    title={Fast Underwater Image Enhancement for Improved Visual Perception},
 	    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
-	    journal={arXiv preprint arXiv:1903.09766},
-	    year={2019}
+	    journal={To appear at the IEEE Robotics and Automation Letters (RA-L). arXiv:1903.09766},
+	    year={2020}
 	}
 	```
 #### Usage
 - Download the data, setup data-paths in the training-scripts
-- Use paired training for FUnIE-GAN/UGAN, and unpaired training for FUnIE-GAN-up 
+- Use paired training for FUnIE-GAN or UGAN, and unpaired training for FUnIE-GAN-up 
 	- Checkpoints: checkpoints/model-name/dataset-name
 	- Samples: data/samples/model-name/dataset-name
 - Use the test-scripts for evaluating different models
@@ -50,7 +50,6 @@
 #### 2019
 | Paper  | Theme | Code   | Data |
 |:------------------------|:---------------------|:---------------------|:---------------------|
-| [FUnIE-GAN](https://arxiv.org/abs/1903.09766)  | Fast cGAN-based model, loss function and dataset formulation | [GitHub](https://github.com/xahidbuffon/funie-gan) | [EUVP dataset](http://irvlab.cs.umn.edu/resources/euvp-dataset) |
 | [Multiscale Dense-GAN](https://ieeexplore.ieee.org/abstract/document/8730425)  | Residual multiscale dense block as generator | | |
 | [Fusion-GAN](https://arxiv.org/abs/1906.06819)  | FGAN-based model, loss function formulation |  | [U45](https://github.com/IPNUISTlegal/underwater-test-dataset-U45-) |
 | [UDAE](https://arxiv.org/abs/1905.09000) | U-Net denoising autoencoder |  | | 
