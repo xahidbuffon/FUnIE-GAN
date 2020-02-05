@@ -18,7 +18,6 @@ import numpy as np
 from scipy import misc
 from keras.models import model_from_json
 ## local libs
-from utils.plot_utils import save_test_samples_funieGAN
 from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
 ## for testing arbitrary local data

@@ -13,6 +13,14 @@
 | ![det-enh](/data/gif1.gif) | ![det-gif](/data/gif2.gif)     |
 
 
+### FUnIE-GAN Features
+- Provides competitive performance for underwater image enhancement
+- Offers real-time inference on single-board computers
+	- 48+ FPS on Jetson AGX Xavier, 25+ FPS on Jetson TX2
+	- 150+ FPS on Nvidia GTX 1080 
+- Suitable for underwater robotic deployments for enhanced vision 
+
+
 ### FUnIE-GAN Pointers
 - Paper: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
@@ -21,7 +29,7 @@
 	article{islam2019fast,
 	    title={Fast Underwater Image Enhancement for Improved Visual Perception},
 	    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
-	    journal={To appear at the IEEE Robotics and Automation Letters (RA-L). arXiv:1903.09766},
+	    journal={To appear at the IEEE Robotics and Automation Letters (RA-L)},
 	    year={2020}
 	}
 	```
@@ -37,9 +45,6 @@
 - A few saved models are provided in saved_models/
 
 #### Constraints and Challenges
-- Trade-offs between performance and running time. Requirements:
-	- Running time >= 10 FPS on Jetson-TX2 (optimized model) 
-	- Model size <= 17MB (no quantization) 
 - Issues with unpaired training (as discussed in the paper)
 	- Inconsistent coloring, inaccurate modeling of sunlight
 	- Often poor hue rectification (dominant blue/green hue) 
