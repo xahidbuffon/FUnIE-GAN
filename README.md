@@ -17,7 +17,7 @@
 - Provides competitive performance for underwater image enhancement
 - Offers real-time inference on single-board computers
 	- 48+ FPS on Jetson AGX Xavier, 25+ FPS on Jetson TX2
-	- 150+ FPS on Nvidia GTX 1080 
+	- 148+ FPS on Nvidia GTX 1080 
 - Suitable for underwater robotic deployments for enhanced vision 
 
 
@@ -78,7 +78,7 @@
 - [Sea-Thru](http://openaccess.thecvf.com/content_CVPR_2019/papers/Akkaynak_Sea-Thru_A_Method_for_Removing_Water_From_Underwater_Images_CVPR_2019_paper.pdf) ([project page](https://www.deryaakkaynak.com/sea-thru))
 - [Haze-line-aware Color Restoration](https://arxiv.org/pdf/1811.01343.pdf) ([code](https://github.com/danaberman/underwater-hl))
 - [Local Color Mapping Combined with Color Transfer](https://ieeexplore.ieee.org/abstract/document/8659313) ([code](https://github.com/rprotasiuk/underwater_enhancement))
-- [Real-time Model-based Image Color Correction for Underwater Robots](https://arxiv.org/abs/1904.06437)
+- [Real-time Model-based Image Color Correction for Underwater Robots](https://arxiv.org/abs/1904.06437) ([code](https://github.com/dartmouthrobotics/underwater_color_enhance))
 - [All-In-One Underwater Image Enhancement using Domain-Adversarial Learning](http://openaccess.thecvf.com/content_CVPRW_2019/papers/UG2+%20Prize%20Challenge/Uplavikar_All-in-One_Underwater_Image_Enhancement_Using_Domain-Adversarial_Learning_CVPRW_2019_paper.pdf) ([code](https://github.com/TAMU-VITA/All-In-One-Underwater-Image-Enhancement-using-Domain-Adversarial-Learning))
 - [Difference Backtracking Deblurring Method for Underwater Images](https://link.springer.com/article/10.1007/s11042-019-7420-z)
 - [Guided Trigonometric Bilateral Filter and Fast Automatic Color correction](https://ieeexplore.ieee.org/abstract/document/6738704)
