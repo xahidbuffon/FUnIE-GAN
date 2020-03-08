@@ -1,5 +1,5 @@
 ### Resources
-- Implementations of **[FUnIE-GAN](https://arxiv.org/abs/1903.09766)** for underwater image enhancement
+- Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
 - Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Modules for quantifying image quality base on **UIQM**, **SSIM**, and **PSNR**
 - Implementation: TensorFlow >= 1.11.0, Keras >= 2.2, and Python 2.7
@@ -22,17 +22,23 @@
 
 
 ### FUnIE-GAN Pointers
-- Paper: https://arxiv.org/pdf/1903.09766.pdf
+- Paper: https://ieeexplore.ieee.org/document/9001231
+- Preprint: https://arxiv.org/pdf/1903.09766.pdf
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
 - Bibliography entry for citation:
 	```
 	article{islam2019fast,
 	    title={Fast Underwater Image Enhancement for Improved Visual Perception},
 	    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
-	    journal={To appear at the IEEE Robotics and Automation Letters (RA-L)},
-	    year={2020}
+	    journal={IEEE Robotics and Automation Letters (RA-L)},
+	    volume={5},
+	    number={2},
+	    pages={3227--3234},
+	    year={2020},
+	    publisher={IEEE}
 	}
 	```
+
 #### Usage
 - Download the data, setup data-paths in the training-scripts
 - Use paired training for FUnIE-GAN or UGAN, and unpaired training for FUnIE-GAN-up 
@@ -104,7 +110,4 @@
 - https://github.com/aiff22/DPED
 - https://github.com/roatienza/Deep-Learning-Experiments
 - https://github.com/CMU-Perceptual-Computing-Lab/openpose
-
-
-
 
