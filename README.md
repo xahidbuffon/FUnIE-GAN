@@ -27,7 +27,7 @@
 - Datasets: http://irvlab.cs.umn.edu/resources/euvp-dataset
 - Bibliography entry for citation:
 	```
-	article{islam2019fast,
+	@article{islam2019fast,
 	    title={Fast Underwater Image Enhancement for Improved Visual Perception},
 	    author={Islam, Md Jahidul and Xia, Youya and Sattar, Junaed},
 	    journal={IEEE Robotics and Automation Letters (RA-L)},
