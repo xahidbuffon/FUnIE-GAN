@@ -1,7 +1,7 @@
 ### Resources
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
 - Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
-- Modules for quantifying image quality base on **UIQM**, **SSIM**, and **PSNR**
+- Modules for quantifying image quality based on **UIQM**, **SSIM**, and **PSNR**
 - Implementation: TensorFlow >= 1.11.0, Keras >= 2.2, and Python 2.7
   
 | Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
@@ -42,8 +42,8 @@
 #### Usage
 - Download the data, setup data-paths in the training-scripts
 - Use paired training for FUnIE-GAN or UGAN, and unpaired training for FUnIE-GAN-up 
-	- Checkpoints: checkpoints/model-name/dataset-name
-	- Samples: data/samples/model-name/dataset-name
+	- Sample checkpoints: checkpoints/model-name/dataset-name
+	- Data samples: data/samples/model-name/dataset-name
 - Use the test-scripts for evaluating different models
 	- A few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
 	- Output: data/output 
@@ -55,6 +55,9 @@
 	- Inconsistent coloring, inaccurate modeling of sunlight
 	- Often poor hue rectification (dominant blue/green hue) 
 	- Hard to achieve training stability
+- Much better enhancement performance can be obtained 
+	- With denser models at the cost of speed
+	- By exploiting optical waterbody properties as prior
 
 
 ### Underwater Image Enhancement: Recent Research and Resources 
