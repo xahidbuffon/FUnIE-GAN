@@ -1,8 +1,10 @@
 MIT License
 
-FUnIE-GAN: Fast Underwater Image Enhancement for Improved Visual Perception
-
 Copyright (c) [2019] [Md Jahidul Islam]
+
+FUnIE-GAN: Fast Underwater Image Enhancement for Improved Visual Perception
+Paper: https://ieeexplore.ieee.org/document/9001231
+Original repository: https://github.com/xahidbuffon/FUnIE-GAN
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
