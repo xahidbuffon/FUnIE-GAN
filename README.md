@@ -1,12 +1,12 @@
+### FUnIE-GAN: Fast Underwater Image Enhancement using GANs  
+
+![funie-fig](/data/funie.jpg)
+
 ### Resources
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
-- Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
+- Simplified implementations of **[UGAN](https://ieeexplore.ieee.org/document/8460552)** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Modules for quantifying image quality based on **UIQM**, **SSIM**, and **PSNR**
 - Implementation: TensorFlow >= 1.11.0, Keras >= 2.2, and Python 2.7
-  
-| Perceptual enhancement | Color and sharpness   | Hue and contrast   | 
-|:--------------------|:--------------------|:--------------------|
-| ![det-1a](/data/fig1a.jpg) | ![det-1b](/data/col.jpg) | ![det-1c](/data/con.jpg)     |
 
 | Enhanced underwater imagery | Improved detection and pose estimation  | 
 |:--------------------|:--------------------|
