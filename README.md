@@ -71,7 +71,7 @@
 | [JWCDN](https://arxiv.org/abs/1907.05595) | Joint wavelength compensation and dehazing  |   | 
 | [AWMD-Cycle-GAN](https://www.mdpi.com/2077-1312/7/7/200) | Adaptive weighting for multi-discriminator training  | | | 
 | [WAug Encoder-Decoder](http://openaccess.thecvf.com/content_CVPRW_2019/html/AAMVEM/Jamadandi_Exemplar-based_Underwater_Image_Enhancement_Augmented_by_Wavelet_Corrected_Transforms_CVPRW_2019_paper.html) |  Encoder-decoder module with wavelet pooling and unpooling | [GitHub](https://github.com/AdarshMJ/Underwater-Image-Enhancement-via-Style-Transfer) | |
-| [Water-Net](https://arxiv.org/abs/1901.05495) | Dataset and benchmark |[GitHub](https://github.com/Li-Chongyi/DUIENet_Code) | [UIEBD](https://li-chongyi.github.io/proj_benchmark.html) |
+| [Water-Net](https://arxiv.org/abs/1901.05495) | Dataset and benchmark |[GitHub](https://github.com/Li-Chongyi/Water-Net_Code) | [UIEBD](https://li-chongyi.github.io/proj_benchmark.html) |
 
 
 #### 2017-18
