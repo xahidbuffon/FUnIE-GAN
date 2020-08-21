@@ -1,4 +1,6 @@
 
+![funie-fig](../data/funie.jpg)
+
 #### Resources
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
 - Simplified implementations of **[UGAN](https://ieeexplore.ieee.org/document/8460552)** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
@@ -6,11 +8,9 @@
 
 #### Usage
 - Download the data, setup data-paths in the training-scripts
-- Use paired training for FUnIE-GAN or UGAN, and unpaired training for FUnIE-GAN-up 
+- Use paired training for FUnIE-GAN / UGAN, and unpaired training for FUnIE-GAN-up 
+- A few saved models are provided in models/
 - Use the test-scripts for evaluating different models
-	- A few test images: ../data/test/A (ground-truth: GTr_A), ../data/test/random (unpaired)
-	- Output: ../data/output 
-- A few saved models are provided in saved_models/
 
 
 #### Acknowledgements
@@ -20,5 +20,3 @@
 - https://github.com/eriklindernoren/Keras-GAN
 - https://github.com/phillipi/pix2pix
 - https://github.com/wandb/superres
-- https://github.com/aiff22/DPED
-- https://github.com/roatienza/Deep-Learning-Experiments
