@@ -1,6 +1,7 @@
 """
-# > Training pipeline for FUnIE-GAN (paired) model
-#   * Paper: arxiv.org/pdf/1903.09766.pdf
+ > Training pipeline for FUnIE-GAN (paired) model
+   * Paper: arxiv.org/pdf/1903.09766.pdf
+ > Maintainer: https://github.com/xahidbuffon
 """
 # py libs
 import os

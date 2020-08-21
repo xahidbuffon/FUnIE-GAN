@@ -1,6 +1,7 @@
 """
  > Standard UNet generator and discriminator networks 
  > Used by Pix2Pix (and adopted by many other GAN models)
+ > Maintainer: https://github.com/xahidbuffon
 """
 import torch
 import torch.nn as nn

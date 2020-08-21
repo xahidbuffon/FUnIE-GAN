@@ -1,7 +1,8 @@
 """
-# > Training pipeline for UGAN and UGAN-P models
-#   * Original paper: https://arxiv.org/pdf/1801.04011.pdf
-#     (see github.com/cameronfabbri/Underwater-Color-Correction)
+ > Training pipeline for UGAN and UGAN-P models
+   * Original paper: https://arxiv.org/pdf/1801.04011.pdf
+     (see github.com/cameronfabbri/Underwater-Color-Correction)
+ > Maintainer: https://github.com/xahidbuffon
 """
 # py libs
 import os
