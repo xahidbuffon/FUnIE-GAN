@@ -1,4 +1,4 @@
-### Quantitative Evaluation: SSIM, PSNR, UIQM
+## Quantitative Evaluation: SSIM, PSNR, UIQM
 
   
 
