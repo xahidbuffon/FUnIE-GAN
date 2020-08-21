@@ -7,8 +7,8 @@
 ### Usage
 - Download the data, setup data-paths in the [config files](/PyTorch/configs/)
 - Use the training scripts for paired training of FUnIE-GAN or UGAN/UGAN-P 
-- A few saved models are provided in models/ *comming soon...*
-- Use the test-scripts for evaluation *comming soon...* 
+- A few saved models are provided in models/ *<comming soon...>*
+- Use the test-scripts for evaluation *<comming soon...>* 
 
 ### Acknowledgements
 - https://phillipi.github.io/pix2pix/
