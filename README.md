@@ -1,4 +1,4 @@
-### FUnIE-GAN: Fast Underwater Image Enhancement using GANs  
+TensorFlow (Keras) and PyTorch implementations of the **Fast Underwater Image Enhancement for Improved Visual Perception** (RAL-2020) and other GAN-based models.
 
 ![funie-fig](/data/funie.jpg)
 
