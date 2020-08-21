@@ -1,7 +1,4 @@
 
-
-![funie-fig](/data/funie.jpg)
-
 #### Resources
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
 - Simplified implementations of **[UGAN / UGAN-P](https://ieeexplore.ieee.org/document/8460552)**([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))

@@ -1,4 +1,4 @@
-TensorFlow (Keras) and PyTorch implementations of the **Fast Underwater Image Enhancement for Improved Visual Perception** (RAL-2020) and other GAN-based models.
+TensorFlow and PyTorch implementations of the paper *Fast Underwater Image Enhancement for Improved Visual Perception* and other GAN-based models.
 
 ![funie-fig](/data/funie.jpg)
 
@@ -6,7 +6,7 @@ TensorFlow (Keras) and PyTorch implementations of the **Fast Underwater Image En
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
 - Simplified implementations of **[UGAN](https://ieeexplore.ieee.org/document/8460552)** ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Modules for quantifying image quality based on **UIQM**, **SSIM**, and **PSNR** ([see Evaluation](/Evaluation/))
-- Implementation: [TensorFlow-Keras](/TF-Keras/) and [PyTorch](/PyTorch/)
+- Implementation: [TensorFlow (Keras)](/TF-Keras/) and [PyTorch](/PyTorch/)
 
 | Enhanced underwater imagery | Improved detection and pose estimation  | 
 |:--------------------|:--------------------|
