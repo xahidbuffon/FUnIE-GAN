@@ -1,4 +1,4 @@
-TensorFlow and PyTorch implementations of the paper *Fast Underwater Image Enhancement for Improved Visual Perception* and other GAN-based models.
+TensorFlow and PyTorch implementations of the paper *[Fast Underwater Image Enhancement for Improved Visual Perception](https://ieeexplore.ieee.org/document/9001231) (RAL-2020)* and other GAN-based models.
 
 ![funie-fig](/data/funie.jpg)
 
