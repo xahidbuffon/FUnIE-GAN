@@ -4,9 +4,9 @@
 
 ### Resources
 - Implementations of **[FUnIE-GAN](https://ieeexplore.ieee.org/document/9001231)** for underwater image enhancement
-- Simplified implementations of **[UGAN](https://ieeexplore.ieee.org/document/8460552)** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
-- Modules for quantifying image quality based on **UIQM**, **SSIM**, and **PSNR**
-- Implementation: TensorFlow >= 1.11.0, Keras >= 2.2, and Python 2.7
+- Simplified implementations of **[UGAN](https://ieeexplore.ieee.org/document/8460552)** ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
+- Modules for quantifying image quality based on **UIQM**, **SSIM**, and **PSNR** ([see Evaluation](/Evaluation/))
+- Implementation: [TensorFlow-Keras](/TF-Keras/) and [PyTorch](/PyTorch/)
 
 | Enhanced underwater imagery | Improved detection and pose estimation  | 
 |:--------------------|:--------------------|
@@ -38,27 +38,6 @@
 	    publisher={IEEE}
 	}
 	```
-
-#### Usage
-- Download the data, setup data-paths in the training-scripts
-- Use paired training for FUnIE-GAN or UGAN, and unpaired training for FUnIE-GAN-up 
-	- Sample checkpoints: checkpoints/model-name/dataset-name
-	- Data samples: data/samples/model-name/dataset-name
-- Use the test-scripts for evaluating different models
-	- A few test images: data/test/A (ground-truth: GTr_A), data/test/random (unpaired)
-	- Output: data/output 
-- Use the [measure.py](measure.py) for quantitative analysis based on UIQM, SSIM, and PSNR 
-- A few saved models are provided in saved_models/
-
-#### Constraints and Challenges
-- Issues with unpaired training (as discussed in the paper)
-	- Inconsistent coloring, inaccurate modeling of sunlight
-	- Often poor hue rectification (dominant blue/green hue) 
-	- Hard to achieve training stability
-- Much better enhancement performance can be obtained 
-	- With denser models at the cost of speed
-	- By exploiting optical waterbody properties as prior
-
 
 ### Underwater Image Enhancement: Recent Research and Resources 
 #### 2019
@@ -103,14 +82,4 @@
 - [A Revised Underwater Image Formation Model](http://openaccess.thecvf.com/content_cvpr_2018/papers/Akkaynak_A_Revised_Underwater_CVPR_2018_paper.pdf)
 
 
-### Acknowledgements
-- https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap
-- https://github.com/PacktPublishing/Advanced-Deep-Learning-with-Keras
-- https://github.com/cameronfabbri/Underwater-Color-Correction
-- https://github.com/eriklindernoren/Keras-GAN
-- https://github.com/phillipi/pix2pix
-- https://github.com/wandb/superres
-- https://github.com/aiff22/DPED
-- https://github.com/roatienza/Deep-Learning-Experiments
-- https://github.com/CMU-Perceptual-Computing-Lab/openpose
 
