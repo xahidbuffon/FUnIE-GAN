@@ -1,0 +1,17 @@
+
+# dataset info
+dataset_name: "UFO-120" 
+dataset_path: "/mnt/data1/ImageSR/UFO-120/train_val/"
+
+# image info
+chans: 3
+im_width: 256  #320
+im_height: 256 #240
+
+# other params
+val_interval: 1000 # steps
+ckpt_interval: 20  # epochs
+
+
+
+ 
