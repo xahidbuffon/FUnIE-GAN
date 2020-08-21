@@ -1,12 +1,8 @@
-#!/usr/bin/env python
 """
 # > Implementation of the classic paper by Zhou Wang et. al.: 
 #     - Image quality assessment: from error visibility to structural similarity
 #     - https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=1284395
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import division
 import numpy as np

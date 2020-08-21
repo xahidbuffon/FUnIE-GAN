@@ -1,15 +1,10 @@
-#!/usr/bin/env python
 """
 # > Script for testing FUnIE-GAN 
 #    - Paper: https://arxiv.org/pdf/1903.09766.pdf
-#
 # > Notes and Usage:
 #    - set data_dir and model paths
 #    - python test_funieGAN.py
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 import os
 import time
@@ -21,20 +16,20 @@ from keras.models import model_from_json
 from utils.data_utils import getPaths, read_and_resize, preprocess, deprocess
 
 ## for testing arbitrary local data
-data_dir = "data/test/random/"
+data_dir = "../data/test/random/"
 from utils.data_utils import get_local_test_data
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
 ## create dir for log and (sampled) validation data
-samples_dir = "data/output/"
+samples_dir = "../data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 ## test funie-gan
-checkpoint_dir  = 'saved_models/gen_p/'
+checkpoint_dir  = 'models/gen_p/'
 model_name_by_epoch = "model_15320_" 
 ## test funie-gan-up
-#checkpoint_dir  = 'saved_models/gen_up/'
+#checkpoint_dir  = 'models/gen_up/'
 #model_name_by_epoch = "model_35442_" 
 
 model_h5 = checkpoint_dir + model_name_by_epoch + ".h5"  

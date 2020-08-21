@@ -1,15 +1,10 @@
-#!/usr/bin/env python
 """
 # > Script for training FUnIE-GAN on paired data 
 #    - Paper: https://arxiv.org/pdf/1903.09766.pdf
-#
 # > Notes and Usage:
 #    - set data_dir, dataset_name, and other hyper-params
 #    - python train_funieGAN.py
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 ## python libs
 import os
@@ -30,7 +25,7 @@ if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
-num_epoch = 50
+num_epoch = 200
 batch_size = 4
 val_interval = 2000
 N_val_samples = 3

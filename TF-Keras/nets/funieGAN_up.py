@@ -1,10 +1,7 @@
 """
 # > FUnIE-GAN architecture for for unpaired training  
 # > Uses cycle consistency (as in Cycle-GAN), with different G and D
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import print_function, division
 ## python libs
@@ -199,12 +196,4 @@ class FUNIE_GAN_UP():
         print(validity); print()
 
         return Model(img, validity)
-
-
-if __name__=="__main__":
-    # for testing the initialization
-    funie_gan = FUNIE_GAN_UP()
-    #gen = funie_gan.FUNIE_UP_generator()
-    #print (gen.summary())
-
 

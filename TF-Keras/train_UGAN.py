@@ -1,16 +1,11 @@
-#!/usr/bin/env python
 """
 # > Script for training UGAN with different settings. 
 #    - A simplified implementation of the original repo 
 #    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
-#
 # > Notes and Usage:
 #    - set LOSS_METHOD, NETWORK, DATA, and data_dir
 #    - python train_UGAN.py
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 # imports
 import os

@@ -1,16 +1,11 @@
-#!/usr/bin/env python
 """
 # > Script for testing UGAN with different settings. 
 #    - A simplified implementation of the original repo 
 #    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
-#
 # > Notes and Usage:
 #    - set LOSS_METHOD, NETWORK, DATA, and data_dir
 #    - python test_UGAN.py
-#
 # Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
 """
 # imports
 import os
@@ -29,7 +24,7 @@ import numpy as np
 from utils.data_utils import getPaths, read_and_resize, preprocess
 
 # test set directories
-data_dir = "data/test/random/"
+data_dir = "../data/test/random/"
 test_paths = getPaths(data_dir)
 print ("{0} test images are loaded".format(len(test_paths)))
 
@@ -71,7 +66,7 @@ if ckpt and ckpt.model_checkpoint_path:
 times = []; s = time.time()
 
 # keep the samples   
-samples_dir = "data/output/"
+samples_dir = "../data/output/"
 if not os.path.exists(samples_dir): os.makedirs(samples_dir)
 
 # testing loop

@@ -1,11 +1,7 @@
-#!/usr/bin/env python
 """
 # > FUnIE-GAN architecture 
 #    - Paper: https://arxiv.org/pdf/1903.09766.pdf
-#
-# Maintainer: Jahid (email: islam034@umn.edu)
-# Interactive Robotics and Vision Lab (http://irvlab.cs.umn.edu/)
-# Any part of this repo can be used for academic and educational purposes only
+# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import print_function, division
 ## python libs
@@ -203,13 +199,5 @@ class FUNIE_GAN():
         validity = Conv2D(1, kernel_size=4, strides=1, padding='same')(d4)
         # return model
         return Model([img_A, img_B], validity)
-
-
-if __name__=="__main__":
-    # for testing the initialization
-    funie_gan = FUNIE_GAN()
-    gen = funie_gan.FUNIE_generator1()
-    print (gen.summary())
-
 
 
