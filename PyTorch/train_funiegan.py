@@ -29,7 +29,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--cfg_file", type=str, default="configs/train_euvp.yaml")
 #parser.add_argument("--cfg_file", type=str, default="configs/train_ufo.yaml")
 parser.add_argument("--epoch", type=int, default=0, help="which epoch to start from")
-parser.add_argument("--num_epochs", type=int, default=200, help="number of epochs of training")
+parser.add_argument("--num_epochs", type=int, default=201, help="number of epochs of training")
 parser.add_argument("--batch_size", type=int, default=8, help="size of the batches")
 parser.add_argument("--lr", type=float, default=0.0003, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of 1st order momentum")
@@ -130,6 +130,18 @@ for epoch in range(epoch, num_epochs):
         valid = Variable(Tensor(np.ones((imgs_distorted.size(0), *patch))), requires_grad=False)
         fake = Variable(Tensor(np.zeros((imgs_distorted.size(0), *patch))), requires_grad=False)
 
+        ## Train Discriminator
+        optimizer_D.zero_grad()
+        imgs_fake = generator(imgs_distorted)
+        pred_real = discriminator(imgs_good_gt, imgs_distorted)
+        loss_real = Adv_cGAN(pred_real, valid)
+        pred_fake = discriminator(imgs_fake, imgs_distorted)
+        loss_fake = Adv_cGAN(pred_fake, fake)
+        # Total loss: real + fake (standard PatchGAN)
+        loss_D = 0.5 * (loss_real + loss_fake) * 10.0 # 10x scaled for stability
+        loss_D.backward()
+        optimizer_D.step()
+
         ## Train Generator
         optimizer_G.zero_grad()
         imgs_fake = generator(imgs_distorted)
@@ -141,17 +153,6 @@ for epoch in range(epoch, num_epochs):
         loss_G = loss_GAN + lambda_1 * loss_1  + lambda_con * loss_con 
         loss_G.backward()
         optimizer_G.step()
-
-        ## Train Discriminator
-        optimizer_D.zero_grad()
-        pred_real = discriminator(imgs_good_gt, imgs_distorted)
-        loss_real = Adv_cGAN(pred_real, valid)
-        pred_fake = discriminator(imgs_fake.detach(), imgs_distorted)
-        loss_fake = Adv_cGAN(pred_fake, fake)
-        # Total loss: real + fake (standard PatchGAN)
-        loss_D = 0.5 * (loss_real + loss_fake)
-        loss_D.backward()
-        optimizer_D.step()
 
         ## Print log
         if not i%50:
