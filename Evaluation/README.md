@@ -6,7 +6,7 @@
 ### Experimental data 
 - For FUnIE-GAN, FUnIE-GAN-UP, UGAN, UGAN-P, and Deep-SESR models
 - On [EUVP](http://irvlab.cs.umn.edu/resources/euvp-dataset) and [UFO-120](http://irvlab.cs.umn.edu/resources/ufo-120-dataset) test sets
-- [Provided here (on exp_data folder)](https://drive.google.com/drive/folders/1ZEql33CajGfHHzPe1vFxUFCMcP0YbZb3?usp=sharing) 
+- [Provided here (on eval_data folder)](https://drive.google.com/drive/folders/1ZEql33CajGfHHzPe1vFxUFCMcP0YbZb3?usp=sharing) 
 
 
 

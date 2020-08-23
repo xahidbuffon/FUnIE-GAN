@@ -41,9 +41,18 @@ def SSIMs_PSNRs(gtr_dir, gen_dir, im_res=(256, 256)):
     return np.array(ssims), np.array(psnrs)
 
 
-## generated im paths
-gen_dir = "exp_data/euvp_test/funie-gan/" 
+"""
+Get datasets from
+ - http://irvlab.cs.umn.edu/resources/euvp-dataset
+ - http://irvlab.cs.umn.edu/resources/ufo-120-dataset
+"""
 gtr_dir = "/home/xahid/datasets/released/EUVP/test_samples/GTr/"
+#gtr_dir = "/home/xahid/datasets/released/UFO-120/TEST/hr/"
+
+## generated im paths
+gen_dir = "eval_data/euvp_test/funie-gan/" 
+#gen_dir = "eval_data/ufo_test/deep-sesr/" 
+
 
 ### compute SSIM and PSNR
 SSIM_measures, PSNR_measures = SSIMs_PSNRs(gtr_dir, gen_dir)
