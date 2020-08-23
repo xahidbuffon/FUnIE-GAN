@@ -1,13 +1,12 @@
 
 ### Resources
-- Implementations of **FUnIE-GAN** for underwater image enhancement
+- Implementation of **FUnIE-GAN** (paired) 
 - Simplified implementations of **UGAN / UGAN-P** ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Implementation: PyTorch 1.6 (Python 3.8)
 
 ### Usage
 - Download the data, setup data-paths in the [config files](/PyTorch/configs/)
 - Use the training scripts for paired training of FUnIE-GAN or UGAN/UGAN-P 
-- A few saved models are provided in models/ *comming soon...*
 - Use the [test.py](test.py) script for evaluation
 
 ### Acknowledgements

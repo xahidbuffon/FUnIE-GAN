@@ -1,14 +1,13 @@
 
 ### Resources
-- Implementations of **FUnIE-GAN** for underwater image enhancement
+- Implementation of **FUnIE-GAN** (paired and unpaired)
 - Simplified implementations of **UGAN** and its variants ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
 - Implementation: TensorFlow >= 1.11.0 and Keras >= 2.2 (Python 2.7)
 
 ### Usage
-- Download the data, setup data-paths in the training-scripts
-- Use paired training for FUnIE-GAN / UGAN, and unpaired training for FUnIE-GAN-up 
+- Download the data, setup data-paths in the training scripts
 - A few saved models are provided in models/
-- Use the test-scripts for evaluation
+- Use the test scripts for evaluation
 
 
 ### Acknowledgements
