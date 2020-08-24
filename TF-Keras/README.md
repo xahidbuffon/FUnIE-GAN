@@ -8,6 +8,7 @@
 - Download the data, setup data-paths in the training scripts
 - A few saved models are provided in models/
 - Use the test scripts for evaluation
+- Evaluation data is [provided here (on eval_data folder)](https://drive.google.com/drive/folders/1ZEql33CajGfHHzPe1vFxUFCMcP0YbZb3?usp=sharing) for convenience
 
 
 ### Acknowledgements
