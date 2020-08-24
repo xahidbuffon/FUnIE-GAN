@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_dir", type=str, default="data/test/A/")
 parser.add_argument("--sample_dir", type=str, default="data/output/")
 parser.add_argument("--model_name", type=str, default="funiegan") # or "ugan"
-parser.add_argument("--model_path", type=str, default="models/funieGAN/funie_generator.pth")
+parser.add_argument("--model_path", type=str, default="models/funie_generator.pth")
 opt = parser.parse_args()
 
 ## checks
