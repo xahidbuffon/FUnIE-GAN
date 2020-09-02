@@ -7,7 +7,7 @@ import os
 import random
 import fnmatch
 import numpy as np
-from scipy import misc
+from PIL import Image
 
 def deprocess(x, np_uint8=True):
     # [-1,1] -> [0, 255]
@@ -47,15 +47,18 @@ def getPaths(data_dir):
     return np.asarray(image_paths)
 
 def read_and_resize(path, img_res):
-    img = misc.imread(path, mode='RGB').astype(np.float)  
-    img = misc.imresize(img, img_res)
-    return img
+    im = Image.open(path).resize(img_res)
+    if im.mode=='L': 
+        copy = np.zeros((res[1], res[0], 3))
+        copy[:, :, 0] = im
+        copy[:, :, 1] = im
+        copy[:, :, 2] = im
+        im = copy
+    return np.array(im).astype(np.float32)
 
 def read_and_resize_pair(pathA, pathB, img_res):
-    img_A = misc.imread(pathA, mode='RGB').astype(np.float)  
-    img_A = misc.imresize(img_A, img_res)
-    img_B = misc.imread(pathB, mode='RGB').astype(np.float)
-    img_B = misc.imresize(img_B, img_res)
+    img_A = read_and_resize(pathA, img_res)  
+    img_B = read_and_resize(pathB, img_res)
     return img_A, img_B
 
 def get_local_test_data(data_dir, img_res=(256, 256)):
