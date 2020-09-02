@@ -1,6 +1,5 @@
 """
 # > Various modules for plotting samples
-# > Maintainer: https://github.com/xahidbuffon
 """
 import os
 import matplotlib.pyplot as plt

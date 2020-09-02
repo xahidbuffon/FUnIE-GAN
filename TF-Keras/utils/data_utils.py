@@ -1,6 +1,5 @@
 """
 # > Various modules for handling data 
-# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import division
 from __future__ import absolute_import

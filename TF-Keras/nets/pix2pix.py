@@ -1,7 +1,6 @@
 """
 # > Pix2Pix implementation, adopted as the original UGAN paper 
 #    - Original repo: github.com/cameronfabbri/Underwater-Color-Correction
-# > Maintainer: https://github.com/xahidbuffon
 """
 import tensorflow as tf
 import tensorflow.contrib.layers as tcl

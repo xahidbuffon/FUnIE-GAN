@@ -1,7 +1,6 @@
 """
 # > FUnIE-GAN architecture 
 #    - Paper: https://arxiv.org/pdf/1903.09766.pdf
-# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import print_function, division
 ## python libs

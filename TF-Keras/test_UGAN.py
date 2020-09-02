@@ -5,7 +5,6 @@
 # > Notes and Usage:
 #    - set LOSS_METHOD, NETWORK, DATA, and data_dir
 #    - python test_UGAN.py
-# Maintainer: Jahid (email: islam034@umn.edu)
 """
 # imports
 import os

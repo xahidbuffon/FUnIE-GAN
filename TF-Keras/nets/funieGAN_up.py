@@ -1,13 +1,11 @@
 """
 # > FUnIE-GAN architecture for for unpaired training  
 # > Uses cycle consistency (as in Cycle-GAN), with different G and D
-# > Maintainer: https://github.com/xahidbuffon
 """
 from __future__ import print_function, division
 ## python libs
 import os
 import numpy as np
-
 ## tf-Keras libs
 import tensorflow as tf
 import keras.backend as K
