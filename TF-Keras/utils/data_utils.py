@@ -10,9 +10,10 @@ import fnmatch
 import numpy as np
 from scipy import misc
 
-def deprocess(x):
+def deprocess(x, np_uint8=True):
     # [-1,1] -> [0, 255]
-    return (x+1.0)*127.5
+    x = (x+1.0)*127.5
+    return np.uint8(x) if np_uint8 else x
 
 def preprocess(x):
     # [0,255] -> [-1, 1]

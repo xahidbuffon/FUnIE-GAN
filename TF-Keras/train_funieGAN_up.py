@@ -1,16 +1,14 @@
 """
 # > Script for training FUnIE-GAN on unpaired data (using cycle consistency) 
 #    - Training pipeline is similar to that of a Cycle-GAN (different G and D)
-#    - Paper: https://arxiv.org/pdf/1903.09766.pdf
 # > Notes and Usage:
 #    - set data_dir and other hyper-params
 #    - python train_funieGAN_up.py
-# > Maintainer: https://github.com/xahidbuffon
 """
 ## python libs
 import os
 import numpy as np
-
+from os.path import join, exists
 ## local libs
 from utils.data_utils import DataLoader
 from nets.funieGAN_up import FUNIE_GAN_UP
@@ -19,13 +17,13 @@ from utils.plot_utils import save_val_samples_unpaired
 ## configure data-loader
 data_dir = "/mnt/data1/color_correction_related/datasets/EUVP/"
 dataset_name = "Unpaired"
-data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
+data_loader = DataLoader(join(data_dir, dataset_name), dataset_name)
 
 ## create dir for log and (sampled) validation data
-samples_dir = os.path.join("data/samples/funieGAN_up/", dataset_name)
-checkpoint_dir = os.path.join("checkpoints/funieGAN_up/", dataset_name)
-if not os.path.exists(samples_dir): os.makedirs(samples_dir)
-if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
+samples_dir = join("data/samples/funieGAN_up/", dataset_name)
+checkpoint_dir = join("checkpoints/funieGAN_up/", dataset_name)
+if not exists(samples_dir): os.makedirs(samples_dir)
+if not exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
 num_epoch = 200
@@ -79,7 +77,7 @@ while (step <= num_step):
 
         if (step % save_model_interval==0):
             ## save model and weights
-            model_name = os.path.join(checkpoint_dir, ("model_%d" %step))
+            model_name = join(checkpoint_dir, ("model_%d" %step))
             with open(model_name+"_.json", "w") as json_file:
                 json_file.write(funie_gan.g_BA.to_json())
             funie_gan.g_BA.save_weights(model_name+"_.h5")

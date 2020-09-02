@@ -1,14 +1,13 @@
 """
 # > Script for training FUnIE-GAN on paired data 
-#    - Paper: https://arxiv.org/pdf/1903.09766.pdf
 # > Notes and Usage:
 #    - set data_dir, dataset_name, and other hyper-params
 #    - python train_funieGAN.py
-# > Maintainer: https://github.com/xahidbuffon
 """
 ## python libs
 import os
 import numpy as np
+from os.path import join, exists
 ## local libs
 from nets.funieGAN import FUNIE_GAN
 from utils.data_utils import DataLoader
@@ -17,12 +16,12 @@ from utils.plot_utils import save_val_samples_funieGAN
 ## configure data-loader
 data_dir = "/mnt/data1/color_correction_related/datasets/EUVP/Paired/"
 dataset_name = "underwater_imagenet" # options: {'underwater_imagenet', 'underwater_dark'}
-data_loader = DataLoader(os.path.join(data_dir, dataset_name), dataset_name)
+data_loader = DataLoader(join(data_dir, dataset_name), dataset_name)
 ## create dir for log and (sampled) validation data
-samples_dir = os.path.join("data/samples/funieGAN/", dataset_name)
-checkpoint_dir = os.path.join("checkpoints/funieGAN/", dataset_name)
-if not os.path.exists(samples_dir): os.makedirs(samples_dir)
-if not os.path.exists(checkpoint_dir): os.makedirs(checkpoint_dir)
+samples_dir = join("data/samples/funieGAN/", dataset_name)
+checkpoint_dir = join("checkpoints/funieGAN/", dataset_name)
+if not exists(samples_dir): os.makedirs(samples_dir)
+if not exists(checkpoint_dir): os.makedirs(checkpoint_dir)
 
 ## hyper-params
 num_epoch = 200
@@ -63,7 +62,7 @@ while (step <= num_step):
             save_val_samples_funieGAN(samples_dir, gen_imgs, step, N_samples=N_val_samples)
         ## save model and weights
         if (step % save_model_interval==0):
-            model_name = os.path.join(checkpoint_dir, ("model_%d" %step))
+            model_name = join(checkpoint_dir, ("model_%d" %step))
             with open(model_name+"_.json", "w") as json_file:
                 json_file.write(funie_gan.generator.to_json())
             funie_gan.generator.save_weights(model_name+"_.h5")
