@@ -58,8 +58,8 @@ for img_path in test_paths:
     tot = time.time()-s
     times.append(tot)
     # save output images
-    out_img = np.hstack((inp_img, gen_img))
     img_name = ntpath.basename(img_path)
+    out_img = np.hstack((inp_img, gen_img)).astype('uint8')
     Image.fromarray(out_img).save(join(samples_dir, img_name))
 
 # some statistics    
