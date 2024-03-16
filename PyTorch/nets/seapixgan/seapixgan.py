@@ -5,7 +5,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ..pix2pix import GeneratorUNet
 from .discriminator import DiscriminatorSeaPixGan
 from .generator import GeneratorSeaPixGan
 
