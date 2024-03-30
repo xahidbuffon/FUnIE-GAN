@@ -3,13 +3,11 @@
    * Original paper: https://doi.org/10.1016/j.jvcir.2023.104021
 """
 
-# TODO: add training script
 # py libs
 import os
 import sys
 import yaml
 import argparse
-import numpy as np
 from PIL import Image
 # pytorch libs
 import torch
@@ -21,8 +19,8 @@ from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.transforms as transforms
 # local libs
-from nets.seapixgan import SeaPixGan_Nets, Gradient_Difference_Loss
-from nets.commons import Weights_Normal, Gradient_Penalty
+from nets.seapixgan import SeaPixGan_Nets
+from nets.commons import Weights_Normal
 from utils.data_utils import GetTrainingPairs, GetValImage
 
 ## get configs and training options
@@ -33,7 +31,6 @@ parser.add_argument("--num_epochs", type=int, default=50, help="number of epochs
 parser.add_argument("--batch_size", type=int, default=8, help="size of the batches")
 parser.add_argument("--lr", type=float, default=0.0001, help="adam: learning rate")
 parser.add_argument("--l1_weight", type=float, default=100, help="Weight for L1 loss")
-parser.add_argument("--ig_weight", type=float, default=1, help="0 for UGAN / 1 for UGAN-P")
 parser.add_argument("--gp_weight", type=float, default=10, help="Weight for gradient penalty (D)")
 parser.add_argument("--n_critic", type=int, default=5, help="training steps for D per iter w.r.t G")
 args = parser.parse_args()
@@ -46,8 +43,7 @@ lr_rate = args.lr
 num_critic = args.n_critic
 lambda_gp = args.gp_weight # 10 (default)  
 lambda_1 = args.l1_weight  # 100 (default) 
-lambda_2 = args.ig_weight  # UGAN-P (default)
-model_v = "UGAN_P" if lambda_2 else "UGAN" 
+model_v = "Sea-pix-GAN" 
 # load the data config file
 with open(args.cfg_file) as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
@@ -67,12 +63,10 @@ os.makedirs(samples_dir, exist_ok=True)
 os.makedirs(checkpoint_dir, exist_ok=True)
 
 
-""" UGAN specifics: loss functions and patch-size
+""" Sea-pix-GAN specifics: loss functions and patch-size
 -------------------------------------------------"""
 L1_G  = torch.nn.L1Loss() # l1 loss term
 L_bce = torch.nn.BCELoss() # Binary cross entropy
-#L1_gp = Gradient_Penalty() # wgan_gp loss term
-#L_gdl = Gradient_Difference_Loss() # GDL loss term
 
 
 # Initialize generator and discriminator
@@ -84,9 +78,7 @@ discriminator = seapixgan_.netD
 if torch.cuda.is_available():
     generator = generator.cuda()
     discriminator = discriminator.cuda()
-    #L1_gp.cuda()
     L1_G = L1_G.cuda()
-    #L_gdl = L_gdl.cuda()
     Tensor = torch.cuda.FloatTensor
 else:
     Tensor = torch.FloatTensor
@@ -160,7 +152,7 @@ for epoch in range(epoch, num_epochs):
             loss_bce = L_bce(imgs_fake, torch.ones(transforms.functional.get_image_size(imgs_fake)))
             #loss_gdl = L_gdl(imgs_fake, imgs_good_gt)
             # Total loss: Eq.6 in paper
-            loss_G = loss_bce + lambda_1 * loss_1  #lambda_2 * loss_gdl   
+            loss_G = loss_bce + lambda_1 * loss_1
             loss_G.backward()
             optimizer_G.step()
 
