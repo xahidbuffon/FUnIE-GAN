@@ -5,17 +5,31 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ..pix2pix import GeneratorUNet
 
 
 class DiscriminatorSeaPixGan(nn.Module):
     def __init__(self, in_channels=3):
         super(DiscriminatorSeaPixGan, self).__init__()
 
-        ##########################
-        # TODO: impl discriminator
-        pass
-        ##########################
+        def down_layer(in_filters, out_filters, normalization=True):
+            layers = [nn.Conv2d(in_filters, out_filters, 4, stride=2, padding=1)]
+            if normalization:
+                layers.append(nn.BatchNorm2d(out_filters, momentum=0.8))
+            layers.append(nn.LeakyReLU(0.2, inplace=True))
+            return layers
 
-    def forward(self, img):
-        return self.model(img)
+        self.model = nn.Sequential(
+            *down_layer(2*in_channels, 64),
+            *down_layer(64, 128),
+            *down_layer(128, 256),
+            nn.ZeroPad2d((1, 1, 1, 1)),
+            nn.Conv2d(256, 512, 4, padding=0, bias=False),
+            nn.BatchNorm2d(512, momentum=0.8),
+            nn.ZeroPad2d((1, 1, 1, 1)),
+            nn.Conv2d(512, 1, 4, padding=0, bias=False)
+        )
+
+    def forward(self, img_A, img_B):
+        img_input = torch.cat((img_A, img_B), 1)
+        return self.model(img_input)
+
