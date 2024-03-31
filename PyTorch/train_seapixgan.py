@@ -121,7 +121,6 @@ for epoch in range(epoch, num_epochs):
         # Model inputs
         imgs_distorted = Variable(batch["A"].type(Tensor)) # x: input underwater img
         imgs_good_gt = Variable(batch["B"].type(Tensor)) # y: ground truth underwater img
-        img_size = transforms.functional.get_image_size(imgs_good_gt) # all imgs should have the same size
 
         ## Train Discriminator
         optimizer_D.zero_grad()
@@ -133,8 +132,7 @@ for epoch in range(epoch, num_epochs):
         # ARGUMENT IS MANUALLY PLACED (TENSOR SIZE OF IMAGE!)
         loss_D_gen = L_BCE(pred_fake, torch.zeros_like(pred_fake))
         loss_D_real = L_BCE(pred_real, torch.ones_like(pred_real))
-        loss_D = loss_D_gen + loss_D_real #-torch.mean(pred_real) + torch.mean(pred_fake) # wgan 
-        #gradient_penalty = L1_gp(discriminator, imgs_good_gt.data, imgs_fake.data)
+        loss_D = loss_D_gen + loss_D_real
         loss_D.backward()
         optimizer_D.step()
 
@@ -146,10 +144,7 @@ for epoch in range(epoch, num_epochs):
             pred_fake = discriminator(imgs_fake.detach())
             # calculate loss function
             loss_1 = L1_G(imgs_fake, imgs_good_gt)
-            # for the loss_cgan, since the size of pred_fake(result of discriminator) 
-            # is not the same as `img_size`(origin size), maybe we can use
-            # loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
-            loss_cgan = L_BCE(pred_fake, torch.ones(img_size))
+            loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
             loss_G = loss_cgan + lambda_1 * loss_1 # Total loss: Eq.4 in paper
             # backward & steps
             loss_G.backward()
