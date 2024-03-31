@@ -11,9 +11,6 @@ import argparse
 from PIL import Image
 # pytorch libs
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torchvision import datasets
 from torchvision.utils import save_image
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
@@ -27,22 +24,14 @@ from utils.data_utils import GetTrainingPairs, GetValImage
 parser = argparse.ArgumentParser()
 parser.add_argument("--cfg_file", type=str, default="configs/train_euvp.yaml")
 parser.add_argument("--epoch", type=int, default=0, help="which epoch to start from")
-parser.add_argument("--num_epochs", type=int, default=50, help="number of epochs of training")
-parser.add_argument("--batch_size", type=int, default=8, help="size of the batches")
-parser.add_argument("--lr", type=float, default=0.0001, help="adam: learning rate")
-parser.add_argument("--l1_weight", type=float, default=100, help="Weight for L1 loss")
-parser.add_argument("--gp_weight", type=float, default=10, help="Weight for gradient penalty (D)")
+parser.add_argument("--num_epochs", type=int, default=150, help="number of epochs of training")
 parser.add_argument("--n_critic", type=int, default=5, help="training steps for D per iter w.r.t G")
 args = parser.parse_args()
 
 ## training params
 epoch = args.epoch
 num_epochs = args.num_epochs
-batch_size =  args.batch_size
-lr_rate = args.lr
 num_critic = args.n_critic
-lambda_gp = args.gp_weight # 10 (default)  
-lambda_1 = args.l1_weight  # 100 (default) 
 model_v = "Sea-pix-GAN" 
 # load the data config file
 with open(args.cfg_file) as f:
@@ -63,10 +52,15 @@ os.makedirs(samples_dir, exist_ok=True)
 os.makedirs(checkpoint_dir, exist_ok=True)
 
 
-""" Sea-pix-GAN specifics: loss functions and patch-size
+""" Sea-pix-GAN specifics: loss functions and specified hyperparams
 -------------------------------------------------"""
 L1_G  = torch.nn.L1Loss() # l1 loss term
-L_bce = torch.nn.BCELoss() # Binary cross entropy
+L_BCE = torch.nn.BCELoss() # Binary cross entropy
+lambda_1 = 100
+batch_size = 64
+lr = 2 * 10e-4
+beta_1 = 0.5
+beta_2 = 0.999 # not specified, use PyTorch default
 
 
 # Initialize generator and discriminator
@@ -79,6 +73,7 @@ if torch.cuda.is_available():
     generator = generator.cuda()
     discriminator = discriminator.cuda()
     L1_G = L1_G.cuda()
+    L_BCE = L_BCE.cuda()
     Tensor = torch.cuda.FloatTensor
 else:
     Tensor = torch.FloatTensor
@@ -93,11 +88,12 @@ else:
     print ("Loaded model from epoch %d" %(epoch))
 
 # Optimizers
-optimizer_G = torch.optim.Adam(generator.parameters(), lr=lr_rate)
-optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=lr_rate)
+optimizer_G = torch.optim.Adam(generator.parameters(), lr=lr, betas=(beta_1, beta_2))
+optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=lr, betas=(beta_1, beta_2))
 
 
 ## Data pipeline
+# TODO: make sure preprocessing is correct
 transforms_ = [
     transforms.Resize((img_height, img_width), Image.BICUBIC),
     transforms.ToTensor(),
@@ -123,8 +119,9 @@ val_dataloader = DataLoader(
 for epoch in range(epoch, num_epochs):
     for i, batch in enumerate(dataloader):
         # Model inputs
-        imgs_distorted = Variable(batch["A"].type(Tensor))
-        imgs_good_gt = Variable(batch["B"].type(Tensor))
+        imgs_distorted = Variable(batch["A"].type(Tensor)) # x: input underwater img
+        imgs_good_gt = Variable(batch["B"].type(Tensor)) # y: ground truth underwater img
+        img_size = transforms.functional.get_image_size(imgs_good_gt) # all imgs should have the same size
 
         ## Train Discriminator
         optimizer_D.zero_grad()
@@ -134,25 +131,24 @@ for epoch in range(epoch, num_epochs):
         pred_fake = discriminator(imgs_fake)
         # ALL L_bce LOSSES WOULD BE BETTER IF THE SECOND
         # ARGUMENT IS MANUALLY PLACED (TENSOR SIZE OF IMAGE!)
-        loss_D_gen = L_bce(imgs_fake, torch.zeros(transforms.functional.get_image_size(imgs_fake)))
-        loss_D_real = L_bce(imgs_good_gt, torch.ones(transforms.functional.get_image_size(imgs_good_gt)))
+        loss_D_gen = L_BCE(imgs_fake, torch.zeros(img_size))
+        loss_D_real = L_BCE(imgs_good_gt, torch.ones(img_size))
         loss_D = loss_D_gen + loss_D_real #-torch.mean(pred_real) + torch.mean(pred_fake) # wgan 
         #gradient_penalty = L1_gp(discriminator, imgs_good_gt.data, imgs_fake.data)
-        #loss_D += lambda_gp * gradient_penalty # Eq.2 paper 
         loss_D.backward()
         optimizer_D.step()
 
-        optimizer_G.zero_grad()
         ## Train Generator at 1:num_critic rate 
+        optimizer_G.zero_grad()
         if i % num_critic == 0:
+            # regenerate imgs
             imgs_fake = generator(imgs_distorted)
             pred_fake = discriminator(imgs_fake.detach())
-            #loss_gen = -torch.mean(pred_fake)
+            # calculate loss function
             loss_1 = L1_G(imgs_fake, imgs_good_gt)
-            loss_bce = L_bce(imgs_fake, torch.ones(transforms.functional.get_image_size(imgs_fake)))
-            #loss_gdl = L_gdl(imgs_fake, imgs_good_gt)
-            # Total loss: Eq.6 in paper
-            loss_G = loss_bce + lambda_1 * loss_1
+            loss_cgan = L_BCE(pred_fake, torch.ones(img_size))
+            loss_G = loss_cgan + lambda_1 * loss_1 # Total loss: Eq.4 in paper
+            # backward & steps
             loss_G.backward()
             optimizer_G.step()
 
