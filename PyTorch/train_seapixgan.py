@@ -127,12 +127,12 @@ for epoch in range(epoch, num_epochs):
         optimizer_D.zero_grad()
         
         imgs_fake = generator(imgs_distorted)
-        pred_real = discriminator(imgs_good_gt)
-        pred_fake = discriminator(imgs_fake)
+        pred_real = discriminator(imgs_good_gt, imgs_distorted)
+        pred_fake = discriminator(imgs_fake, imgs_distorted)
         # ALL L_bce LOSSES WOULD BE BETTER IF THE SECOND
         # ARGUMENT IS MANUALLY PLACED (TENSOR SIZE OF IMAGE!)
-        loss_D_gen = L_BCE(imgs_fake, torch.zeros(img_size))
-        loss_D_real = L_BCE(imgs_good_gt, torch.ones(img_size))
+        loss_D_gen = L_BCE(pred_fake, torch.zeros_like(pred_fake))
+        loss_D_real = L_BCE(pred_real, torch.ones_like(pred_real))
         loss_D = loss_D_gen + loss_D_real #-torch.mean(pred_real) + torch.mean(pred_fake) # wgan 
         #gradient_penalty = L1_gp(discriminator, imgs_good_gt.data, imgs_fake.data)
         loss_D.backward()
@@ -146,6 +146,9 @@ for epoch in range(epoch, num_epochs):
             pred_fake = discriminator(imgs_fake.detach())
             # calculate loss function
             loss_1 = L1_G(imgs_fake, imgs_good_gt)
+            # for the loss_cgan, since the size of pred_fake(result of discriminator) 
+            # is not the same as `img_size`(origin size), maybe we can use
+            # loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
             loss_cgan = L_BCE(pred_fake, torch.ones(img_size))
             loss_G = loss_cgan + lambda_1 * loss_1 # Total loss: Eq.4 in paper
             # backward & steps
