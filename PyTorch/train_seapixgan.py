@@ -141,7 +141,7 @@ for epoch in range(epoch, num_epochs):
         if i % num_critic == 0:
             # regenerate imgs
             imgs_fake = generator(imgs_distorted)
-            pred_fake = discriminator(imgs_fake.detach())
+            pred_fake = discriminator(imgs_fake.detach(), imgs_distorted.detach())
             # calculate loss function
             loss_1 = L1_G(imgs_fake, imgs_good_gt)
             loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
