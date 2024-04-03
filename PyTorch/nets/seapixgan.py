@@ -21,22 +21,22 @@ class GeneratorSeaPixGan(nn.Module):
     def __init__(self):
         super(GeneratorSeaPixGan, self).__init__()
     
-        self.e1 = _EncodeLayer(3, 64, batch_normalize=False)
-        self.e2 = _EncodeLayer(64, 128)
-        self.e3 = _EncodeLayer(128, 256)
-        self.e4 = _EncodeLayer(256, 512)
-        self.e5 = _EncodeLayer(512, 512)
-        self.e6 = _EncodeLayer(512, 512)
-        self.e7 = _EncodeLayer(512, 512)
-        self.e8 = _EncodeLayer(512, 512)
+        self.e1 = _DownLayer(3, 64, batch_normalize=False)
+        self.e2 = _DownLayer(64, 128)
+        self.e3 = _DownLayer(128, 256)
+        self.e4 = _DownLayer(256, 512)
+        self.e5 = _DownLayer(512, 512)
+        self.e6 = _DownLayer(512, 512)
+        self.e7 = _DownLayer(512, 512)
+        self.e8 = _DownLayer(512, 512)
         
-        self.d1 = _DecodeLayer(512, 512, dropout=True)
-        self.d2 = _DecodeLayer(1024, 512, dropout=True)
-        self.d3 = _DecodeLayer(1024, 512, dropout=True)
-        self.d4 = _DecodeLayer(1024, 512)
-        self.d5 = _DecodeLayer(1024, 256)
-        self.d6 = _DecodeLayer(512, 128)
-        self.d7 = _DecodeLayer(256, 64)
+        self.d1 = _UpLayer(512, 512, dropout=True)
+        self.d2 = _UpLayer(1024, 512, dropout=True)
+        self.d3 = _UpLayer(1024, 512, dropout=True)
+        self.d4 = _UpLayer(1024, 512)
+        self.d5 = _UpLayer(1024, 256)
+        self.d6 = _UpLayer(512, 128)
+        self.d7 = _UpLayer(256, 64)
 
         self.deconv = nn.ConvTranspose2d(
             in_channels=128, out_channels=3, 
@@ -67,26 +67,26 @@ class GeneratorSeaPixGan(nn.Module):
         return final
 
 
-class _EncodeLayer(nn.Module):
+class _DownLayer(nn.Module):
     """ Encoder: a series of Convolution-BatchNorm-ReLU*
     """
     def __init__(self, in_size, out_size, batch_normalize=True):
-        super(_EncodeLayer, self).__init__()
+        super(_DownLayer, self).__init__()
         layers = [nn.Conv2d(in_channels=in_size, out_channels=out_size, kernel_size=4, stride=2, padding=1, bias=False)]
         if batch_normalize: 
-            layers.append(nn.BatchNorm2d(num_features=out_size))
-        layers.append(nn.LeakyReLU(negative_slope=0.2))
+            layers.append(nn.BatchNorm2d(num_features=out_size, momentum=0.8))
+        layers.append(nn.LeakyReLU(negative_slope=0.2, inplace=True))
         self.model = nn.Sequential(*layers)
 
     def forward(self, x):
         return self.model(x)
 
 
-class _DecodeLayer(nn.Module):
+class _UpLayer(nn.Module):
     """ Decoder: a series of Convolution-BatchNormDropout-ReLU*
     """
     def __init__(self, in_size, out_size, dropout=False):
-        super(_DecodeLayer, self).__init__()
+        super(_UpLayer, self).__init__()
         layers = [
             nn.ConvTranspose2d(in_channels=in_size, out_channels=out_size, kernel_size=4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(num_features=out_size),
@@ -105,17 +105,10 @@ class DiscriminatorSeaPixGan(nn.Module):
     def __init__(self, in_channels=3):
         super(DiscriminatorSeaPixGan, self).__init__()
 
-        def down_layer(in_filters, out_filters, normalization=True):
-            layers = [nn.Conv2d(in_filters, out_filters, 4, stride=2, padding=1)]
-            if normalization:
-                layers.append(nn.BatchNorm2d(out_filters, momentum=0.8))
-            layers.append(nn.LeakyReLU(0.2, inplace=True))
-            return layers
-
         self.model = nn.Sequential(
-            *down_layer(2*in_channels, 64),
-            *down_layer(64, 128),
-            *down_layer(128, 256),
+            *_DownLayer(2*in_channels, 64),
+            *_DownLayer(64, 128),
+            *_DownLayer(128, 256),
             nn.ZeroPad2d((1, 1, 1, 1)),
             nn.Conv2d(256, 512, 4, padding=0, bias=False),
             nn.BatchNorm2d(512, momentum=0.8),
