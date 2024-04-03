@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.transforms as transforms
 # local libs
-from nets.seapixgan import SeaPixGan_Nets
+from nets.seapixgan import SeaPixGAN_Nets
 from nets.commons import Weights_Normal
 from utils.data_utils import GetTrainingPairs, GetValImage
 
@@ -64,7 +64,7 @@ beta_2 = 0.999 # not specified, use PyTorch default
 
 
 # Initialize generator and discriminator
-seapixgan_ = SeaPixGan_Nets(base_model='pix2pix')
+seapixgan_ = SeaPixGAN_Nets(base_model='pix2pix')
 generator = seapixgan_.netG
 discriminator = seapixgan_.netD
 
@@ -104,7 +104,7 @@ dataloader = DataLoader(
     GetTrainingPairs(dataset_path, dataset_name, transforms_=transforms_),
     batch_size = batch_size,
     shuffle = True,
-    num_workers = 8,
+    num_workers = 4,
 )
 
 val_dataloader = DataLoader(

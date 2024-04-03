@@ -40,7 +40,7 @@ class GeneratorSeaPixGan(nn.Module):
 
         self.deconv = nn.ConvTranspose2d(
             in_channels=128, out_channels=3, 
-            kernel_size=4, padding=1, bias=False
+            kernel_size=4, stride=2, padding=1, bias=False
         )
 
     def forward(self, x):
