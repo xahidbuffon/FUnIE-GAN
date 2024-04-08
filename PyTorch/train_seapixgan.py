@@ -25,17 +25,29 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--cfg_file", type=str, default="configs/train_euvp.yaml")
 parser.add_argument("--epoch", type=int, default=0, help="which epoch to start from")
 parser.add_argument("--num_epochs", type=int, default=150, help="number of epochs of training")
-parser.add_argument("--n_critic", type=int, default=5, help="training steps for D per iter w.r.t G")
+parser.add_argument("--batch_size", type=int, default=64, help="size of the batches, paper uses 64")
+parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate, paper uses 0.0002")
+parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of 1st order momentum, paper uses 0.5")
+parser.add_argument("--b2", type=float, default=0.99, help="adam: decay of 2nd order momentum")
+parser.add_argument("--l1_weight", type=float, default=100, help="Weight for L1 loss, paper uses 100")
+
 args = parser.parse_args()
 
 ## training params
 epoch = args.epoch
 num_epochs = args.num_epochs
 num_critic = args.n_critic
-model_v = "Sea-pix-GAN" 
+batch_size = args.batch_size
+lr = args.lr
+beta_1 = args.b1
+beta_2 = args.b2
+lambda_1 = args.l1_weight
+model_v = "Sea-pix-GAN"
+
 # load the data config file
 with open(args.cfg_file) as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
+
 # get info from config file
 dataset_name = cfg["dataset_name"] 
 dataset_path = cfg["dataset_path"]
@@ -52,15 +64,10 @@ os.makedirs(samples_dir, exist_ok=True)
 os.makedirs(checkpoint_dir, exist_ok=True)
 
 
-""" Sea-pix-GAN specifics: loss functions and specified hyperparams
+""" Sea-pix-GAN specifics: loss functions
 -------------------------------------------------"""
 L1_G  = torch.nn.L1Loss() # l1 loss term
-L_BCE = torch.nn.BCELoss() # Binary cross entropy
-lambda_1 = 100
-batch_size = 64
-lr = 2 * 10e-4
-beta_1 = 0.5
-beta_2 = 0.999 # not specified, use PyTorch default
+L_BCE = torch.nn.BCEWithLogitsLoss() # Binary cross entropy
 
 
 # Initialize generator and discriminator
@@ -93,7 +100,6 @@ optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=lr, betas=(beta_1,
 
 
 ## Data pipeline
-# TODO: make sure preprocessing is correct
 transforms_ = [
     transforms.Resize((img_height, img_width), Image.BICUBIC),
     transforms.ToTensor(),
@@ -116,7 +122,9 @@ val_dataloader = DataLoader(
 
 
 ## Training pipeline
+all_loss = []
 for epoch in range(epoch, num_epochs):
+    batch_loss = []
     for i, batch in enumerate(dataloader):
         # Model inputs
         imgs_distorted = Variable(batch["A"].type(Tensor)) # x: input underwater img
@@ -124,40 +132,30 @@ for epoch in range(epoch, num_epochs):
 
         ## Train Discriminator
         optimizer_D.zero_grad()
-        
         imgs_fake = generator(imgs_distorted)
         pred_real = discriminator(imgs_good_gt, imgs_distorted)
         pred_fake = discriminator(imgs_fake, imgs_distorted)
-        # ALL L_bce LOSSES WOULD BE BETTER IF THE SECOND
-        # ARGUMENT IS MANUALLY PLACED (TENSOR SIZE OF IMAGE!)
         loss_D_gen = L_BCE(pred_fake, torch.zeros_like(pred_fake))
         loss_D_real = L_BCE(pred_real, torch.ones_like(pred_real))
         loss_D = loss_D_gen + loss_D_real
         loss_D.backward()
         optimizer_D.step()
 
-        ## Train Generator at 1:num_critic rate 
+        ## Train Generator
         optimizer_G.zero_grad()
-        if i % num_critic == 0:
-            # regenerate imgs
-            imgs_fake = generator(imgs_distorted)
-            pred_fake = discriminator(imgs_fake.detach(), imgs_distorted.detach())
-            # calculate loss function
-            loss_1 = L1_G(imgs_fake, imgs_good_gt)
-            loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
-            loss_G = loss_cgan + lambda_1 * loss_1 # Total loss: Eq.4 in paper
-            # backward & steps
-            loss_G.backward()
-            optimizer_G.step()
+        # regenerate imgs
+        imgs_fake = generator(imgs_distorted)
+        pred_fake = discriminator(imgs_fake.detach(), imgs_distorted.detach())
+        # calculate loss function
+        loss_1 = L1_G(imgs_fake, imgs_good_gt)
+        loss_cgan = L_BCE(pred_fake, torch.ones_like(pred_fake))
+        loss_G = loss_cgan + lambda_1 * loss_1 # Total loss: Eq.4 in paper
+        # backward & steps
+        loss_G.backward()
+        optimizer_G.step()
 
-        ## Print log
-        if not i%50:
-            sys.stdout.write("\r[Epoch %d/%d: batch %d/%d] [DLoss: %.3f, GLoss: %.3f]"
-                              %(
-                                epoch, num_epochs, i, len(dataloader),
-                                loss_D.item(), loss_G.item(),
-                               )
-            )
+        batch_loss.append([loss_D.item(), loss_G.item(), loss_cgan.item(), loss_1.item()])
+
         ## If at sample interval save image
         batches_done = epoch * len(dataloader) + i
         if batches_done % val_interval == 0:
@@ -166,9 +164,21 @@ for epoch in range(epoch, num_epochs):
             imgs_gen = generator(imgs_val)
             img_sample = torch.cat((imgs_val.data, imgs_gen.data), -2)
             save_image(img_sample, "samples/%s/%s/%s.png" % (model_v, dataset_name, batches_done), nrow=5, normalize=True)
+    
+    epoch_loss = (torch.Tensor(batch_loss)).mean(dim=0).tolist()
+    all_loss.append(epoch_loss)
+    print("[Epoch %d/%d] [DLoss: %.3f, GLoss: %.3f, cGanLoss: %.3f, L1Loss: %.3f]"
+          %(
+            epoch, num_epochs,
+            epoch_loss[0], epoch_loss[1], epoch_loss[2], epoch_loss[3]
+           )
+         )
 
     ## Save model checkpoints
     if (epoch % ckpt_interval == 0):
         torch.save(generator.state_dict(), "checkpoints/%s/%s/generator_%d.pth" % (model_v, dataset_name, epoch))
         torch.save(discriminator.state_dict(), "checkpoints/%s/%s/discriminator_%d.pth" % (model_v, dataset_name, epoch))
 
+## result
+torch.save(generator.state_dict(), "checkpoints/%s/%s/generator.pth" % (model_v, dataset_name))
+torch.save(discriminator.state_dict(), "checkpoints/%s/%s/discriminator.pth" % (model_v, dataset_name))

@@ -13,9 +13,9 @@ class SeaPixGAN_Nets:
             self.netD = DiscriminatorSeaPixGan()
         elif base_model=='resnet':
             #TODO: add ResNet support
-            pass
+            raise NotImplementedError()
         else: 
-            pass
+            raise NotImplementedError()
 
 class GeneratorSeaPixGan(nn.Module):
     def __init__(self):
@@ -63,13 +63,9 @@ class GeneratorSeaPixGan(nn.Module):
         d7 = self.d7(d6, e1)  # (128×128×(64+64))
 
         final = self.deconv(d7) # (256×256×3)
-
         return final
 
-
 class _EncodeLayer(nn.Module):
-    """ Encoder: a series of Convolution-BatchNorm-ReLU*
-    """
     def __init__(self, in_size, out_size, batch_normalize=True):
         super(_EncodeLayer, self).__init__()
         layers = [nn.Conv2d(in_channels=in_size, out_channels=out_size, kernel_size=4, stride=2, padding=1, bias=False)]
@@ -81,10 +77,7 @@ class _EncodeLayer(nn.Module):
     def forward(self, x):
         return self.model(x)
 
-
 class _DecodeLayer(nn.Module):
-    """ Decoder: a series of Convolution-BatchNormDropout-ReLU*
-    """
     def __init__(self, in_size, out_size, dropout=False):
         super(_DecodeLayer, self).__init__()
         layers = [
@@ -100,6 +93,7 @@ class _DecodeLayer(nn.Module):
         x = self.model(x)
         x = torch.cat((x, skip_input), 1)
         return x
+
 
 class DiscriminatorSeaPixGan(nn.Module):
     def __init__(self, in_channels=3):
