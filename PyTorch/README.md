@@ -2,11 +2,12 @@
 ### Resources
 - Implementation of **FUnIE-GAN** (paired) 
 - Simplified implementations of **UGAN / UGAN-P** ([original repo](https://github.com/cameronfabbri/Underwater-Color-Correction))
+- Implementation of **Sea-Pix-GAN**
 - Implementation: PyTorch 1.6 (Python 3.8)
 
 ### Usage
 - Download the data, setup data-paths in the [config files](configs)
-- Use the training scripts for paired training of FUnIE-GAN or UGAN/UGAN-P 
+- Use the training scripts for paired training of FUnIE-GAN, UGAN/UGAN-P or Sea-Pix-GAN
 - Use the [test.py](test.py) script for evaluation
 - A sample model is provided in [models](models) 
 - *Note that the [TF-Keras implementation](/TF-Keras/) is the official one; use those weights to reproduce results in the paper* 
