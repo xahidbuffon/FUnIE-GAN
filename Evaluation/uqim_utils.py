@@ -61,8 +61,8 @@ def eme(x, window_size):
       x.shape[1] = width
     """
     # if 4 blocks, then 2x2...etc.
-    k1 = x.shape[1]/window_size
-    k2 = x.shape[0]/window_size
+    k1 = int(x.shape[1]/window_size)
+    k2 = int(x.shape[0]/window_size)
     # weight
     w = 2./(k1*k2)
     blocksize_x = window_size
